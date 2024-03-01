@@ -10,7 +10,7 @@ use App\Models\Jabatan;
 use App\Models\JenisDiklat;
 use App\Models\Kegiatan;
 use App\Models\KodeSurat;
-use App\Models\peran;
+use App\Models\Peran;
 use App\Models\Presensi;
 use App\Models\Ruangan;
 use App\Models\BarangTik;
@@ -103,11 +103,11 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Anak Kandung',
         ]);
 
-        peran::create([
+        Peran::create([
             'nama_peran' => 'Pembawa Acara',
         ]);
 
-        peran::create([
+        Peran::create([
             'nama_peran' => 'Panitia',
         ]);
 

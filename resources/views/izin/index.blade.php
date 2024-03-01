@@ -191,8 +191,8 @@
                                                     <select type="hidden" id="kode_finger" name="kode_finger"
                                                         class="form-select @error('kode_finger') is-invalid @enderror">
                                                         @foreach ($users as $u)
-                                                        <option value="{{ $u->kode_finger }}"
-                                                            {{ $ap->kode_finger == $u->kode_finger ? 'selected' : '' }}>
+                                                        <option value="{{ $u->kode_finger }}" {{ $ap->kode_finger ==
+                                                            $u->kode_finger ? 'selected' : '' }}>
                                                             {{ $u->nama_pegawai }}
                                                         </option>
                                                         @endforeach
@@ -236,8 +236,10 @@
                                                         id="jumlah_hari_pengajuan" name="jumlah_hari_pengajuan"
                                                         value="{{$ap -> jumlah_hari_pengajuan ?? old('jumlah_hari_pengajuan') }}"
                                                         min="0">
-                                                    @error('jumlah_hari_pengajuan') <span
-                                                        class="text-danger">{{ $message }}</span> @enderror
+
+                                                    @error('jumlah_hari_pengajuan') 
+                                                        <span class="text-danger">{{$message }}</span> 
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="jenis_perizinan">Jenis Perizinan</label>
@@ -245,29 +247,24 @@
                                                         class="form-select  @error('jenis_perizinan') is-invalid @enderror"
                                                         id="jenis_perizinan" name="jenis_perizinan">
                                                         <option value="A" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='A' )selected
-                                                            @endif>Alpha</option>
+                                                            jenis_perizinan)=='A' ) selected @endif>Alpha</option>
                                                         <option value="CAP" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CAP' )selected
-                                                            @endif>CAP</option>
+                                                            jenis_perizinan)=='CAP' ) selected @endif>CAP</option>
                                                         <option value="CB" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CB' )selected
-                                                            @endif>Cuti Bersama</option>
+                                                            jenis_perizinan)=='CB' ) selected @endif>Cuti Bersama
+                                                        </option>
                                                         <option value="CH" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CH' )selected
-                                                            @endif>Cuti Haji</option>
+                                                            jenis_perizinan)=='CH' ) selected @endif>Cuti Haji</option>
                                                         <option value="CM" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CM' )selected
-                                                            @endif>Cuti Melahirkan</option>
+                                                            jenis_perizinan)=='CM' ) selected @endif>Cuti Melahirkan
+                                                        </option>
                                                         <option value="CS" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CS' )selected
-                                                            @endif>Cuti Sakit</option>
+                                                            jenis_perizinan)=='CS' ) selected @endif>Cuti Sakit</option>
                                                         <option value="CT" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CT' )selected
-                                                            @endif>Cuti Tahunan</option>
+                                                            jenis_perizinan)=='CT' ) selected @endif>Cuti Tahunan
+                                                        </option>
                                                         <option value="DL" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='DL' )selected
-                                                            @endif>Dinas Luar</option>
+                                                            jenis_perizinan)=='DL' ) selected @endif>Dinas Luar</option>
                                                         <option value="I" @if(old('jenis_perizinan', $ap->
                                                             jenis_perizinan)=='I')selected
                                                             @endif>Izin</option>
@@ -324,49 +321,38 @@
                                                     @endif
                                                 </div>
                                                 @endcan
-                                                @if($ap->id_atasan == auth()->user()->id_users or
-                                                auth()->user()->level=='admin')
 
+                                                @if(($ap->id_atasan == auth()->user()->id_users) || (auth()->user()->level=='admin'))
                                                 <div class="form-group">
                                                     <label for="status_izin_atasan">Persetujuan Atasan</label>
                                                     <div class="input">
-                                                        <input type="radio" name="status_izin_atasan" value="1" @if
-                                                            ($ap->status_izin_atasan === '1') checked @endif>
+                                                        <input type="radio" name="status_izin_atasan" value="1" @if ($ap->status_izin_atasan === '1') checked @endif>
                                                         Disetujui<br>
-                                                        <input type="radio" name="status_izin_atasan" value="0" @if
-                                                            ($ap->status_izin_atasan === '0') checked @endif>
+                                                        <input type="radio" name="status_izin_atasan" value="0" @if ($ap->status_izin_atasan === '0') checked @endif>
                                                         Ditolak<br>
                                                     </div>
                                                 </div>
-                                                <div id="alasan_ditolak_atasan" style="display: none;"
-                                                    class="form-group">
+                                                <div id="alasan_ditolak_atasan" style="display: none;" class="form-group">
                                                     <label for="alasan_ditolak_atasan">Alasan Ditolak</label>
-
-                                                    <textarea name="alasan_ditolak_atasan" id="alasan_ditolak_atasan"
-                                                        cols="30" rows="3"
-                                                        class="form-control">{{ $ap->alasan_ditolak_atasan }}</textarea>
-
+                                                    <textarea name="alasan_ditolak_atasan" id="alasan_ditolak_atasan" cols="30" rows="3" class="form-control">{{ $ap->alasan_ditolak_atasan }}</textarea>
                                                 </div>
                                                 @endif
-                                                @if(auth()->user()->level === 'admin' || auth()->user()->level === 'ppk'
-                                                )
+
+                                                @if(auth()->user()->level === 'admin' || auth()->user()->level === 'ppk')
                                                 @if ($ap->jenis_perizinan !== 'I')
                                                 <div class="form-group">
                                                     <label for="status_izin_ppk">Persetujuan PPK</label>
                                                     <div class="input">
-                                                        <input type="radio" name="status_izin_ppk" value="1" @if
-                                                            ($ap->status_izin_ppk === '1') checked @endif>
+                                                        <input type="radio" name="status_izin_ppk" value="1" @if ($ap->status_izin_ppk === '1') checked @endif>
                                                         Disetujui<br>
-                                                        <input type="radio" name="status_izin_ppk" value="0" @if
-                                                            ($ap->status_izin_ppk === '0') checked @endif>
+                                                        <input type="radio" name="status_izin_ppk" value="0" <?= $ap->status_izin_ppk === '0' ? 'checked': '' ?>>
                                                         Ditolak<br>
                                                     </div>
                                                 </div>
                                                 @endif
                                                 <div id="alasan_ditolak_ppk" style="display: none;" class="form-group">
                                                     <label for="alasan_ditolak_ppk">Alasan Ditolak</label>
-                                                    <textarea name="alasan_ditolak_ppk" id="alasan_ditolak_ppk"
-                                                        cols="30" rows="3"
+                                                    <textarea name="alasan_ditolak_ppk" id="alasan_ditolak_ppk" cols="30" rows="3"
                                                         class="form-control">{{ $ap->alasan_ditolak_ppk }}</textarea>
                                                 </div>
                                                 @endif
@@ -528,79 +514,79 @@
     @csrf
 </form>
 <script>
-document.querySelectorAll('input[type=radio][name=status_izin_atasan]').forEach(input => input.addEventListener(
-    'change',
-    function() {
-        const alasanDitolakElement = this.parentNode.parentNode.parentNode.querySelector(
-            '#alasan_ditolak_atasan');
-        const alasanTextarea = alasanDitolakElement.querySelector('textarea[name=alasan_ditolak_atasan]');
+    document.querySelectorAll('input[type=radio][name=status_izin_atasan]').forEach(input => input.addEventListener(
+        'change',
+        function () {
+            const alasanDitolakElement = this.parentNode.parentNode.parentNode.querySelector(
+                '#alasan_ditolak_atasan');
+            const alasanTextarea = alasanDitolakElement.querySelector('textarea[name=alasan_ditolak_atasan]');
 
-        if (this.value === '0') {
-            alasanDitolakElement.style.display = 'block';
-            // Tambahkan atribut required
-            alasanTextarea.setAttribute('required', 'true');
-        } else {
-            alasanDitolakElement.style.display = 'none';
-            // Hapus atribut required
-            alasanTextarea.removeAttribute('required');
-        }
-    }));
-document.querySelectorAll('input[type=radio][name=status_izin_ppk]').forEach(input => input.addEventListener('change',
-    function() {
-        const alasanDitolakppkElement = this.parentNode.parentNode.parentNode.querySelector(
-            '#alasan_ditolak_ppk');
-        const alasanppkTextarea = alasanDitolakppkElement.querySelector('textarea[name=alasan_ditolak_ppk]');
-        if (this.value === '0') {
-            alasanDitolakppkElement.style.display = 'block';
-            // Tambahkan atribut required
-            alasanppkTextarea.setAttribute('required', 'true');
-        } else {
-            alasanDitolakppkElement.style.display = 'none';
-            // Hapus atribut required
-            alasanppkTextarea.removeAttribute('required');
-        }
-    }));
+            if (this.value === '0') {
+                alasanDitolakElement.style.display = 'block';
+                // Tambahkan atribut required
+                alasanTextarea.setAttribute('required', 'true');
+            } else {
+                alasanDitolakElement.style.display = 'none';
+                // Hapus atribut required
+                alasanTextarea.removeAttribute('required');
+            }
+        }));
+    document.querySelectorAll('input[type=radio][name=status_izin_ppk]').forEach(input => input.addEventListener('change',
+        function () {
+            const alasanDitolakppkElement = this.parentNode.parentNode.parentNode.querySelector(
+                '#alasan_ditolak_ppk');
+            const alasanppkTextarea = alasanDitolakppkElement.querySelector('textarea[name=alasan_ditolak_ppk]');
+            if (this.value === '0') {
+                alasanDitolakppkElement.style.display = 'block';
+                // Tambahkan atribut required
+                alasanppkTextarea.setAttribute('required', 'true');
+            } else {
+                alasanDitolakppkElement.style.display = 'none';
+                // Hapus atribut required
+                alasanppkTextarea.removeAttribute('required');
+            }
+        }));
 </script>
 
 <script>
-function validateFile(input) {
-    const allowedExtensions = ['.jpeg', '.jpg', '.png', '.pdf', '.docx'];
-    const fileInput = input.files[0];
-    const fileErrorElement = document.getElementById('fileError');
+    function validateFile(input) {
+        const allowedExtensions = ['.jpeg', '.jpg', '.png', '.pdf', '.docx'];
+        const fileInput = input.files[0];
+        const fileErrorElement = document.getElementById('fileError');
 
-    if (fileInput) {
-        const fileName = fileInput.name;
-        const fileExtension = '.' + fileName.split('.').pop().toLowerCase();
+        if (fileInput) {
+            const fileName = fileInput.name;
+            const fileExtension = '.' + fileName.split('.').pop().toLowerCase();
 
-        if (!allowedExtensions.includes(fileExtension)) {
-            fileErrorElement.style.display = 'block';
-            input.classList.add('is-invalid');
-            input.value = ''; // Clear the input
-        } else {
-            fileErrorElement.style.display = 'none';
-            input.classList.remove('is-invalid');
+            if (!allowedExtensions.includes(fileExtension)) {
+                fileErrorElement.style.display = 'block';
+                input.classList.add('is-invalid');
+                input.value = ''; // Clear the input
+            } else {
+                fileErrorElement.style.display = 'none';
+                input.classList.remove('is-invalid');
+            }
         }
     }
-}
 </script>
 
 <script>
-$(document).ready(function() {
-    var table = $('#example2').DataTable({
-        "responsive": true,
-        "order": [
-            [1, 'desc']
-        ]
-    });
-
-    table.on('order.dt search.dt', function() {
-        table.column(0, {
-            search: 'applied',
-            order: 'applied'
-        }).nodes().each(function(cell, i) {
-            cell.innerHTML = i + 1;
+    $(document).ready(function () {
+        var table = $('#example2').DataTable({
+            "responsive": true,
+            "order": [
+                [1, 'desc']
+            ]
         });
-    }).draw();
-});
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    });
 </script>
 @endpush

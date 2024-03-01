@@ -6,6 +6,7 @@ use App\Models\EmailConfiguration;
 use App\Models\User;
 use App\Observers\UserProfileObserver;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,7 +28,6 @@ class AppServiceProvider extends ServiceProvider
             if (\Schema::hasTable('email_configuration')) {
                 $mailsetting = EmailConfiguration::first();
                 if ($mailsetting) {
-
                     config(['mail.default' => $mailsetting->protocol]);
                     config(['mail.mailers.smtp.host' => $mailsetting->host]);
                     config(['mail.mailers.smtp.port' => $mailsetting->port]);
@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            Log::error($th);
         }
 
         User::observe(UserProfileObserver::class);

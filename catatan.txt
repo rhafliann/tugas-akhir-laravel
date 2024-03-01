@@ -1,0 +1,12 @@
+Siklis:
+Framework: Laravel 10
+Database: MySQL
+Php Version: 8.1
+
+admin/user
+http://127.0.0.1:8000/login
+mail: admin@admin.com
+pass: 12345678
+
+don't forget to symlink
+php artisan storage:link
