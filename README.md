@@ -165,8 +165,10 @@ git push -u origin --set-upstream YOUR-NEW-FEATURE
     jika mengunakan email gmail pastikan untuk mengunakan app password sebagai password\
     username dan password adalah email gmail
 
-## Kontibutor
-<a href="https://github.com/ghinaat/Sikil/graphs/contributors">
+<!-- ## Kontibutor BATCH 1 -->
+<!-- <a href="https://github.com/ghinaat/Sikil/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ghinaat/Sikil" />
-</a>
+</a> -->
+
+<!-- ## Kontributor BATCH 2 -->
 
