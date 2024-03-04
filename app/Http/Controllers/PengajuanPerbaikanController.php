@@ -37,7 +37,6 @@ class PengajuanPerbaikanController extends Controller
      */
     public function store(Request $request)
     {
-    //   dd($request);
         //Menyimpan Data User Baru
         $request->validate([
             'id_users' => 'required',
@@ -61,11 +60,11 @@ class PengajuanPerbaikanController extends Controller
         $notifikasi->is_dibaca = 'tidak_dibaca';
         $notifikasi->label = 'info';
         $notifikasi->send_email = 'yes';
-        $notifikasi->link = '/ajuanperbaikan';  
+        $notifikasi->link = '/perbaikanBarang/' . $perbaikanBarang->id;  
         $notifikasi->id_users = $pengguna->id_users;
         $notifikasi->save();
 
-           $notifikasiKadiv = User::where('id_jabatan', '8')->get();
+        $notifikasiKadiv = User::where('id_jabatan', '8')->get();
 
 
         foreach($notifikasiKadiv as $nk){
@@ -74,7 +73,7 @@ class PengajuanPerbaikanController extends Controller
         $notifikasi->pesan =  'Pengajuan Perbaikan Alat TIK dari '.$pengguna->nama_pegawai.'. Dimohon untuk segera memperbaiki Alat TIK.'; 
         $notifikasi->is_dibaca = 'tidak_dibaca';
         $notifikasi->label = 'info';
-        $notifikasi->link = '/ajuanperbaikan';
+        $notifikasi->link = '/perbaikanBarang/' . $perbaikanBarang->id;
         $notifikasi->send_email = 'yes';
         $notifikasi->id_users = $nk->id_users;
         $notifikasi->save();
@@ -88,7 +87,7 @@ class PengajuanPerbaikanController extends Controller
         $notifikasi->pesan =  'Pengajuan Perbaikan Alat TIK dari '.$pengguna->nama_pegawai.'. Dimohon untuk segera memperbaiki Alat TIK.'; 
         $notifikasi->is_dibaca = 'tidak_dibaca';
         $notifikasi->label = 'info';
-        $notifikasi->link = '/ajuanperbaikan';
+        $notifikasi->link = '/perbaikanBarang/' . $perbaikanBarang->id;
         $notifikasi->send_email = 'no';
         $notifikasi->id_users = $na->id_users;
         $notifikasi->save();

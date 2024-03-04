@@ -4,6 +4,9 @@ namespace App\Observers;
 
 use App\Mail\NotifikasiMail;
 use App\Models\Notifikasi;
+use App\Models\User;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
@@ -15,10 +18,28 @@ class NotifikasiObserver
     public function created(Notifikasi $notifikasi): void
     {
         if ($notifikasi->send_email == 'yes') {
+            $count = 3;
             try {
                 Mail::to($notifikasi->user)->send(new NotifikasiMail($notifikasi));
             } catch (\Throwable $th) {
                 Log::error($th);
+                $notifikasiAdmin = User::where('level', 'admin')->get();
+                $count = $count - 1;
+                
+                if ($count > 0) {
+                    foreach($notifikasiAdmin as $na){
+                        DB::table('notifikasi')->insert([
+                            'judul' => 'Error Mengirim Email',
+                            'pesan' => 'Terjadi Error ketika mengirim email. '.$count.' '. $th->getMessage(), // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+                            'is_dibaca' => 'tidak_dibaca',
+                            'label' => 'error',
+                            'link' => '/email-configuration',
+                            'id_users' => $na->id_users,
+                            'created_at' => Date::now(),
+                            'updated_at' => Date::now()
+                        ]);
+                    }
+                }
             }
         }
     }
