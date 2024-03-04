@@ -16,7 +16,8 @@ class SuratController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $surat = Surat::where('is_deleted', '0')->orderBy('id_surat', 'desc')
+        $surat = Surat::where('is_deleted', '0')
+            ->orderBy('tgl_surat', 'desc')
             ->whereIn('id_users', $user->surat->pluck('id_users'))->get();
 
         return view('surat.index', [

@@ -29,7 +29,7 @@
                         </thead>
                         <tbody>
                             @php
-                            $sortedSurat = $surat->sortByDesc('created_at');
+                            $sortedSurat = $surat->sortByDesc('tgl_surat');
                             $nomor = 1; // Initialize a variable to keep track of the sequence
                             @endphp
                             @foreach($sortedSurat as $key => $sr)
