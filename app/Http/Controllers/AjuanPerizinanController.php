@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+enum PersetujuanIzin: int {
+    case Ditolak = 0;
+    case Disetujui = 1;
+};
+
+enum UserLevel: String {
+    case PPK = 'ppk';
+    case Kadiv = 'kadiv';
+    case Admin = 'admin';
+    case BOD = 'bod';
+};
+
+
+
 class AjuanPerizinanController extends Controller
 {
     /**
@@ -20,43 +34,44 @@ class AjuanPerizinanController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->input('tgl_absen_awal') == null && $request->input('tgl_absen_akhir') == null) {
-            $user = Auth::user();
-            if ($user->level == 'admin' or $user->level == 'ppk') {
-                $ajuanperizinan = Perizinan::where('is_deleted', '0')->orderBy('id_perizinan','desc')
-                ->get();
-            } elseif ($user->level == 'bod' or $user->level == 'kadiv') {
-                $ajuanperizinan = Perizinan::where('is_deleted', '0')->where('id_atasan', auth()->user()->id_users)->orderBy('id_perizinan','desc')
-                ->get();
+        $user = Auth::user();
+        $ajuanperizinan  = Perizinan::where(['is_deleted' => '0']);
+        $kode_finger     = $request->kode_finger ?? null;
+        $tgl_absen_awal  = $request->tgl_absen_awal ?? null;
+        $tgl_absen_akhir = $request->tgl_absen_akhir ?? null;
+        $jenis_perizinan = $request->jenis_perizinan ?? null;
+
+        $where = [];
+
+        if ($tgl_absen_awal == null && $tgl_absen_akhir == null) {
+            if ($user->level == UserLevel::BOD or $user->level == UserLevel::Kadiv) {
+                $where['id_atasan'] = $user->id_users;
             }
         } else {
-            $user = Auth::user();
-            if ($user->level == 'admin' or $user->level == 'ppk') {
-                $ajuanperizinan = Perizinan::where('is_deleted', '0')->where('tgl_absen_awal', '>=', $request->input('tgl_absen_awal'))->where('tgl_absen_akhir', '<=', $request->input('tgl_absen_akhir'))->orderBy('id_perizinan','desc')
-                ->get();
-            } elseif ($user->level == 'bod' or $user->level == 'kadiv') {
-                $ajuanperizinan = Perizinan::where('is_deleted', '0')->where('id_atasan', auth()->user()->id_users)->where('tgl_absen_awal', '>=', $request->tgl_absen_awal)->where('tgl_absen_akhir', '<=', $request->tgl_absen_akhir)->orderBy('id_perizinan','desc')
-                ->get();
+            if ($user->level == UserLevel::BOD or $user->level == UserLevel::Kadiv) {
+                $where['id_atasan'] = $user->id_users;
             }
+            $ajuanperizinan
+            ->where('tgl_absen_awal', '>=', date($tgl_absen_awal))
+            ->where('tgl_absen_akhir', '<=', date($tgl_absen_akhir));
         }
 
-        if ($request->input('kode_finger') != null) {
-            if ($request->input('kode_finger') != 'all') {
-                $ajuanperizinan = $ajuanperizinan->where('kode_finger', '=', $request->input('kode_finger'));
-            }
+        if ($kode_finger != null && $kode_finger != 'all') {
+            $where['kode_finger'] = $kode_finger;
         }
 
-        if ($request->input('jenis_perizinan') != null) {
-            if ($request->input('jenis_perizinan') != 'all') {
-                $ajuanperizinan = $ajuanperizinan->where('jenis_perizinan', '=', $request->input('jenis_perizinan'));    
-            }
+        if ($jenis_perizinan != null && $jenis_perizinan != 'all') {
+            $where['jenis_perizinan'] = $jenis_perizinan;    
         }
+
+        $ajuanperizinan->where($where);
+        $ajuanperizinan->orderBy('id_perizinan', 'desc');
 
         return view('izin.index', [
-            'ajuanperizinan' => $ajuanperizinan,
+            'ajuanperizinan' => $ajuanperizinan->get(),
             'users' => User::where('is_deleted', '0')->orderByRaw("LOWER(nama_pegawai)")->get(),
             'settingperizinan' => User::with(['setting'])->get(),
-            'pengguna' => User::where('kode_finger', $request->kode_finger)->first(),
+            'pengguna' => User::where('kode_finger', $kode_finger)->first(),
         ]);
     }
 
@@ -73,7 +88,6 @@ class AjuanPerizinanController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $request->validate([
             'id_atasan' => 'required',
             'kode_finger' => 'required',
@@ -86,15 +100,14 @@ class AjuanPerizinanController extends Controller
         ]);
 
         $ajuanperizinan = new Perizinan();
+        $kode_finger    = $request->kode_finger || null; 
+        $jumlah_hari_pengajuan = $request->jumlah_hari_pengajuan || null;
 
-        $pengguna = User::where('kode_finger', $request->kode_finger)->first();
+        $pengguna = User::where('kode_finger', $kode_finger)->first();
 
         if (! $pengguna) {
             return redirect()->back()->with('error', 'Pengguna dengan kode finger tersebut tidak ditemukan.');
         }
-
-        $jumlah_hari_pengajuan = $request->jumlah_hari_pengajuan;
-        // dd($jumlah_hari_pengajuan);
 
         // Periksa apakah jatah cuti tahunan mencukupi
         if ($request->jenis_perizinan === 'CT' && $pengguna->cuti) {
@@ -222,7 +235,7 @@ class AjuanPerizinanController extends Controller
             $request->validate($rules);
             $ajuanperizinan->status_izin_atasan = $request->status_izin_atasan;
 
-            if ($request->status_izin_atasan === '0') {
+            if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
                 $ajuanperizinan->alasan_ditolak_atasan = $request->alasan_ditolak_atasan;
             } else {
                 $statusPPK = $ajuanperizinan->status_izin_ppk;
@@ -319,7 +332,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
 
-                } elseif ($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === null) {
+                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -402,7 +415,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                 
-                }elseif($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === null) {
+                }elseif($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -427,7 +440,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                 
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === '0') {
+                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -440,7 +453,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                     
-                } elseif ($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === '0') {
+                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -459,7 +472,7 @@ class AjuanPerizinanController extends Controller
             
 
             return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-        } elseif (auth()->user()->level === 'ppk') {
+        } elseif (auth()->user()->level === UserLevel::PPK) {
             $ajuanperizinan = Perizinan::find($id_perizinan);
 
             $rules = [
@@ -483,10 +496,10 @@ class AjuanPerizinanController extends Controller
 
             $statusAtasan = $ajuanperizinan->status_izin_atasan;
 
-            if ($request->status_izin_ppk === '0') {
+            if ($request->status_izin_ppk === PersetujuanIzin::Ditolak) {
                 $ajuanperizinan->alasan_ditolak_ppk = $request->alasan_ditolak_ppk;
             }
-            if ($request->status_izin_atasan === '0') {
+            if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
                 $ajuanperizinan->alasan_ditolak_atasan = $request->alasan_ditolak_atasan;
             }
 
@@ -579,7 +592,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
 
-                } elseif ($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === null) {
+                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -664,7 +677,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                 
-                }elseif($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === null) {
+                }elseif($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -689,7 +702,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                 
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === '0') {
+                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -702,7 +715,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                     
-                } elseif ($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === '0') {
+                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -736,13 +749,13 @@ class AjuanPerizinanController extends Controller
             }
 
             if (isset($request->status_izin_atasan)) {
-                if ($request->status_izin_atasan === '0') {
+                if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
                     $rules['alasan_ditolak_atasan'] = 'required';
                 }
             }
 
             if (isset($request->status_izin_ppk)) {
-                if ($request->status_izin_ppk === '0') {
+                if ($request->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $rules['alasan_ditolak_ppk'] = 'required';
                 }
             }
@@ -769,12 +782,12 @@ class AjuanPerizinanController extends Controller
             }
 
             if (isset($request->status_izin_atasan)) {
-                if ($request->status_izin_atasan === '0') {
+                if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
                     $ajuanperizinan->alasan_ditolak_atasan = $request->alasan_ditolak_atasan;
                 }
             }
             if (isset($request->status_izin_ppk)) {
-                if ($request->status_izin_ppk === '0') {
+                if ($request->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $ajuanperizinan->alasan_ditolak_ppk = $request->alasan_ditolak_ppk;
                 }
             }
@@ -882,7 +895,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
 
-                } elseif ($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === null) {
+                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -967,7 +980,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                 
-                }elseif($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === null) {
+                }elseif($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -992,7 +1005,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                 
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === '0') {
+                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
@@ -1018,7 +1031,7 @@ class AjuanPerizinanController extends Controller
 
                     return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                     
-                } elseif ($ajuanperizinan->status_izin_atasan === '0' && $ajuanperizinan->status_izin_ppk === '0') {
+                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
                     $notifikasi = new Notifikasi();
                     $notifikasi->judul = 'Persetujuan Izin ';
                     $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';

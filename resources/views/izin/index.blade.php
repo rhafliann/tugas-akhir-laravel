@@ -4,6 +4,7 @@
 <h1 class="m-0 text-dark"> Perizinan</h1>
 @stop
 @section('content')
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -91,7 +92,7 @@
                         </thead>
                         <tbody>
                             @php
-                            $sortedPerizinan = $ajuanperizinan->sortByDesc('id_perizinan');
+                            $sortedPerizinan = $ajuanperizinan->sortByDesc('tgl_ajuan');
                             $nomor = 1; // Initialize a variable to keep track of the sequence
                             @endphp
                             @foreach($sortedPerizinan as $key => $ap)
