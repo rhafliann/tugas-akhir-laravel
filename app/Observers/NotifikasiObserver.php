@@ -18,15 +18,15 @@ class NotifikasiObserver
     public function created(Notifikasi $notifikasi): void
     {
         if ($notifikasi->send_email == 'yes') {
-            $count = 3;
+            $count = 0;
             try {
                 Mail::to($notifikasi->user)->send(new NotifikasiMail($notifikasi));
             } catch (\Throwable $th) {
                 Log::error($th);
                 $notifikasiAdmin = User::where('level', 'admin')->get();
-                $count = $count - 1;
+                $count = $count + 1;
                 
-                if ($count > 0) {
+                if ($count <= 3) {
                     foreach($notifikasiAdmin as $na){
                         DB::table('notifikasi')->insert([
                             'judul' => 'Error Mengirim Email',
