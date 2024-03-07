@@ -19,10 +19,10 @@ enum PersetujuanIzin: int {
 };
 
 enum UserLevel: String {
-    case PPK = 'ppk';
+    case PPK   = 'ppk';
     case Kadiv = 'kadiv';
     case Admin = 'admin';
-    case BOD = 'bod';
+    case BOD   = 'bod';
 };
 
 
@@ -43,20 +43,23 @@ class AjuanPerizinanController extends Controller
 
         $where = [];
 
-        if ($user->level == UserLevel::BOD or $user->level == UserLevel::Kadiv) {
+        if ($user->level == UserLevel::BOD->value or $user->level == UserLevel::Kadiv->value) {
             $where['id_atasan'] = $user->id_users;
         }
 
         if(
-            $user->level != UserLevel::Admin ||
-            $user->level != UserLevel::BOD   ||
-            $user->level != UserLevel::Kadiv ||
-            $user->level != UserLevel::PPK
+            $user->level == UserLevel::Admin->value ||
+            $user->level == UserLevel::BOD->value   ||
+            $user->level == UserLevel::Kadiv->value ||
+            $user->level == UserLevel::PPK->value
         ){
+            // unset($where['kode_finger']);
+        } else {
             $where['kode_finger'] = $user->kode_finger;
         }
 
-        if ($tgl_absen_awal == null && $tgl_absen_akhir == null) {
+
+        if ($tgl_absen_awal != null && $tgl_absen_akhir != null) {
             $ajuanperizinan
             ->where('tgl_absen_awal', '>=', date($tgl_absen_awal))
             ->where('tgl_absen_akhir', '<=', date($tgl_absen_akhir));
@@ -69,7 +72,7 @@ class AjuanPerizinanController extends Controller
         if ($jenis_perizinan != null && $jenis_perizinan != 'all') {
             $where['jenis_perizinan'] = $jenis_perizinan;    
         }
-
+        
         $ajuanperizinan->where($where);
         $ajuanperizinan->orderBy('id_perizinan', 'desc');
 
