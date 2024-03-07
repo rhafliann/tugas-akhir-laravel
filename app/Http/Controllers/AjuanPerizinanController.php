@@ -53,7 +53,7 @@ class AjuanPerizinanController extends Controller
             $user->level == UserLevel::Kadiv->value ||
             $user->level == UserLevel::PPK->value
         ){
-            // unset($where['kode_finger']);
+            unset($where['kode_finger']);
         } else {
             $where['kode_finger'] = $user->kode_finger;
         }
