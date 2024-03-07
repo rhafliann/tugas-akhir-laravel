@@ -47,6 +47,15 @@ class AjuanPerizinanController extends Controller
             $where['id_atasan'] = $user->id_users;
         }
 
+        if(
+            $user->level != UserLevel::Admin ||
+            $user->level != UserLevel::BOD   ||
+            $user->level != UserLevel::Kadiv ||
+            $user->level != UserLevel::PPK
+        ){
+            $where['kode_finger'] = $user->kode_finger;
+        }
+
         if ($tgl_absen_awal == null && $tgl_absen_akhir == null) {
             $ajuanperizinan
             ->where('tgl_absen_awal', '>=', date($tgl_absen_awal))
