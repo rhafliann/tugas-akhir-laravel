@@ -67,10 +67,10 @@
     <div class="ag-courses_box">
         <div class="ag-courses_item">
             <a href="{{route('surat.index')}}" class="ag-courses-item_link">
-                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_bg circle-red"></div>
 
                 <div class="ag-courses-item_icon">
-                    <div class="circle-background">
+                    <div class="circle-background circle-red">
                         <i class="fa-solid fa-envelope-open-text"></i>
                     </div>
                 </div>
@@ -205,10 +205,10 @@
 
         <div class="ag-courses_item">
             <a href="{{route('ajuandesain.index')}}" class="ag-courses-item_link">
-                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_bg circle-green"></div>
 
                 <div class="ag-courses-item_icon">
-                    <div class="circle-background">
+                    <div class="circle-background circle-green">
                         <i class="fa-solid fa-palette"></i>
                     </div>
                 </div>
