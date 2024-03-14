@@ -330,11 +330,9 @@
                                                 <div class="form-group">
                                                     <label for="status_izin_atasan">Persetujuan Atasan</label>
                                                     <div class="input">
-                                                        <input type="radio" name="status_izin_atasan" value="1" @if
-                                                            ($ap->status_izin_atasan === '1') checked @endif>
+                                                        <input type="radio" name="status_izin_atasan" value="1" @if ($ap->status_izin_atasan === '1') checked @endif> 
                                                         Disetujui<br>
-                                                        <input type="radio" name="status_izin_atasan" value="0" @if
-                                                            ($ap->status_izin_atasan === '0') checked @endif>
+                                                        <input type="radio" name="status_izin_atasan" value="0" @if ($ap->status_izin_atasan === '0') checked @endif> 
                                                         Ditolak<br>
                                                     </div>
                                                 </div>
@@ -354,11 +352,9 @@
                                                 <div class="form-group">
                                                     <label for="status_izin_ppk">Persetujuan PPK</label>
                                                     <div class="input">
-                                                        <input type="radio" name="status_izin_ppk" value="1" @if
-                                                            ($ap->status_izin_ppk === '1') checked @endif>
+                                                        <input type="radio" name="status_izin_ppk" value="1" @if ($ap->status_izin_ppk === '1') checked @endif>
                                                         Disetujui<br>
-                                                        <input type="radio" name="status_izin_ppk" value="0" @if
-                                                            ($ap->status_izin_ppk === '0') checked @endif>
+                                                        <input type="radio" name="status_izin_ppk" value="0" @if ($ap->status_izin_ppk === '0') checked @endif>
                                                         Ditolak<br>
                                                     </div>
                                                 </div>
