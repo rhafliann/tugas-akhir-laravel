@@ -29,6 +29,7 @@ use App\Http\Controllers\SirkulasiBarangController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\PeminjamanBarangController;
 use App\Http\Controllers\PengajuanSingleLinkController;
+use App\Http\Controllers\TandaTanganController;
 use App\Http\Controllers\TingkatPendidikanController;
 use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserController;
@@ -323,3 +324,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/ajuandesain/{id_pengajuan_desain}', [PengajuanDesainController::class, 'destroy'])->name('ajuandesain.destroy');
     Route::get('/ajuandesain/{id_pengajuan_desain}', [PengajuanDesainController::class, 'show'])->name('ajuandesain.show');
 });
+
+Route::get('tanda-tangan/{id_users}', [TandaTanganController::class, 'view'])->name('tanda-tangan.view');
+Route::post('tanda-tangan/{id_users}/update', [TandaTanganController::class, 'update'])->name('tanda-tangan.update');
+Route::post('tanda-tangan/{id_users}/store', [TandaTanganController::class, 'store'])->name('tanda-tangan.store');

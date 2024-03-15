@@ -24,11 +24,11 @@
                                 src="{{ asset('/storage/profile/' . $user->photo) }}" alt="User profile picture">
                             @endif
                             <h3 class="profile-username text-center">{{ $main_user->nama_pegawai }}</h3>
-                            <p class="text-muted text-center">      @if(isset($main_user?->jabatan))
-                                            {{ $main_user->jabatan->nama_jabatan }}
-                                        @else
-                                           Data jabatan tidak tersedia
-                                        @endif</p>
+                            <p class="text-muted text-center"> @if(isset($main_user?->jabatan))
+                                {{ $main_user->jabatan->nama_jabatan }}
+                                @else
+                                Data jabatan tidak tersedia
+                                @endif</p>
                         </div>
                     </div>
                 </div>
@@ -36,9 +36,9 @@
             <div class="col-md-9">
                 <div class="card">
                     @if (Route::currentRouteName() === 'user.showAdmin')
-                        @include('partials.nav-pills-profile-admin', ['id_users' => $main_user->id_users])
+                    @include('partials.nav-pills-profile-admin', ['id_users' => $main_user->id_users])
                     @else
-                         @include('partials.nav-pills-profile')
+                    @include('partials.nav-pills-profile')
                     @endif
                     <div class="card-body">
                         <div class="tab-content">
@@ -48,7 +48,8 @@
                                         <label for="nama" class='form-label'>Nama</label>
                                         <div class="form-input">
                                             @if($user->gelar_depan)
-                                            : {{ $user->gelar_depan }}. {{ $main_user->nama_pegawai }} {{ $user->gelar_belakang }}
+                                            : {{ $user->gelar_depan }}. {{ $main_user->nama_pegawai }} {{
+                                            $user->gelar_belakang }}
                                             @else
                                             : {{ $main_user->nama_pegawai }} {{ $user->gelar_belakang }}
                                             @endif
@@ -57,11 +58,11 @@
                                     <div class="form-group">
                                         <label for="jabatan" class='form-label'>Jabatan</label>
                                         <div class="form-input">
-                                        @if(isset($main_user?->jabatan))
+                                            @if(isset($main_user?->jabatan))
                                             : {{ $main_user->jabatan->nama_jabatan }}
-                                        @else
+                                            @else
                                             : Data jabatan tidak tersedia
-                                        @endif
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -78,186 +79,194 @@
                                     <div class="form-group">
                                         <label for="nip" class='form-label'>NIP</label>
                                         <div class="form-input">
-                                        @if (isset($user->nip))
-                                        : {{ $user->nip }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->nip))
+                                            : {{ $user->nip }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="nik" class='form-label'>NIK</label>
                                         <div class="form-input">
-                                        @if (isset($user->nik))
-                                        : {{ $user->nik }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->nik))
+                                            : {{ $user->nik }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="kk" class='form-label'>KK</label>
                                         <div class="form-input">
-                                        @if (isset($user->kk))
-                                        : {{ $user->kk }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->kk))
+                                            : {{ $user->kk }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="gelar_depan" class='form-label'>Gelar Depan</label>
                                         <div class="form-input">
-                                        @if (isset($user->gelar_depan))
-                                        : {{ $user->gelar_depan }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->gelar_depan))
+                                            : {{ $user->gelar_depan }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="gelar_belakang" class='form-label'>Gelar Belakang</label>
                                         <div class="form-input">
-                                        @if (isset($user->gelar_belakang))
-                                        : {{ $user->gelar_belakang }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->gelar_belakang))
+                                            : {{ $user->gelar_belakang }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="tempat_lahir" class='form-label'>Tempat Lahir</label>
                                         <div class="form-input">
-                                        @if (isset($user->tempat_lahir))
-                                        : {{ $user->tempat_lahir }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->tempat_lahir))
+                                            : {{ $user->tempat_lahir }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="tanggal_lahir" class='form-label'>Tanggal Lahir</label>
                                         <div class="form-input">
-                                        @if (isset($user->tanggal_lahir))
-                                        : {{ date_format( new DateTime($user->tanggal_lahir), 'd F Y')}}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->tanggal_lahir))
+                                            : {{ date_format( new DateTime($user->tanggal_lahir), 'd F Y')}}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="alamat" class='form-label'>Alamat</label>
                                         <div class="form-input">
-                                        @if (isset($user->alamat))
-                                        : {{ $user->alamat }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->alamat))
+                                            : {{ $user->alamat }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="no_hp" class='form-label'>No HP</label>
                                         <div class="form-input">
-                                        @if (isset($user->no_hp))
-                                        : {{ $user->no_hp }}
-                                        @else
-                                        :
-                                        @endif
-                                       </div>
+                                            @if (isset($user->no_hp))
+                                            : {{ $user->no_hp }}
+                                            @else
+                                            :
+                                            @endif
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="agama" class='form-label'>Agama</label>
                                         <div class="form-input">
-                                        @if($user->agama == "islam")
-                                            : Islam                                            
-                                        @elseif($user->agama == "kristen")
+                                            @if($user->agama == "islam")
+                                            : Islam
+                                            @elseif($user->agama == "kristen")
                                             : Kristen
-                                        @elseif($user->agama == "katolik")
+                                            @elseif($user->agama == "katolik")
                                             : Katolik
-                                        @elseif($user->agama == "hindu")
+                                            @elseif($user->agama == "hindu")
                                             : Hindu
-                                        @elseif($user->agama == "budha")
+                                            @elseif($user->agama == "budha")
                                             : Budha
-                                        @elseif($user->agama == "konghucu")
+                                            @elseif($user->agama == "konghucu")
                                             : Konghucu
-                                        @else
+                                            @else
                                             :
-                                        @endif
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="gender" class='form-label'>Jenis Kelamin</label>
                                         <div class="form-input">
-                                        @if($user->gender == "laki-laki")
+                                            @if($user->gender == "laki-laki")
                                             : Laki-laki
-                                        @elseif($user->gender == "perempuan")
+                                            @elseif($user->gender == "perempuan")
                                             : Perempuan
-                                        @else
+                                            @else
                                             :
-                                        @endif
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="pendidikan" class='form-label'>Pendidikan</label>
                                         <div class="form-input">
-                                        @if(isset($user->pendidikan))
-                                        : {{ $user->pendidikan }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if(isset($user->pendidikan))
+                                            : {{ $user->pendidikan }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="tmt" class='form-label'>Tanggal Mulai Tugas</label>
                                         <div class="form-input">
-                                        @if (isset($user->tmt))
-                                        : {{ \Carbon\Carbon::parse($user->tmt)->format('d F Y') ?? old('tmt')}}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->tmt))
+                                            : {{ \Carbon\Carbon::parse($user->tmt)->format('d F Y') ?? old('tmt')}}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="masa_kerja" class='form-label'>Masa Kerja</label>
                                         <div class="form-input">
-                                        @if (isset($user->tmt))
-                                        {{-- give me day from today minus tmt --}}
-                                        : {{ date_diff(new DateTime(date('Y-m-d')), new DateTime($user->tmt))->format('%y Tahun %m Bulan %d Hari') }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->tmt))
+                                            {{-- give me day from today minus tmt --}}
+                                            : {{ date_diff(new DateTime(date('Y-m-d')), new
+                                            DateTime($user->tmt))->format('%y Tahun %m Bulan %d Hari') }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="status_kawin" class='form-label'>Status Kawin</label>
                                         <div class="form-input">
-                                        @if($user->status_kawin == 'belum_menikah')
-                                        : Belum menikah
-                                        @elseif ($user->status_kawin == 'menikah')
-                                        : Menikah
-                                        @else
-                                        : 
-                                        @endif
+                                            @if($user->status_kawin == 'belum_menikah')
+                                            : Belum menikah
+                                            @elseif ($user->status_kawin == 'menikah')
+                                            : Menikah
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="bpjs" class='form-label'>BPJS</label>
                                         <div class="form-input">
-                                        @if (isset($user->bpjs))
-                                        : {{ $user->bpjs }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->bpjs))
+                                            : {{ $user->bpjs }}
+                                            @else
+                                            :
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="tingkat_pendidikan" class='form-label'>Tingkat Pendidikan</label>
                                         <div class="form-input">
-                                        @if (isset($user->id_tingkat_pendidikan))
-                                        : {{ $user->tingkat_pendidikan?->nama_tingkat_pendidikan }}
-                                        @else
-                                        :
-                                        @endif
+                                            @if (isset($user->id_tingkat_pendidikan))
+                                            : {{ $user->tingkat_pendidikan?->nama_tingkat_pendidikan }}
+                                            @else
+                                            :
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="tanda_tangan" class="form-label">Tanda Tangan</label>
+                                        <div class="form-input">
+                                            <img name="tanda_tangan" width="200" height="200" src="{{ $tanda_tangan->image }}" alt="{{ $tanda_tangan->image }}">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -283,28 +292,37 @@
                                                             @method('PUT')
                                                             <div class="form-group">
 
-                                                                <label for="nama_pegawai" class='form-label'>Nama</label>
+                                                                <label for="nama_pegawai"
+                                                                    class='form-label'>Nama</label>
                                                                 <div class="form-input">
                                                                     <input type="text"
                                                                         class="form-control @error('nama_pegawai') is-invalid @enderror"
-                                                                        id="nama_pegawai" placeholder="Nama Pegawai" name="nama_pegawai"
-
-                                                                        value="{{$main_user->nama_pegawai ?? old('nama_pegawai')}}" required>
+                                                                        id="nama_pegawai" placeholder="Nama Pegawai"
+                                                                        name="nama_pegawai"
+                                                                        value="{{$main_user->nama_pegawai ?? old('nama_pegawai')}}"
+                                                                        required>
                                                                     @error('nama_pegawai') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="email" class='form-label'>Jabatan</label>
                                                                 <div class="form-input">
-                                                                <select class="form-select @error('id_jabatan') is-invalid @enderror"
-                                                                    id="exampleInputJabatan" name="id_jabatan" required>
-                                                                    @foreach ($jabatan as $jabatan)
-                                                                    <option value="{{ $jabatan->id_jabatan }}" @if(old('id_jabatan',$main_user->id_jabatan) == $jabatan->id_jabatan ) selected @endif>  {{ $jabatan->nama_jabatan }} </option>
-                                                                    @endforeach
-                                                                </select>
+                                                                    <select
+                                                                        class="form-select @error('id_jabatan') is-invalid @enderror"
+                                                                        id="exampleInputJabatan" name="id_jabatan"
+                                                                        required>
+                                                                        @foreach ($jabatan as $jabatan)
+                                                                        <option value="{{ $jabatan->id_jabatan }}"
+                                                                            @if(old('id_jabatan',$main_user->id_jabatan)
+                                                                            == $jabatan->id_jabatan ) selected @endif>
+                                                                            {{ $jabatan->nama_jabatan }} </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                     @error('id_jabatan') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -313,9 +331,11 @@
                                                                     <input type="text"
                                                                         class="form-control @error('email') is-invalid @enderror"
                                                                         id="nip" placeholder="Email" name="email"
-                                                                        value="{{ old('email', $main_user->email) }}"required>
+                                                                        value="{{ old('email', $main_user->email) }}"
+                                                                        required>
                                                                     @error('email') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -326,7 +346,8 @@
                                                                         id="nip" placeholder="NIP" name="nip"
                                                                         value="{{$user->nip ?? old('nip')}}">
                                                                     @error('nip') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -337,7 +358,8 @@
                                                                         id="nik" placeholder="NIK" name="nik"
                                                                         value="{{$user->nik ?? old('nik')}}">
                                                                     @error('nik') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group">
@@ -348,33 +370,41 @@
                                                                         id="kk" placeholder="KK" name="kk"
                                                                         value="{{$user->kk ?? old('kk')}}">
                                                                     @error('kk') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group">
-                                                                <label for="gelar_depan" class='form-label'>Gelar Depan</label>
+                                                                <label for="gelar_depan" class='form-label'>Gelar
+                                                                    Depan</label>
                                                                 <div class="form-input">
                                                                     <input type="text"
                                                                         class="form-control @error('gelar_depan') is-invalid @enderror"
-                                                                        id="gelar_depan" placeholder="Gelar Depan" name="gelar_depan"
+                                                                        id="gelar_depan" placeholder="Gelar Depan"
+                                                                        name="gelar_depan"
                                                                         value="{{$user->gelar_depan ?? old('gelar_depan')}}">
                                                                     @error('gelar_depan') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group">
-                                                                <label for="gelar_belakang" class='form-label'>Gelar Belakang</label>
+                                                                <label for="gelar_belakang" class='form-label'>Gelar
+                                                                    Belakang</label>
                                                                 <div class="form-input">
                                                                     <input type="text"
                                                                         class="form-control @error('gelar_belakang') is-invalid @enderror"
-                                                                        id="gelar_belakang" placeholder="Gelar Belakang" name="gelar_belakang"
+                                                                        id="gelar_belakang" placeholder="Gelar Belakang"
+                                                                        name="gelar_belakang"
                                                                         value="{{$user->gelar_belakang ?? old('gelar_belakang')}}">
                                                                     @error('gelar_belakang') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="tempat_lahir" class='form-label'>Tempat Lahir</label>
+                                                                <label for="tempat_lahir" class='form-label'>Tempat
+                                                                    Lahir</label>
                                                                 <div class="form-input">
                                                                     <input type="text"
                                                                         class="form-control @error('tempat_lahir') is-invalid @enderror"
@@ -382,15 +412,21 @@
                                                                         name="tempat_lahir"
                                                                         value="{{$user->tempat_lahir ?? old('tempat_lahir')}}">
                                                                     @error('tempat_lahir') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="tanggal_lahir" class='form-label'>Tanggal Lahir</label>
+                                                                <label for="tanggal_lahir" class='form-label'>Tanggal
+                                                                    Lahir</label>
                                                                 <div class="form-input">
-                                                                 <input type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror" 
-                                                                id="tanggal_lahir" placeholder="Tanggal Lahir" name="tanggal_lahir" value="{{$user -> tanggal_lahir ?? old('tanggal_lahir')}}" >
-                                                                    @error('tanggal_lahir') <span class="text-danger">{{ $message }}</span> @enderror
+                                                                    <input type="date"
+                                                                        class="form-control @error('tanggal_lahir') is-invalid @enderror"
+                                                                        id="tanggal_lahir" placeholder="Tanggal Lahir"
+                                                                        name="tanggal_lahir"
+                                                                        value="{{$user -> tanggal_lahir ?? old('tanggal_lahir')}}">
+                                                                    @error('tanggal_lahir') <span class="text-danger">{{
+                                                                        $message }}</span> @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -401,7 +437,8 @@
                                                                         id="alamat" placeholder="Alamat" name="alamat"
                                                                         value="{{$user->alamat ?? old('alamat')}}">
                                                                     @error('alamat') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -412,87 +449,99 @@
                                                                         id="no_hp" placeholder="No HP" name="no_hp"
                                                                         value="{{$user->no_hp ?? old('no_hp')}}">
                                                                     @error('no_hp') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleInputagama" class='form-label'>Agama</label>
+                                                                <label for="exampleInputagama"
+                                                                    class='form-label'>Agama</label>
                                                                 <div class="form-input">
-                                                                @if (isset($user->agama))
-                                                                <select
-                                                                    class="form-select @error('agama') isinvalid @enderror"
-                                                                    id="exampleInputagama" name="agama">
-                                                                    <option value="islam" @if($user->agama == 'islam' ||
-                                                                        old('agama')=='islam' ) selected @endif>Islam
-                                                                    </option>
-                                                                    <option value="kristen" @if($user->agama ==
-                                                                        'kristen' || old('agama')=='kristen' ) selected
-                                                                        @endif>Kristen</option>
-                                                                    <option value="katolik" @if($user->agama ==
-                                                                        'katolik' || old('agama')=='katolik' ) selected
-                                                                        @endif>Katolik</option>
-                                                                    <option value="hindu" @if($user->agama == 'hindu' ||
-                                                                        old('agama')=='hindu' ) selected @endif>Hindu
-                                                                    </option>
-                                                                    <option value="budha" @if($user->agama == 'budha' ||
-                                                                        old('agama')=='budha' ) selected @endif>Budha
-                                                                    </option>
-                                                                    <option value="konghucu" @if($user->agama ==
-                                                                        'konghucu' || old('agama')=='konghucu' )
-                                                                        selected @endif>konghucu</option>
-                                                                </select>
-                                                                @error('agama') <span
-                                                                    class="text-danger">{{$message}}</span>
-                                                                @enderror
-                                                                @else
-                                                                <select
-                                                                    class="form-select @error('agama') isinvalid @enderror"
-                                                                    id="exampleInputagama" name="agama">
-                                                                    <option value="islam">Islam</option>
-                                                                    <option value="kristen">Kristen</option>
-                                                                    <option value="katolik">Katolik</option>
-                                                                    <option value="hindu">Hindu</option>
-                                                                    <option value="budha">Budha</option>
-                                                                    <option value="konghucu">konghucu</option>
-                                                                </select>
-                                                                @error('agama') <span
-                                                                    class="text-danger">{{$message}}</span>
-                                                                @enderror
-                                                                @endif
+                                                                    @if (isset($user->agama))
+                                                                    <select
+                                                                        class="form-select @error('agama') isinvalid @enderror"
+                                                                        id="exampleInputagama" name="agama">
+                                                                        <option value="islam" @if($user->agama ==
+                                                                            'islam' ||
+                                                                            old('agama')=='islam' ) selected
+                                                                            @endif>Islam
+                                                                        </option>
+                                                                        <option value="kristen" @if($user->agama ==
+                                                                            'kristen' || old('agama')=='kristen' )
+                                                                            selected
+                                                                            @endif>Kristen</option>
+                                                                        <option value="katolik" @if($user->agama ==
+                                                                            'katolik' || old('agama')=='katolik' )
+                                                                            selected
+                                                                            @endif>Katolik</option>
+                                                                        <option value="hindu" @if($user->agama ==
+                                                                            'hindu' ||
+                                                                            old('agama')=='hindu' ) selected
+                                                                            @endif>Hindu
+                                                                        </option>
+                                                                        <option value="budha" @if($user->agama ==
+                                                                            'budha' ||
+                                                                            old('agama')=='budha' ) selected
+                                                                            @endif>Budha
+                                                                        </option>
+                                                                        <option value="konghucu" @if($user->agama ==
+                                                                            'konghucu' || old('agama')=='konghucu' )
+                                                                            selected @endif>konghucu</option>
+                                                                    </select>
+                                                                    @error('agama') <span
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
+                                                                    @else
+                                                                    <select
+                                                                        class="form-select @error('agama') isinvalid @enderror"
+                                                                        id="exampleInputagama" name="agama">
+                                                                        <option value="islam">Islam</option>
+                                                                        <option value="kristen">Kristen</option>
+                                                                        <option value="katolik">Katolik</option>
+                                                                        <option value="hindu">Hindu</option>
+                                                                        <option value="budha">Budha</option>
+                                                                        <option value="konghucu">konghucu</option>
+                                                                    </select>
+                                                                    @error('agama') <span
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleInputgender"class='form-label'>Jenis Kelamin</label>
+                                                                <label for="exampleInputgender" class='form-label'>Jenis
+                                                                    Kelamin</label>
                                                                 <div class="form-input">
-                                                                @if (isset($user->gender))
-                                                                <select
-                                                                    class="form-select @error('gender') isinvalid @enderror"
-                                                                    id="exampleInputgender" name="gender">
-                                                                    <option value="laki-laki" @if($user->gender ==
-                                                                        'laki-laki' || old('gender')=='laki-laki' )
-                                                                        selected @endif>Laki-laki</option>
-                                                                    <option value="perempuan" @if($user->gender ==
-                                                                        'perempuan' || old('gender')=='perempuan' )
-                                                                        selected @endif>Perempuan</option>
-                                                                </select>
-                                                                @error('gender') <span
-                                                                    class="text-danger">{{$message}}</span>
-                                                                @enderror
-                                                                @else
-                                                                <select
-                                                                    class="form-select @error('gender') isinvalid @enderror"
-                                                                    id="exampleInputgender" name="gender">
-                                                                    <option value="laki-laki">Laki-laki</option>
-                                                                    <option value="perempuan">Perempuan</option>
-                                                                </select>
-                                                                @error('gender') <span
-                                                                    class="text-danger">{{$message}}</span>
-                                                                @enderror
-                                                                @endif
+                                                                    @if (isset($user->gender))
+                                                                    <select
+                                                                        class="form-select @error('gender') isinvalid @enderror"
+                                                                        id="exampleInputgender" name="gender">
+                                                                        <option value="laki-laki" @if($user->gender ==
+                                                                            'laki-laki' || old('gender')=='laki-laki' )
+                                                                            selected @endif>Laki-laki</option>
+                                                                        <option value="perempuan" @if($user->gender ==
+                                                                            'perempuan' || old('gender')=='perempuan' )
+                                                                            selected @endif>Perempuan</option>
+                                                                    </select>
+                                                                    @error('gender') <span
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
+                                                                    @else
+                                                                    <select
+                                                                        class="form-select @error('gender') isinvalid @enderror"
+                                                                        id="exampleInputgender" name="gender">
+                                                                        <option value="laki-laki">Laki-laki</option>
+                                                                        <option value="perempuan">Perempuan</option>
+                                                                    </select>
+                                                                    @error('gender') <span
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="pendidikan" class='form-label'>Pendidikan</label>
+                                                                <label for="pendidikan"
+                                                                    class='form-label'>Pendidikan</label>
                                                                 <div class="form-input">
                                                                     <input type="text"
                                                                         class="form-control @error('pendidikan') is-invalid @enderror"
@@ -500,49 +549,59 @@
                                                                         name="pendidikan"
                                                                         value="{{$user->pendidikan ?? old('pendidikan')}}">
                                                                     @error('pendidikan') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="tmt" class='form-label'>Tanggal Mulai Tugas</label>
+                                                                <label for="tmt" class='form-label'>Tanggal Mulai
+                                                                    Tugas</label>
                                                                 <div class="form-input">
                                                                     <input type="date"
                                                                         class="form-control @error('tmt') is-invalid @enderror"
                                                                         id="tmt" placeholder="Tanggal Mulai Tugas"
                                                                         name="tmt" value="{{$user->tmt ?? old('tmt')}}">
                                                                     @error('tmt') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleInputstatus_kawin" class='form-label'>Status Kawin</label>
+                                                                <label for="exampleInputstatus_kawin"
+                                                                    class='form-label'>Status Kawin</label>
                                                                 <div class="form-input">
-                                                                @if (isset($user->status_kawin))
-                                                                <select
-                                                                    class="form-select @error('status_kawin') isinvalid @enderror"
-                                                                    id="exampleInputstatus_kawin" name="status_kawin">
-                                                                    <option value="menikah" @if($user->status_kawin ==
-                                                                        'menikah' || old('status_kawin')=='menikah' )
-                                                                        selected @endif>Menikah</option>
-                                                                    <option value="belum_menikah" @if($user->
-                                                                        status_kawin == 'belum_menikah' ||
-                                                                        old('status_kawin')=='belum_menikah' ) selected
-                                                                        @endif>Belum Menikah</option>
-                                                                </select>
-                                                                @error('status_kawin') <span
-                                                                    class="text-danger">{{$message}}</span>
-                                                                @enderror
-                                                                @else
-                                                                <select
-                                                                    class="form-select @error('status_kawin') isinvalid @enderror"
-                                                                    id="exampleInputstatus_kawin" name="status_kawin">
-                                                                    <option value="menikah">Menikah</option>
-                                                                    <option value="belum_menikah">Belum Menikah</option>
-                                                                </select>
-                                                                @error('status_kawin') <span
-                                                                    class="text-danger">{{$message}}</span>
-                                                                @enderror
-                                                                @endif
+                                                                    @if (isset($user->status_kawin))
+                                                                    <select
+                                                                        class="form-select @error('status_kawin') isinvalid @enderror"
+                                                                        id="exampleInputstatus_kawin"
+                                                                        name="status_kawin">
+                                                                        <option value="menikah" @if($user->status_kawin
+                                                                            ==
+                                                                            'menikah' || old('status_kawin')=='menikah'
+                                                                            )
+                                                                            selected @endif>Menikah</option>
+                                                                        <option value="belum_menikah" @if($user->
+                                                                            status_kawin == 'belum_menikah' ||
+                                                                            old('status_kawin')=='belum_menikah' )
+                                                                            selected
+                                                                            @endif>Belum Menikah</option>
+                                                                    </select>
+                                                                    @error('status_kawin') <span
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
+                                                                    @else
+                                                                    <select
+                                                                        class="form-select @error('status_kawin') isinvalid @enderror"
+                                                                        id="exampleInputstatus_kawin"
+                                                                        name="status_kawin">
+                                                                        <option value="menikah">Menikah</option>
+                                                                        <option value="belum_menikah">Belum Menikah
+                                                                        </option>
+                                                                    </select>
+                                                                    @error('status_kawin') <span
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -553,18 +612,24 @@
                                                                         id="bpjs" placeholder="BPJS" name="bpjs"
                                                                         value="{{$user->bpjs ?? old('bpjs')}}">
                                                                     @error('bpjs') <span
-                                                                        class="text-danger">{{$message}}</span> @enderror
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="tingkat_pendidikan" class='form-label'>Tingkat Pendidikan</label>
+                                                                <label for="tingkat_pendidikan"
+                                                                    class='form-label'>Tingkat Pendidikan</label>
                                                                 <div class="form-input">
                                                                     <select
                                                                         class="form-select @error('tingkat_pendidikan') isinvalid @enderror"
                                                                         id="exampleInputtingkat_pendidikan"
                                                                         name="id_tingkat_pendidikan">
                                                                         @foreach ($tingkat_pendidikans as $tp)
-                                                                        <option value="{{ $tp->id_tingkat_pendidikan }}" @if($user->id_tingkat_pendidikan == old('id_tingkat_pendidikan', $tp->id_tingkat_pendidikan ) ) selected @endif> 
+                                                                        <option value="{{ $tp->id_tingkat_pendidikan }}"
+                                                                            @if($user->id_tingkat_pendidikan ==
+                                                                            old('id_tingkat_pendidikan',
+                                                                            $tp->id_tingkat_pendidikan ) ) selected
+                                                                            @endif>
                                                                             {{ $tp->nama_tingkat_pendidikan }}
                                                                         </option>
                                                                         @endforeach
@@ -574,8 +639,9 @@
                                                             <div class="my-2">
                                                                 <label for="photo">Photo Profile</label>
                                                                 <input type="file" name="photo" id="photo"
-                                                                    class="form-control" accept=".jpg, .jpeg, .png" >
-                                                                <small class="form-text text-muted">Allow file extensions : .jpeg .jpg .png</small>
+                                                                    class="form-control" accept=".jpg, .jpeg, .png">
+                                                                <small class="form-text text-muted">Allow file
+                                                                    extensions : .jpeg .jpg .png</small>
                                                                 @error('photo')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
@@ -590,8 +656,10 @@
                                                                 @endif
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Simpan</button>
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-dismiss="modal">Batal</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -601,14 +669,18 @@
                                         {{-- @endif --}}
 
                                         @if(strpos(Route::currentRouteName(), 'showAdmin') !== false)
-                                            <a href="{{ route('profile.pdfAdmin', $main_user->id_users) }}" class="btn btn-primary ">
-                                                Unduh CV
-                                            </a>
+                                        <a href="{{ route('profile.pdfAdmin', $main_user->id_users) }}"
+                                            class="btn btn-primary ">
+                                            Unduh CV
+                                        </a>
                                         @else
-                                            <a href="{{ route('profile.pdf') }}" class="btn btn-primary ">
-                                                Unduh CV
-                                            </a>
+                                        <a href="{{ route('profile.pdf') }}" class="btn btn-primary ">
+                                            Unduh CV
+                                        </a>
                                         @endif
+                                        <a href="{{ route('tanda-tangan.view', $user->id_users) }}" class="btn btn-primary ">
+                                            Tanda Tangan
+                                        </a>
                                     </div>
                                 </div>
 
@@ -652,7 +724,7 @@
 
 @if(count($errors))
 <script>
-Swal.fire({
+    Swal.fire({
     title: 'Input tidak sesuai!',
     text: 'Pastikan inputan sudah sesuai',
     icon: 'error',

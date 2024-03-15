@@ -42,6 +42,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $inputVal = $request->all();
+        $userDevice = $request->header('User-Agent');
 
         $this->validate($request, [
             'email' => 'required|email',
@@ -54,7 +55,8 @@ class LoginController extends Controller
 
                 return redirect()->route('login')->with('error', 'Your account has been deleted.');
             } else {
-                return redirect()->route('home');
+                $token = auth()->user()->createToken($userDevice);
+                return redirect()->route('home')->withCookie("SIKLIS_TOKEN", $token->plainTextToken, 0, "", "", false, false);
             }
         } else {
             return redirect()->route('login')->with('error', 'Email & Password are incorrect.');

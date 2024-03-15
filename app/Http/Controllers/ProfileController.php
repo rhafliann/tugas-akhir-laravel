@@ -6,6 +6,7 @@ use App\Models\Profile;
 use App\Models\TingkatPendidikan;
 use App\Models\User;
 use App\Models\Jabatan;
+use App\Models\TandaTangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -54,12 +55,14 @@ class ProfileController extends Controller
         $jabatan = Jabatan::where('is_deleted', '0')->orderBy('nama_jabatan', 'ASC')->get();
 
         $tingkat_pendidikan = TingkatPendidikan::all();
+        $tanda_tangan = TandaTangan::where(['id_users' => auth()->user()->id_users])->first();
 
         return view('profile.index', [
             'main_user' => $user,
             'user' => $user_profile,
             'jabatan' => $jabatan,
             'tingkat_pendidikans' => $tingkat_pendidikan,
+            'tanda_tangan' => $tanda_tangan
         ]);
     }
 

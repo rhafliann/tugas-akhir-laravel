@@ -1,0 +1,15 @@
+{
+  "name": "SIKLIS",
+  "short_name": "SIKLIS",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Sebuah sistem informasi internal SIKLIS",
+  "icons": [
+      {
+          "src": "favicons/favicon.ico",
+          "sizes": "16x16",
+          "type": "icon"
+      }
+  ]
+}

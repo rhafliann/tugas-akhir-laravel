@@ -8,6 +8,8 @@ use App\Observers\UserProfileObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\PersonalAccessToken;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // using sanctum for api authentication
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         try {
             if (\Schema::hasTable('email_configuration')) {
                 $mailsetting = EmailConfiguration::first();
