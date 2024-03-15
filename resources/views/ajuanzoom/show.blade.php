@@ -13,21 +13,25 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="form-group">
-                    <label for="tgl_ajuan" class="form-label">Tanggal Ajuan</label>
-                    <div class="form-input">
-                        : {{ \Carbon\Carbon::parse($zoom->tgl_pengajuan)->format('d M Y') }}
+                <!-- <div class="row">
+                    <div class="col"> -->
+                        </div>
+                        <div class="form-group">
+                            <label for="tgl_ajuan" class="form-label">Tanggal Ajuan</label>
+                        <div class="form-input">
+                            : {{ \Carbon\Carbon::parse($zoom->tgl_pengajuan)->format('d M Y') }}
+                        </div>
                     </div>
-                </div>
+                <!-- </div> -->
                 <div class="form-group">
                     <label for="id_users" class="form-label">Pemohon</label>
-                    <div class="form-input">
+                        <div class="form-input">
                         : {{old('id_users', $zoom->users->nama_pegawai)}}
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="tgl_ajuan" class="form-label">Jenis Zoom</label>
-                    <div class="form-input">
+                        <div class="form-input">
                         : {{old('jenis_zoom', $zoom->jenis_zoom)}}
                     </div>
                 </div>
@@ -35,6 +39,12 @@
                     <label for="merek" class="form-label">Nama Kegiatan</label>
                     <div class="form-input">
                         : {{old('nama_kegiatan', $zoom->nama_kegiatan)}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="judul_zoom" class="form-label">Judul Zoom</label>
+                    <div class="form-input">
+                        : {{old('judul_zoom', $zoom->judul_zoom)}}
                     </div>
                 </div>
                 <div class="form-group">

@@ -45,6 +45,7 @@ class PengajuanZoomController extends Controller
             'jenis_zoom' => 'required',
             'jam_selesai' => 'required',
             'nama_kegiatan' => 'required',
+            'judul_zoom' => 'required',
             'jumlah_peserta' => 'required',
             'keterangan_pemohon' => 'nullable',
         ]);
@@ -58,6 +59,7 @@ class PengajuanZoomController extends Controller
         $zoom->jam_selesai = $request->jam_selesai;
         $zoom->jumlah_peserta = $request->jumlah_peserta;
         $zoom->nama_kegiatan = $request->nama_kegiatan;
+        $zoom->judul_zoom = $request->judul_zoom;
         $zoom->keterangan_pemohon = $request->keterangan_pemohon;
         $zoom->status = 'diajukan';
         
@@ -140,6 +142,7 @@ class PengajuanZoomController extends Controller
                 'jenis_zoom' => 'required',
                 'jam_selesai' => 'required',
                 'nama_kegiatan' => 'required',
+                'judul_zoom' => 'required',
                 'jumlah_peserta' => 'required',
                 'keterangan_pemohon' => 'nullable',
                 'nama_operator' => 'required',
@@ -157,6 +160,7 @@ class PengajuanZoomController extends Controller
             $zoom->jam_selesai = $request->jam_selesai;
             $zoom->jumlah_peserta = $request->jumlah_peserta;
             $zoom->nama_kegiatan = $request->nama_kegiatan;
+            $zoom->judul_zoom = $request->judul_zoom;
             $zoom->keterangan_pemohon = $request->keterangan_pemohon;
             $zoom->nama_operator = $request->nama_operator;
             $zoom->akun_zoom = $request->akun_zoom;
@@ -186,6 +190,7 @@ class PengajuanZoomController extends Controller
                 'jenis_zoom' => 'required',
                 'jam_selesai' => 'required',
                 'nama_kegiatan' => 'required',
+                'judul_zoom' => 'required',
                 'jumlah_peserta' => 'required',
                 'keterangan_pemohon' => 'required',
             ];

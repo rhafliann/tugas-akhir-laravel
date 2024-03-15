@@ -117,19 +117,19 @@
                     enctype="multipart/form-data">
                     @csrf
 
-                    <div class="form-body">
+                    <div class="form-body w-100">
                         <input type="hidden" name="id_users" value="{{ Auth::user()->id_users}}">
                         <div class="form-group">
                             <label for="jenis_zoom" class="form-label">Jenis Meeting</label>
                             <div class="form-input">
                                 <div class="form-inline">
-                                    <input type="radio" name="jenis_zoom" value="meeting"
+                                    <input class="form-control" type="radio" name="jenis_zoom" value="meeting"
                                         checked>&nbsp;Meeting&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
                                     <input type="radio" name="jenis_zoom" value="webinar">&nbsp;Webinar<br>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group d-flex flex-wrap">
                             <label for="nama_kegiatan" class='form-label'>Nama Kegiatan</label>
                             <div class="form-input">
                                 <input type="text" class="form-control @error('nama_kegiatan') is-invalid @enderror"
@@ -137,6 +137,16 @@
                                 @error('nama_kegiatan') <span class="textdanger">{{$message}}</span> @enderror
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="judul_zoom" class='form-label'>Judul Zoom</label>
+                            <div class="form-input">
+                                <input type="text" class="form-control @error('judul_zoom') is-invalid @enderror"
+                                    id="judul_zoom" name="judul_zoom" value="{{ old('judul_zoom')}}">
+                                @error('judul_zoom') <span class="textdanger">{{$message}}</span> @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="jumlah_peserta" class='form-label'>Jumlah Peserta</label>
                             <div class="form-input">
@@ -153,15 +163,18 @@
                                 @error('tgl_pelaksanaan') <span class="textdanger">{{$message}}</span> @enderror
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="tgl_pelaksanaan" class='form-label'>Waktu Pelaksanaan (WIB)</label>
-                            <div class="form-input">
-                                <div class="form-inline">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <input type="time"
                                         class="form-control @error('jam_mulai') is-invalid @enderror custom-time-input mr-2"
                                         id="jam_mulai" name="jam_mulai" value="{{ old('jam_mulai')}}">
                                     @error('jam_mulai') <span class="text-danger">{{$message}}</span> @enderror
                                     <small><b>s/d</b></small>
+                                </div>
+                                <div class="col-md-3">
                                     <input type="time"
                                         class="form-control @error('jam_selesai') is-invalid @enderror custom-time-input ml-2"
                                         id="jam_selesai" name="jam_selesai" value="{{ old('jam_selesai')}}">
@@ -169,6 +182,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="keterangan_pemohon" class='form-label'>Keterangan Tambahan</label>
                             <div class="form-input">
@@ -258,13 +272,14 @@
                     <div class="form-group">
                         <label for="tgl_pelaksanaan" class='form-label'>Tanggal Pelaksanaan</label>
                         <div class="form-input">
-                        @if(auth()->user()->level == 'admin' && isset($pz) && $pz->tgl_pelaksanaan)
+                            @if(auth()->user()->level == 'admin' && isset($pz) && $pz->tgl_pelaksanaan)
                             <input type="text" class="form-control" id="tgl_pelaksanaan" name="tgl_pelaksanaan"
                                 value="{{ \Carbon\Carbon::parse($pz->tgl_pelaksanaan)->format('d M Y') }} " readonly>
-                        @else
+                            @else
                             <input type="date" class="form-control @error('tgl_pelaksanaan') is-invalid @enderror"
-                                id="tgl_pelaksanaan" name="tgl_pelaksanaan" value="{{ $pz->tgl_pelaksanaan ?? old('tgl_pelaksanaan') }}">
-                        @endif
+                                id="tgl_pelaksanaan" name="tgl_pelaksanaan"
+                                value="{{ $pz->tgl_pelaksanaan ?? old('tgl_pelaksanaan') }}">
+                            @endif
                             @error('tgl_pelaksanaan') <span class="textdanger">{{$message}}</span> @enderror
                         </div>
                     </div>
@@ -380,40 +395,40 @@
     @csrf
 </form>
 <script>
-$(document).ready(function() {
-    var table = $('#example2').DataTable({
-        "responsive": true,
-        "order": [
-            [1, 'desc']
-        ]
+    $(document).ready(function () {
+        var table = $('#example2').DataTable({
+            "responsive": true,
+            "order": [
+                [1, 'desc']
+            ]
+        });
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
     });
 
-    table.on('order.dt search.dt', function() {
-        table.column(0, {
-            search: 'applied',
-            order: 'applied'
-        }).nodes().each(function(cell, i) {
-            cell.innerHTML = i + 1;
-        });
-    }).draw();
-});
-
-function notificationBeforeDelete(event, el) {
-    event.preventDefault();
-    if (confirm('Apakah anda yakin akan menghapus data ? ')) {
-        $("#delete-form").attr('action', $(el).attr('href'));
-        $("#delete-form").submit();
+    function notificationBeforeDelete(event, el) {
+        event.preventDefault();
+        if (confirm('Apakah anda yakin akan menghapus data ? ')) {
+            $("#delete-form").attr('action', $(el).attr('href'));
+            $("#delete-form").submit();
+        }
     }
-}
 </script>
 
 @if(count($errors))
 <script>
-Swal.fire({
-    title: 'Input tidak sesuai!',
-    text: 'Pastikan inputan sudah sesuai',
-    icon: 'error',
-});
+    Swal.fire({
+        title: 'Input tidak sesuai!',
+        text: 'Pastikan inputan sudah sesuai',
+        icon: 'error',
+    });
 </script>
 @endif
 @endpush
