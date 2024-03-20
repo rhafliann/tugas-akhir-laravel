@@ -267,7 +267,7 @@
                                     <div class="form-group">
                                         <label for="tanda_tangan" class="form-label">Tanda Tangan</label>
                                         <div class="form-input">
-                                            <img name="tanda_tangan" width="200" height="200" src="{{ $tanda_tangan->image }}" alt="{{ $tanda_tangan->image }}">
+                                            <img name="tanda_tangan" width="200" height="200" src="{{ isset($tanda_tangan) ? $tanda_tangan->image : '' }}" alt="{{ isset($tanda_tangan) ? $tanda_tangan->image : '' }}">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
