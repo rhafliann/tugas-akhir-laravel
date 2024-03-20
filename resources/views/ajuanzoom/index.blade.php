@@ -261,6 +261,15 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="judul_zoom" class='form-label'>Judul Zoom</label>
+                        <div class="form-input">
+                            <input type="text" class="form-control @error('judul_zoom') is-invalid @enderror"
+                                id="judul_zoom" name="judul_zoom"
+                                value="{{$pz->judul_zoom ?? old('judul_zoom')}}">
+                            @error('judul_zoom') <span class="textdanger">{{$message}}</span> @enderror
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="jumlah_peserta" class='form-label'>Jumlah Peserta</label>
                         <div class="form-input">
                             <input type="number" class="form-control @error('jumlah_peserta') is-invalid @enderror"

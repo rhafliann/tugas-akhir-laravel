@@ -41,10 +41,13 @@ class UrlController extends Controller
         //Menyimpan Data Keluarga Baru
         $request->validate([
             'id_users' => 'required',
-            'url_address' => 'required|url',
+            'url_address' => 'nullable|url',
+            'nama_kegiatansl' => 'required',
             'jenis' => 'required',
             'url_short' => 'required',
         ]);
+
+        // dd($request->all());
 
         $existingUrl = Url::where('url_short', $request->input('url_short'))->first();
 
@@ -56,6 +59,7 @@ class UrlController extends Controller
         $url->id_users = $request->id_users;
         $url->url_address = $request->url_address;
         $url->jenis = $request->jenis;
+        $url->nama_kegiatansl = $request->nama_kegiatansl;
         $customCode = $request->input('url_short');
         $slug = Str::slug($customCode, '-');
         $short = $this->generateShortCode( $slug);
@@ -139,6 +143,7 @@ class UrlController extends Controller
         $request->validate([
             'id_users' => 'required',
             'url_address' => 'required|url',
+            'nama_kegiatansl => required',
             'jenis' => 'required',
             'url_short' => 'required',
         ]);
