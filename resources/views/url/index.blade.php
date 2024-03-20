@@ -30,6 +30,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Nama Kegiatan</th>
                                 <th>Nama Shortlink</th>
                                 <th>Jenis</th>
                                 <th>Tautan</th>
@@ -103,6 +104,12 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
+                                                            <label for="nama_kegiatansl">Nama Kegiatan</label>
+                                                            <input type="text" class="form-control" id="nama_kegiatansl"
+                                                                value="{{$url -> nama_kegiatansl ?? old('nama_kegiatansl') }}"
+                                                                name="nama_kegiatansl" required>
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label for="url_short">Nama Shortlink </label>
                                                             <input type="text" class="form-control" id="url_short"
                                                                 name="url_short"
@@ -155,8 +162,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="jenis">Jenis Shortlink</label>
-                                <select class="form-select  @error('jenis') is-invalid @enderror" id="jenis"
-                                    name="jenis" required>
+                                <select class="form-select  @error('jenis') is-invalid @enderror" id="jenis" name="jenis" required>
                                     <option value="Form">Form</option>
                                     <option value="Sertifikat">Sertifikat</option>
                                     <option value="Laporan">Laporan</option>
@@ -166,12 +172,16 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="nama_kegiatansl">Nama Kegiatan</label>
+                                <input type="text" class="form-control" id="nama_kegiatansl" name="nama_kegiatansl" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="url_short">Nama Shortlink</label>
                                 <input type="text" class="form-control" id="url_short" name="url_short" required>
                             </div>
                             <div class="form-group">
                                 <label for="url_address">Tautan</label>
-                                <input type="text" class="form-control" id="url_address" name="url_address" required>
+                                <input type="text" class="form-control" id="url_address" name="url_address">
                             </div>
                         </div>
                     </div>

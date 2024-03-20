@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('url', function (Blueprint $table) {
             $table->increments('id_url');
+            $table->string(nama_kegiatansl);
             $table->string('url_short');
             $table->string('url_address');
             $table->string('qrcode_image');
