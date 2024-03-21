@@ -244,10 +244,20 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="bpjs" class='form-label'>BPJS</label>
+                                        <label for="bpjs" class='form-label'>BPJS Kesehatan</label>
                                         <div class="form-input">
                                             @if (isset($user->bpjs))
                                             : {{ $user->bpjs }}
+                                            @else
+                                            :
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bpjsk" class='form-label'>BPJS Ketenagakerjaan</label>
+                                        <div class="form-input">
+                                            @if (isset($user->bpjsk))
+                                            : {{ $user->bpjsk }}
                                             @else
                                             :
                                             @endif
@@ -606,13 +616,25 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="bpjs" class='form-label'>BPJS</label>
+                                                                <label for="bpjs" class='form-label'>BPJS Kesehatan</label>
                                                                 <div class="form-input">
                                                                     <input type="text"
                                                                         class="form-control @error('bpjs') is-invalid @enderror"
-                                                                        id="bpjs" placeholder="BPJS" name="bpjs"
+                                                                        id="bpjs" placeholder="BPJS KESEHATAN" name="bpjs"
                                                                         value="{{$user->bpjs ?? old('bpjs')}}">
                                                                     @error('bpjs') <span
+                                                                        class="text-danger">{{$message}}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="bpjsk" class='form-label'>BPJS Ketenagakerjaan</label>
+                                                                <div class="form-input">
+                                                                    <input type="text"
+                                                                        class="form-control @error('bpjsk') is-invalid @enderror"
+                                                                        id="bpjsk" placeholder="BPJS KETENAGAKERJAAN" name="bpjsk"
+                                                                        value="{{$user->bpjsk ?? old('bpjsk')}}">
+                                                                    @error('bpjsk') <span
                                                                         class="text-danger">{{$message}}</span>
                                                                     @enderror
                                                                 </div>

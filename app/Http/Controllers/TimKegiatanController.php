@@ -106,10 +106,13 @@ class TimKegiatanController extends Controller
             $timkegiatan = TimKegiatan::get();
         }
 
+        $kegiatan = Kegiatan::where('is_deleted', '0')->get();
+
         return view('timkegiatan.laporan', [
             'timkegiatan' => $timkegiatan,
             'user' => User::where('is_deleted', '0')->get(),
             'peran' => Peran::where('is_deleted', '0')->get(),
+            'kegiatan' => $kegiatan,
         ]);
     }
 }

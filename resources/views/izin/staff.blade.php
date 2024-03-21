@@ -1,11 +1,13 @@
 @extends('adminlte::page')
 @section('title', 'Daftar Perizinan')
 @section('content_header')
-<h1 class="m-0 text-dark"> Daftar Perizinan @if ($jatahCuti)
+<h1 class="m-0 text-dark"> Daftar Perizinan 
+    <!-- @if ($jatahCuti)
     (Sisa Cuti: {{ $jatahCuti->jatah_cuti}} Hari)
     @else
     (Sisa Cuti: -)
-    @endif</h1>
+    @endif -->
+</h1>
 @stop
 @section('content')
 <div class="row">

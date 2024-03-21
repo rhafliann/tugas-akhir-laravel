@@ -122,6 +122,7 @@ class ProfileController extends Controller
             'tmt' => 'nullable',
             'status_kawin' => 'nullable',
             'bpjs' => 'nullable',
+            'bpjsk' => 'nullable',
             'id_tingkat_pendidikan' => 'required',
         ];
 
@@ -171,6 +172,7 @@ class ProfileController extends Controller
             'tmt' => $request->input('tmt'),
             'status_kawin' => $request->input('status_kawin'),
             'bpjs' => $request->input('bpjs'),
+            'bpjsk' => $request->input('bpjsk'),
             'id_tingkat_pendidikan' => $request->input('id_tingkat_pendidikan'),
         ]);
 

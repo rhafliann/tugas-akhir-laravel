@@ -42,6 +42,22 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="form-group ">
+                                <label for="tgl_selesai">Tahun</label>
+                                <select id="tgl_selesai" name="tgl_selesai"
+                                    class="form-select @error('tgl_selesai') is-invalid @enderror">
+                                    <option value="0" @if(session('selected_tgl_selesai', 0)==0) selected @endif>All
+                                    </option>
+                                    @foreach ($kegiatan as $key => $k)
+                                    <option value="{{ $k->tgl_selesai = date('Y', strtotime($k->created_at))}}" @if($k->tgl_selesai ==
+                                        session('selected_tgl_selesai')) selected @endif>
+                                        {{ $k->tgl_selesai }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <br>
                         <div class="col-md-12 mb-2">
                             <button type="submit" class="btn btn-primary mb-2">
@@ -57,7 +73,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nama Kegiatan</th>
+                                <th>Tahun</th>
                                 <th>Nama pegawai</th>
                                 <th>Peran</th>
 
@@ -67,7 +83,7 @@
                             @foreach($timkegiatan as $key => $tk)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$tk->kegiatan->nama_kegiatan }}</td>
+                                <td>{{$tk->kegiatan->tgl_selesai = date('Y', strtotime($tk->created_at))}}</td>
                                 <td>{{$tk->user->nama_pegawai}}</td>
                                 <td>{{$tk->peran->nama_peran}}</td>
 
