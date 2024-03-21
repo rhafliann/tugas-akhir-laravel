@@ -7,6 +7,8 @@
             <th>Nama Pegawai</th>
             <th>Divisi</th>
             <th>Tanggal (Desc)</th>
+            <th>Jam Masuk</th>
+            <th>Jam Pulang</th>
             <th>Jam Mulai</th>
             <th>Jam Selesai</th>
             <th>Waktu Lembur</th>
@@ -21,6 +23,8 @@
             <td>{{ $lembur->user->nama_pegawai }}</td>
             <td>{{ $lembur->user->jabatan->nama_jabatan }}</td>
             <td>{{ $lembur->tanggal }}</td>
+            <td>{{ $lembur->jam_masuk }}</td>
+            <td>{{ $lembur->jam_pulang }}</td>
             <td>{{ $lembur->jam_mulai }}</td>
             <td>{{ $lembur->jam_selesai }}</td>
             <td>{{ $lembur->jam_lembur }}</td>

@@ -180,6 +180,8 @@ class LemburController extends Controller
             'id_atasan' => 'required',
             'kode_finger' => 'required',
             'tanggal' => 'required|date',
+            'jam_masuk' => 'required',
+            'jam_pulang' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
             'tugas' => 'required|string',
@@ -201,6 +203,8 @@ class LemburController extends Controller
         $lembur->kode_finger = $request->kode_finger;
         $lembur->id_atasan = $request->id_atasan;
         $lembur->tanggal = $request->input('tanggal');
+        $lembur->jam_masuk = $request->input('jam_masuk');
+        $lembur->jam_pulang = $request->input('jam_pulang');
         $lembur->jam_mulai = $request->input('jam_mulai');
         $lembur->jam_selesai = $request->input('jam_selesai');
         $lembur->jam_lembur = floor($diffInMinutes / 60).':'.($diffInMinutes % 60); // Jam dan menit
@@ -273,6 +277,8 @@ class LemburController extends Controller
             'id_atasan' => 'required',
             'kode_finger' => 'required',
             'tanggal' => 'required|date',
+            'jam_masuk' => 'required',
+            'jam_pulang' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
             'tugas' => 'required|string',
