@@ -161,14 +161,14 @@
                                         class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jam_mulai">Jam Mulai</label>
-                                    <input type="time" name="jam_mulai" id="jam_mulai" value="{{ old('jam_mulai')}}"
+                                    <label for="jam_masuk">Jam Masuk</label>
+                                    <input type="time" name="jam_masuk" id="jam_masuk" value="{{ old('jam_masuk')}}"
                                         class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jam_selesai">Jam Selesai</label>
-                                    <input type="time" name="jam_selesai" id="jam_selesai"
-                                        value="{{ old('jam_selesai')}}" class="form-control" required>
+                                    <label for="jam_pulang">Jam Pulang</label>
+                                    <input type="time" name="jam_pulang" id="jam_pulang" value="{{ old('jam_pulang')}}"
+                                        class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="tugas">Uraian Tugas</label>

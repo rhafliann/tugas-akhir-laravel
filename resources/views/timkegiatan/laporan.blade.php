@@ -49,12 +49,16 @@
                                     class="form-select @error('tgl_selesai') is-invalid @enderror">
                                     <option value="0" @if(session('selected_tgl_selesai', 0)==0) selected @endif>All
                                     </option>
-                                    @foreach ($kegiatan as $key => $k)
-                                    <option value="{{ $k->tgl_selesai = date('Y', strtotime($k->created_at))}}" @if($k->tgl_selesai ==
-                                        session('selected_tgl_selesai')) selected @endif>
-                                        {{ $k->tgl_selesai }}
-                                    </option>
-                                    @endforeach
+
+                                    @php
+                                        $tahun = 2024;
+                                    @endphp
+
+                                    @for( intval($tahun); $tahun > 2020; $tahun--)
+                                    
+
+                                    <option>{{ $tahun}}</option>
+                                    @endfor
                                 </select>
                             </div>
                         </div>
@@ -73,7 +77,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Tahun</th>
+                                <th>Nama Kegiatan</th>
                                 <th>Nama pegawai</th>
                                 <th>Peran</th>
 
@@ -83,7 +87,7 @@
                             @foreach($timkegiatan as $key => $tk)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$tk->kegiatan->tgl_selesai = date('Y', strtotime($tk->created_at))}}</td>
+                                <td>{{$tk->kegiatan->nama_kegiatan}}</td>
                                 <td>{{$tk->user->nama_pegawai}}</td>
                                 <td>{{$tk->peran->nama_peran}}</td>
 

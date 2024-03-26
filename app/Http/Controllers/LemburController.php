@@ -17,9 +17,9 @@ class LemburController extends Controller
         $users = User::where('is_deleted', '0')->get();
 
         $lemburs = [];
-
+        
         $defaultStartDate = '2023-01-01';
-        $defaultEndDate = '2023-12-31';
+        $defaultEndDate = date('Y') . '-12-31';
 
         $start_date = $request->input('start_date', $defaultStartDate);
         $end_date = $request->input('end_date', $defaultEndDate);
@@ -27,7 +27,7 @@ class LemburController extends Controller
         $lemburs['data'] = Lembur::whereBetween('tanggal', [$start_date, $end_date])->get();
 
         $lemburs['start_date'] = $start_date;
-        $lemburs['end_date'] = $end_date;
+        $lemburs['end_date']   = $end_date;
 
         return Excel::download(new LemburExport($lemburs), 'lembur.xlsx');
 
@@ -180,12 +180,11 @@ class LemburController extends Controller
             'id_atasan' => 'required',
             'kode_finger' => 'required',
             'tanggal' => 'required|date',
-            'jam_masuk' => 'required',
-            'jam_pulang' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
             'tugas' => 'required|string',
         ]);
+
 
         // Menghitung jam lembur dari jam mulai dan jam selesai
         $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->input('jam_mulai'));
@@ -203,8 +202,6 @@ class LemburController extends Controller
         $lembur->kode_finger = $request->kode_finger;
         $lembur->id_atasan = $request->id_atasan;
         $lembur->tanggal = $request->input('tanggal');
-        $lembur->jam_masuk = $request->input('jam_masuk');
-        $lembur->jam_pulang = $request->input('jam_pulang');
         $lembur->jam_mulai = $request->input('jam_mulai');
         $lembur->jam_selesai = $request->input('jam_selesai');
         $lembur->jam_lembur = floor($diffInMinutes / 60).':'.($diffInMinutes % 60); // Jam dan menit
@@ -277,8 +274,6 @@ class LemburController extends Controller
             'id_atasan' => 'required',
             'kode_finger' => 'required',
             'tanggal' => 'required|date',
-            'jam_masuk' => 'required',
-            'jam_pulang' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
             'tugas' => 'required|string',
