@@ -13,8 +13,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->job(new ProcessLogFingerprint)->everyFiveMinutes();
+        $schedule->job('app:process-fingerprint')->everyFiveMinutes();
     }
 
     /**

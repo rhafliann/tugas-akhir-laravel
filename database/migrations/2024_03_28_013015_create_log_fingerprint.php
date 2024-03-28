@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('log_fingerprint', function (Blueprint $table) {
             $table->id('id_log_fingerprint');
+            $table->string('cloud_id');
             $table->string('nik');
             $table->string('type');
+            $table->timestamp('scan_time');
             $table->text('original_data');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->unique(['nik', 'type', 'scan_time']);
         });
     }
 

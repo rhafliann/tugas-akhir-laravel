@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Jobs\ProcessLogFingerprint;
 use App\Models\EmailConfiguration;
 use App\Models\User;
 use App\Observers\UserProfileObserver;
