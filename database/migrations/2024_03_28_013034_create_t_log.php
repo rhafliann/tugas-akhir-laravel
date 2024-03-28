@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('t_log', function (Blueprint $table) {
-            $table->id();
+            $table->string('cloud_id');
+            $table->string('type');
+            $table->string('original_data');
+            $table->primary(['cloud_id','type', 'created_at'], 'tlog_primary_key');
             $table->timestamps();
         });
     }

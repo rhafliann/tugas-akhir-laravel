@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('log_fingerprint', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_log_fingerprint');
+            $table->string('nik');
+            $table->string('type');
+            $table->text('original_data');
             $table->timestamps();
         });
     }
