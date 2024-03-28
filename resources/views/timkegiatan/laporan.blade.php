@@ -11,68 +11,69 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <form method="get" action="{{ route('laporan') }}" class="form-inline">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label" for="id_users">Nama Pegawai</label>
-                                <select id="id_users" name="id_users"
-                                    class="form-select @error('id_users') is-invalid @enderror">
-                                    <!-- Tambahkan opsi All dengan value 0 -->
-                                    <option value="0" @if(session('selected_id_users', 0)==0) selected @endif>All
-                                    </option>
-                                    @foreach ($user as $us)
-                                    <option value="{{ $us->id_users }}" @if($us->id_users ==
-                                        session('selected_id_users')) selected @endif>{{ $us->nama_pegawai }}</option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                        <label class="control-label p-2" for="id_users">Nama Pegawai</label>
+                                        <select id="id_users" name="id_users"
+                                            class="form-select @error('id_users') is-invalid @enderror">
+                                        <!-- Tambahkan opsi All dengan value 0 -->
+                                        <option value="0" @if(session('selected_id_users', 0)==0) selected @endif>All
+                                        </option>
+                                        @foreach ($user as $us)
+                                        <option value="{{ $us->id_users }}" @if($us->id_users ==
+                                            session('selected_id_users')) selected @endif>{{ $us->nama_pegawai }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12 mb-2">
-                            <div class="form-group ">
-                                <label for="id_peran">Peran</label>
-                                <select id="id_peran" name="id_peran"
-                                    class="form-select @error('id_peran') is-invalid @enderror">
-                                    <option value="0" @if(session('selected_id_peran', 0)==0) selected @endif>All
-                                    </option>
-                                    @foreach ($peran as $p)
-                                    <option value="{{ $p->id_peran }}" @if($p->id_peran ==
-                                        session('selected_id_peran')) selected @endif>
-                                        {{ $p->nama_peran }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <div class="form-group">
+                                        <label for="id_peran" class="px-2">Peran</label>
+                                        <select id="id_peran" name="id_peran"
+                                            class="form-select @error('id_peran') is-invalid @enderror">
+                                        <option value="0" @if(session('selected_id_peran', 0)==0) selected @endif>All
+                                        </option>
+                                        @foreach ($peran as $p)
+                                        <option value="{{ $p->id_peran }}" @if($p->id_peran ==
+                                            session('selected_id_peran')) selected @endif>
+                                            {{ $p->nama_peran }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12 mb-2">
-                            <div class="form-group ">
-                                <label for="tgl_selesai">Tahun</label>
-                                <select id="tgl_selesai" name="tgl_selesai"
-                                    class="form-select @error('tgl_selesai') is-invalid @enderror">
-                                    <option value="0" @if(session('selected_tgl_selesai', 0)==0) selected @endif>All
-                                    </option>
-
-                                    @php
-                                        $tahun = 2024;
-                                    @endphp
-
-                                    @for( intval($tahun); $tahun > 2020; $tahun--)
-                                    
-
-                                    <option>{{ $tahun}}</option>
-                                    @endfor
-                                </select>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <div class="form-group ">
+                                    <label for="tgl_selesai" class="px-2">Tahun</label>
+                                    <select id="tgl_selesai" name="tgl_selesai"
+                                        class="form-select @error('tgl_selesai') is-invalid @enderror">
+                                        <option value="0" @if(session('selected_tgl_selesai', 0)==0) selected @endif>All
+                                        </option>
+                                        @foreach ($kegiatan as $k)
+                                        <option value="{{ $k->tgl_selesai = date('Y', strtotime($k->tgl_selesai))}}"> @if($k->tgl_selesai ==
+                                            session('selected_tgl_selesai')) selected @endif>
+                                            {{ $k->tgl_selesai}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <br>
-                        <div class="col-md-12 mb-2">
-                            <button type="submit" class="btn btn-primary mb-2">
-                                <i class="fa fa-filter"></i> &nbsp; Filter
-                            </button>
+                        <div class="col">
+                            <div class="col-md-12 mb-2">
+                                <button type="submit" class="btn btn-primary mb-2">
+                                    <i class="fa fa-filter"></i> &nbsp; Filter
+                                </button>
+                            </div>
                         </div>
                     </form>
                     <br>
-
-
-
                     <table class="table table-hover table-bordered table-stripped" id="example2">
                         <thead>
                             <tr>

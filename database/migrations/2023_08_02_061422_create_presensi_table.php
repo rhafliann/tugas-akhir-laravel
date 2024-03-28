@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('presensi', function (Blueprint $table) {
             $table->increments('id_presensi');
-            $table->unsignedInteger('kode_finger');
+            $table->unsignedInteger('nik');
             $table->date('tanggal');
             $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();
