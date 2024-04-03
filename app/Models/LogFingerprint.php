@@ -10,8 +10,8 @@ class LogFingerprint extends Model {
 
   use HasFactory;
 
+  protected $primaryKey = 'id_log_fingerprint';
   protected $table = 'log_fingerprint';
-
   protected $fillable = [
     'cloud_id',
     'nik',

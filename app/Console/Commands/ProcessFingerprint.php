@@ -4,12 +4,12 @@ namespace App\Console\Commands;
 
 use App\Models\LogFingerprint;
 use App\Models\Presensi;
-use App\Models\Profile;
-use App\Models\User;
+// use App\Models\Profile;
+// use App\Models\User;
 use Illuminate\Console\Command;
 
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Log;
 
 use Carbon\Carbon;
 
@@ -35,6 +35,11 @@ class ProcessFingerprint extends Command
     public function handle()
     {
         //
+        // $hari_ini = Carbon::now()->format('Y-m-d');
+        $hari_ini = "2024-03-20";
+        // $jam10pagi = Carbon::now()->hour(10)->minute(1);
+        $jam10pagi = Carbon::parse($hari_ini)->hour(10)->minute(1);
+
         $cloud_id = "C2630450C3051F24";
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -51,10 +56,11 @@ class ProcessFingerprint extends Command
         
         if ($response->failed()) {
             echo "Failed \n";
-            print_r($response->json());
+            Log::error('request failed with' . json_encode($response->json(), JSON_PRETTY_PRINT));
         } else {
             echo "Success \n";  
             $json = (object) $response->json();
+            // Log::info('request success with' . json_encode($json, JSON_PRETTY_PRINT));
 
             if(isset($json->data)){ // mengecek apakah data dapat diakses
                 foreach($json->data as $item){
@@ -84,21 +90,19 @@ class ProcessFingerprint extends Command
             }
         }
 
-        $hari_ini = Carbon::now()->format('Y-m-d');
-        $jam10pagi = Carbon::now()->hour(10)->minute(1);
+        Log::info('log_fingerprints ' . json_encode($log_fingerprints, JSON_PRETTY_PRINT));
 
         foreach ($log_fingerprints as $item) {
-            $presensi = Presensi::where(['nik' => $item->nik, 'tanggal'=> $hari_ini])->first();
+            $payload = [];
+            $where   = ['nik' => $item->nik, 'tanggal'=> $hari_ini];
 
             if ($item->scan_time <= $jam10pagi) {
-                echo "masuk";
-                $presensi->scan_masuk = $item->scan_time;
+                $payload['scan_masuk'] = $item->scan_time;
             } else {
-                echo "pulang";
-                $presensi->scan_pulang = $item->scan_time;
+                $payload['scan_pulang'] = $item->scan_time;
             }
-            
-            $presensi->save();
+
+            Presensi::where($where)->update($payload);
         }
     }
 }

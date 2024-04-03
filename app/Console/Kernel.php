@@ -2,18 +2,22 @@
 
 namespace App\Console;
 
-use App\Jobs\ProcessLogFingerprint;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+
+    protected $commands = [
+        Commands\ProcessFingerprint::class
+    ];
     /**
      * Define the application's command schedule.
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job('app:process-fingerprint')->everyFiveMinutes();
+        print_r($this->commands);
+        $schedule->command('app:process-fingerprint')->everyFiveMinutes();
     }
 
     /**
