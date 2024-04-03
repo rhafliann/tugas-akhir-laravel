@@ -155,6 +155,11 @@ git push -u origin --set-upstream YOUR-NEW-FEATURE
     /usr/local/bin/php /home/contohurl/public_html/siklis/laravel/artisan schedule:run >> /home/contohurl/public_html/siklis/laravel/storage logs/laravel.log 2>&1
     ```
 
+    - Contoh sintak fungsi terjadwal, digunakan untuk melakukan sinkronisasi presensi
+    ``` bash
+    /usr/local/bin/php /home/contohurl/public_html/siklis/laravel/artisan schedule:work >> /home/contohurl/public_html/siklis/laravel/storage logs/laravel.log 2>&1
+    ```
+
     - Memperhatikan port SMTP\
     port yang biasa digunakan 25, 465, 587, 2525.
     ```
