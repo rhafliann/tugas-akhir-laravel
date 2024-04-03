@@ -35,8 +35,8 @@ class ProcessFingerprint extends Command
     public function handle()
     {
         //
-        // $hari_ini = Carbon::now()->format('Y-m-d');
-        $hari_ini = "2024-03-20";
+        $hari_ini = Carbon::now()->format('Y-m-d');
+        // $hari_ini = "2024-03-20";
         // $jam10pagi = Carbon::now()->hour(10)->minute(1);
         $jam10pagi = Carbon::parse($hari_ini)->hour(10)->minute(1);
 
@@ -48,8 +48,8 @@ class ProcessFingerprint extends Command
         ->post('https://developer.fingerspot.io/api/get_attlog', [
             'trans_id' => 1, 
             'cloud_id' => $cloud_id,
-            "start_date" => "2024-03-20",
-            "end_date" =>"2024-03-20"
+            "start_date" => $hari_ini,
+            "end_date" => $hari_ini
         ]);
 
         $log_fingerprints = [];
