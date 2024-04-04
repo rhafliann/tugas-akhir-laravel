@@ -21,8 +21,9 @@
                                         <option value="0" @if(session('selected_id_users', 0)==0) selected @endif>All
                                         </option>
                                         @foreach ($user as $us)
-                                        <option value="{{ $us->id_users }}" @if($us->id_users ==
-                                            session('selected_id_users')) selected @endif>{{ $us->nama_pegawai }}</option>
+                                        <option value="{{ $us->id_users }}" @if($us->id_users == session('selected_id_users')) selected @endif>
+                                            {{ $us->nama_pegawai }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -37,8 +38,7 @@
                                         <option value="0" @if(session('selected_id_peran', 0)==0) selected @endif>All
                                         </option>
                                         @foreach ($peran as $p)
-                                        <option value="{{ $p->id_peran }}" @if($p->id_peran ==
-                                            session('selected_id_peran')) selected @endif>
+                                        <option value="{{ $p->id_peran }}" @if($p->id_peran == session('selected_id_peran')) selected @endif>
                                             {{ $p->nama_peran }}
                                         </option>
                                         @endforeach
@@ -59,7 +59,7 @@
                                           $year = date('Y');  
                                         @endphp
                                         @for ($year; $year >= 2020; $year--)
-                                        <option value="{{ $year }}"> @if( $year  == session('selected_tgl_selesai')) selected @endif>
+                                        <option value="{{ $year }}" @if( $year  == session('selected_tgl_selesai')) selected @endif>
                                             {{ $year }}
                                         </option>
                                         @endfor
