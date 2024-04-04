@@ -70,7 +70,7 @@
                         <br>
                         <div class="col">
                             <div class="col-md-12 mb-2">
-                                <button type="submit" class="btn btn-primary mb-2">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-filter"></i> &nbsp; Filter
                                 </button>
                             </div>
