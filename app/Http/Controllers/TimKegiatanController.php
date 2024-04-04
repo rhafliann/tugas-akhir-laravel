@@ -85,10 +85,12 @@ class TimKegiatanController extends Controller
 
         $pegawai = $request->input('id_users');
         $peran = $request->input('id_peran');
+        $tgl_selesai = $request->input('tgl_selesai');
 
         // Store the selected values in session
         session()->put('selected_id_users', $pegawai);
         session()->put('selected_id_peran', $peran);
+        session()->put('selected_tgl_selesai', $tgl_selesai);
 
         if ($pegawai && $peran && $peran != 0) {
             $timkegiatan = TimKegiatan::whereIn('id_users', [$pegawai])
