@@ -101,8 +101,11 @@ class ProcessFingerprint extends Command
             } else {
                 $payload['scan_pulang'] = $item->scan_time;
             }
+            $presensi = Presensi::where($where);
 
-            Presensi::where($where)->update($payload);
+            if($presensi->exists()){
+                $presensi->update($payload);
+            }
         }
     }
 }
