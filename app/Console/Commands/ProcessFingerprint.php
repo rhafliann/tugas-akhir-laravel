@@ -105,6 +105,8 @@ class ProcessFingerprint extends Command
 
             if($presensi->exists()){
                 $presensi->update($payload);
+            } else {
+                Presensi::create(array_merge($where, $payload));
             }
         }
     }
