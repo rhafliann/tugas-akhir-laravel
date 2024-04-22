@@ -18,7 +18,10 @@
                         <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="input-group">
-                                <input type="file" name="file" id="file" class="form-control">
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                                    <input type="file" class="custom-file-input" id="file" aria-describedby="inputGroupFileAddon04">
+                                </div>
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-primary">Import</button>
                                 </div>
@@ -103,7 +106,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputlevel">Level</label>
-                                                    <select class="form-select @error('level') is-invalid @enderror"
+                                                    <select class="form-control @error('level') is-invalid @enderror"
                                                         id="exampleInputlevel" name="level">
                                                         <option value="admin" @if($user->level == 'admin' ||
                                                             old('level')=='admin' )selected
@@ -129,7 +132,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputJabatan">Jabatan</label>
-                                                    <select class="form-select @error('jabatan') is-invalid @enderror"
+                                                    <select class="form-control @error('jabatan') is-invalid @enderror"
                                                         id="exampleInputJabatan" name="id_jabatan">
                                                         @foreach ($jabatans as $jabatan)
                                                         <option value="{{ $jabatan->id_jabatan }}" @if(old('id_jabatan',$user->id_jabatan) == $jabatan->id_jabatan ) selected @endif>  {{ $jabatan->nama_jabatan }} </option>
@@ -226,7 +229,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputlevel">Level</label>
-                        <select class="form-select @error('level') isinvalid @enderror" id="exampleInputlevel"
+                        <select class="form-control @error('level') isinvalid @enderror" id="exampleInputlevel"
                             name="level">
                             <option value="admin" @if(old('level')=='admin' )selected @endif>Admin</option>
                             <option value="bod" @if(old('level')=='bod' )selected @endif>BOD</option>
@@ -242,7 +245,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputJabatan">Jabatan</label>
-                        <select class="form-select @error('jabatan') isinvalid @enderror" id="exampleInputJabatan"
+                        <select class="form-control @error('jabatan') isinvalid @enderror" id="exampleInputJabatan"
                             name="id_jabatan">
                             @foreach ($jabatans as $jabatan)
                             <option value="{{ $jabatan->id_jabatan }}" @if( old('id_jabatan')==$jabatan->id_jabatan

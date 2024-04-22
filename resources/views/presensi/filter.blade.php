@@ -19,7 +19,7 @@
                                 @csrf
                                 <div class="input-group">
                                     <label for="import" class="my-label mr-2 mt-1">Import Presensi:</label>&nbsp;&nbsp;
-                                    <input type="file" name="file" id="file" class="form-control" required>
+                                    <input type="file" name="file" id="file" class="form-label border" required>
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-primary">Import</button>
 

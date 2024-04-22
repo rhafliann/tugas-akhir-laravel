@@ -99,7 +99,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputName">Jenis Surat </label>
-                                        <select class="form-select  @error('jenis_surat') is-invalid @enderror"
+                                        <select class="form-control  @error('jenis_surat') is-invalid @enderror"
                                         id="jenis_surat" name="jenis_surat">
                                         <option value="nota_dinas">Nota Dinas</option>
                                         <option value="notula_rapat">Notula Rapat</option>
@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="id_kode_surat">Kode Surat</label>
-                                        <select id="id_kode_surat" name="id_kode_surat"class="form-select @error('id_kode_surat') is-invalid @enderror">
+                                        <select id="id_kode_surat" name="id_kode_surat"class="form-control @error('id_kode_surat') is-invalid @enderror">
                                             @foreach ($kodesurat as $ks)
                                             <option value="{{ $ks->id_kode_surat }}" @if( old('id_kode_surat')==$ks->
                                                 id_kode_surat )selected
@@ -133,7 +133,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="bulan_kegiatan">Bulan Kegiatan</label>
-                                        <select class="form-select" id="bulan_kegiatan" name="bulan_kegiatan">
+                                        <select class="form-control" id="bulan_kegiatan" name="bulan_kegiatan">
                                             <option value="I">Januari</option>
                                             <option value="II">Februari</option>
                                             <option value="III">Maret</option>

@@ -13,7 +13,7 @@
                     <div class="col-md-12">
                         <div class="form-group mb-2">
                             <label for="kode_finger">Nama Pegawai:</label>
-                            <select class="form-select" name="kode_finger" id="kode_finger" class="form-select">
+                            <select class="form-select" name="kode_finger" id="kode_finger" class="form-control">
                                 <option value="all">Semua Pegawai</option>
                                 @foreach ($users as $user)
                                 <option value="{{ $user->kode_finger }}" @if(request()->input('kode_finger') ==
@@ -22,7 +22,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="jenis_perizinan">Jenis Perizinan</label>&nbsp;&nbsp;
+                            <label for="jenis_perizinan">Jenis Perizinan:</label>&nbsp;&nbsp;
                             <select class="form-select" id="jenis_perizinan" name="jenis_perizinan">
                                 <option value="all">Semua Jenis Perizinan</option>
                                 <option value="A" @if(request()->input('jenis_perizinan')=='A' )selected @endif>Alpha
@@ -399,7 +399,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="kode_finger">Nama Pegawai</label>
                                     <select id="kode_finger" name="kode_finger"
-                                        class="form-select @error('kode_finger') is-invalid @enderror">
+                                        class="form-control @error('kode_finger') is-invalid @enderror">
                                         @foreach ($users as $us)
                                         <option value="{{ $us->kode_finger }}" @if( old('kode_finger')==$us->id_users
                                             )selected @endif>
@@ -433,7 +433,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="jenis_perizinan">Jenis Perizinan</label>
-                                <select class="form-select  @error('jenis_perizinan') is-invalid @enderror"
+                                <select class="form-control  @error('jenis_perizinan') is-invalid @enderror"
                                     id="jenis_perizinan" name="jenis_perizinan">
                                     <option value="A">Alpha</option>
                                     <option value="CAP">CAP</option>
@@ -469,7 +469,7 @@
                             <div class="form-group">
                                 <label for="id_atasan">Atasan Langsung</label>
                                 <select id="id_atasan" name="id_atasan"
-                                    class="form-select @error('id_atasan') is-invalid @enderror">
+                                    class="form-control @error('id_atasan') is-invalid @enderror">
                                     @foreach ($users as $us)
                                     <option value="{{ $us->id_users }}" @if( old('id_atasan')==$us->
                                         id_users )selected
@@ -482,7 +482,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="file_perizinan">Unggah Lampiran</label>
-                                <input type="file" class="form-control @error('file_perizinan') is-invalid @enderror"
+                                <input type="file" class="form-control-file border @error('file_perizinan') is-invalid @enderror"
                                     id="file_perizinan" name="file_perizinan" onchange="validateFile(this)">
                                 <small class="form-text text-muted">Allow file extensions: .jpeg .jpg .png .pdf
                                     .docx</small>

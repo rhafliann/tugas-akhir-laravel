@@ -72,7 +72,7 @@
                                 <div class="form-group">
                                         <label class="control-label col-md-6" for="id_barang_ppr">Nama Barang</label>
                                         <select id="id_barang_ppr" name="id_barang_ppr"
-                                            class="form-select @error('id_barang_ppr') is-invalid @enderror" required>
+                                            class="form-control @error('id_barang_ppr') is-invalid @enderror" required>
                                             @foreach ($barangppr->sortBy(function($bp) {
                                                 return strtolower($bp->nama_barang);}) as $bp)
                                                 <option value="{{ $bp->id_barang_ppr }}" @if( old('id_barang_ppr')==$bp->id_barang_ppr )selected @endif>

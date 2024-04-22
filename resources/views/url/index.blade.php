@@ -162,7 +162,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="jenis">Jenis Shortlink</label>
-                                <select class="form-select  @error('jenis') is-invalid @enderror" id="jenis" name="jenis" required>
+                                <select class="form-control  @error('jenis') is-invalid @enderror" id="jenis" name="jenis" required>
                                     <option value="Form">Form</option>
                                     <option value="Sertifikat">Sertifikat</option>
                                     <option value="Laporan">Laporan</option>

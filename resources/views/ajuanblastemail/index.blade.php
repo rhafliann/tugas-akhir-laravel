@@ -96,7 +96,7 @@
                     <div class="form-group">
                         <label for="jenis_blast" class="form-label">Jenis Email</label>
                         <div class="form-input">
-                            <select class="form-select" id="jenis_blast" name="jenis_blast" required>
+                            <select class="form-control" id="jenis_blast" name="jenis_blast" required>
                                 <option value="Sertifikat Kegiatan">Sertifikat Kegiatan</option> 
                                 <option value="Surat Undangan">Surat Undangan</option> 
                                 <option value="Informasi Lainnya">Informasi Lainnya</option>                            
@@ -122,7 +122,7 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="lampiran" class="form-label">Lampiran Dokumen</label>
                         <div class="form-input">
-                            <input type="file" class="form-control @error('lampiran') is-invalid @enderror"
+                            <input type="file" class="form-control-file border @error('lampiran') is-invalid @enderror"
                             id="lampiran" name="lampiran" accept=".doc,.docx,.xlsx,.xls,.rar,.zip" required>
                             <small class="form-text text-muted">Allow file extensions : .doc .docx .xls .xlsx .zip .rar</small>
                         @error('lampiran') <span class="text-danger">{{ $message }}</span> @enderror
@@ -172,7 +172,7 @@
                     <div class="form-group">
                         <label for="jenis_blast" class="form-label">Jenis Email</label>
                         <div class="form-input">
-                            <select class="form-select" id="jenis_blast" name="jenis_blast" required>
+                            <select class="form-control" id="jenis_blast" name="jenis_blast" required>
                                 <option value="Sertifikat Kegiatan" @if($email->jenis_blast == 'Sertifikat Kegiatan' || old('Sertifikat Kegiatan') == 'Sertifikat Kegiatan') selected @endif>Sertifikat Kegiatan</option> 
                                 <option value="Surat Undangan" @if($email->jenis_blast == 'Surat Undangan' || old('Surat Undangan') == 'Surat Undangan') selected @endif>Surat Undangan</option> 
                                 <option value="Informasi Lainnya" @if($email->jenis_blast == 'Informasi Lainnya' || old('Informasi Lainny') == 'Informasi Lainny') selected @endif>Informasi Lainnya</option>                            
@@ -198,7 +198,7 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="lampiran" class="form-label">Lampiran Dokumen</label>
                         <div class="form-input">
-                            <input type="file" class="form-control @error('lampiran') is-invalid @enderror"
+                            <input type="file" class="form-control-file border @error('lampiran') is-invalid @enderror"
                             id="lampiran" name="lampiran" accept=".doc,.docx,.xlsx,.xls,.rar,.zip">
                             <small class="form-text text-muted">Allow file extensions : .doc .docx .xls .xlsx .zip .rar</small>
                             Previous File: 
@@ -212,7 +212,7 @@
                     <div class="form-group">
                         <label for="nama_operator" class="form-label">Nama Operator</label>
                         <div class="form-input">
-                            <select id="nama_operator" name="nama_operator" class="form-select @error('nama_operator') is-invalid @enderror">
+                            <select id="nama_operator" name="nama_operator" class="form-control @error('nama_operator') is-invalid @enderror">
                                 <option value="Hana" @if($email->nama_operator == 'Hana' || old('Hana') == 'Hana') selected @endif>Hana</option>
                                 <option value="Bayu"@if($email->nama_operator == 'Bayu' || old('Bayu') == 'Bayu') selected @endif>Bayu</option>
                                 <option value="Wendy" @if($email->nama_operator == 'Wendy' || old('Wendy') == 'Wendy') selected @endif>Wendy</option>

@@ -125,7 +125,7 @@
                         <div class="form-group">
                             <label for="id_barang_tik" class="form-label">Nama Peralatan TIK</label>
                             <div class="form-input">
-                                <select class="form-select" id="id_barang_tik" name="id_barang_tik" required>
+                                <select class="form-control" id="id_barang_tik" name="id_barang_tik" required>
                                     @foreach($barang as $key => $br)
                                     <option value="{{$br->id_barang_tik}}" @if (old('id_barang_tik')==$br->
                                         id_barang_tik) selected
@@ -192,7 +192,7 @@
                     <div class="form-group">
                         <label for="id_barang_tik" class="form-label">Nama Peralatan TIK</label>
                         <div class="form-input">
-                            <select class="form-select" id="id_barang_tik" name="id_barang_tik" required>
+                            <select class="form-control" id="id_barang_tik" name="id_barang_tik" required>
                                 @foreach ($barang as $br)
                                 <option value="{{ $br->id_barang_tik }}" @if( $pk->
                                     id_barang_tik == old('id_barang_tik', $br->id_barang_tik) )
@@ -216,7 +216,7 @@
                     <div class="form-group">
                         <label for="nama_operator" class="form-label">Nama Operator</label>
                         <div class="form-input">
-                            <select class="form-select" id="nama_operator" name="nama_operator" required>
+                            <select class="form-control" id="nama_operator" name="nama_operator" required>
                                 <option value="Hana" @if($pk->nama_operator == 'Hana' || old('nama_operator') == 'Hana')
                                     selected @endif>Hana</option>
                                 <option value="Bayu" @if($pk->nama_operator == 'Bayu' ||
@@ -251,7 +251,7 @@
                     <div class="form-group">
                         <label for="status" class="form-label">Status</label>
                         <div class="form-input">
-                            <select class="form-select" id="status" name="status" required>
+                            <select class="form-control" id="status" name="status" required>
                                 <option value="diajukan" @if($pk->status == 'diajukan' || old('status') ==
                                     'diajukan')
                                     selected @endif>Diajukan</option>
