@@ -108,7 +108,7 @@
                                                             <div class="form-group">
                                                                 <label for="kode_finger">Nama Pegawai</label>
                                                                 <select id="kode_finger" name="kode_finger"
-                                                                    class="form-select @error('kode_finger') is-invalid @enderror">
+                                                                    class="form-control @error('kode_finger') is-invalid @enderror">
                                                                     @foreach ($users as $u)
                                                                     <option value="{{ $u->kode_finger }}"
                                                                         {{ $lr->kode_finger == $u->kode_finger ? 'selected' : '' }}>
@@ -217,7 +217,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-6" for="kode_finger">Nama Pegawai</label>
                             <select id="kode_finger" name="kode_finger"
-                                class="form-select @error('kode_finger') is-invalid @enderror">
+                                class="form-control @error('kode_finger') is-invalid @enderror">
                                 @foreach ($users as $us)
                                 <option value="{{ $us->kode_finger }}" @if( old('kode_finger')==$us->id_users
                                     )selected @endif>
@@ -249,7 +249,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-6" for="id_atasan">Atasan Langsung</label>
                             <select id="id_atasan" name="id_atasan"
-                                class="form-select @error('id_atasan') is-invalid @enderror">
+                                class="form-control @error('id_atasan') is-invalid @enderror">
                                 @foreach ($users as $us)
                                 <option value="{{ $us->id_users }}" @if( old('id_atasan')==$us->
                                     id_users )selected

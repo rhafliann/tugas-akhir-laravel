@@ -321,13 +321,13 @@
                                                                 <label for="email" class='form-label'>Jabatan</label>
                                                                 <div class="form-input">
                                                                     <select
-                                                                        class="form-select @error('id_jabatan') is-invalid @enderror"
+                                                                        class="form-control @error('id_jabatan') is-invalid @enderror"
                                                                         id="exampleInputJabatan" name="id_jabatan"
                                                                         required>
                                                                         @foreach ($jabatan as $jabatan)
                                                                         <option value="{{ $jabatan->id_jabatan }}"
                                                                             @if(old('id_jabatan',$main_user->id_jabatan)
-                                                                            == $jabatan->id_jabatan ) selected @endif>
+                                                                            == $jabatan->id_jabatan ) selected @endif> 
                                                                             {{ $jabatan->nama_jabatan }} </option>
                                                                         @endforeach
                                                                     </select>
@@ -470,7 +470,7 @@
                                                                 <div class="form-input">
                                                                     @if (isset($user->agama))
                                                                     <select
-                                                                        class="form-select @error('agama') isinvalid @enderror"
+                                                                        class="form-control @error('agama') isinvalid @enderror"
                                                                         id="exampleInputagama" name="agama">
                                                                         <option value="islam" @if($user->agama ==
                                                                             'islam' ||
@@ -504,7 +504,7 @@
                                                                     @enderror
                                                                     @else
                                                                     <select
-                                                                        class="form-select @error('agama') isinvalid @enderror"
+                                                                        class="form-control @error('agama') isinvalid @enderror"
                                                                         id="exampleInputagama" name="agama">
                                                                         <option value="islam">Islam</option>
                                                                         <option value="kristen">Kristen</option>
@@ -525,21 +525,19 @@
                                                                 <div class="form-input">
                                                                     @if (isset($user->gender))
                                                                     <select
-                                                                        class="form-select @error('gender') isinvalid @enderror"
+                                                                        class="form-control @error('gender') isinvalid @enderror"
                                                                         id="exampleInputgender" name="gender">
-                                                                        <option value="laki-laki" @if($user->gender ==
-                                                                            'laki-laki' || old('gender')=='laki-laki' )
-                                                                            selected @endif>Laki-laki</option>
-                                                                        <option value="perempuan" @if($user->gender ==
-                                                                            'perempuan' || old('gender')=='perempuan' )
-                                                                            selected @endif>Perempuan</option>
+                                                                        <option value="laki-laki" @if($user->gender == 'laki-laki' || old('gender')=='laki-laki' ) 
+                                                                            selected @endif>Laki-laki </option>
+                                                                        <option value="perempuan" @if($user->gender == 'perempuan' || old('gender')=='perempuan' ) 
+                                                                            selected @endif>Perempuan </option>
                                                                     </select>
                                                                     @error('gender') <span
                                                                         class="text-danger">{{$message}}</span>
                                                                     @enderror
                                                                     @else
                                                                     <select
-                                                                        class="form-select @error('gender') isinvalid @enderror"
+                                                                        class="form-control @error('gender') isinvalid @enderror"
                                                                         id="exampleInputgender" name="gender">
                                                                         <option value="laki-laki">Laki-laki</option>
                                                                         <option value="perempuan">Perempuan</option>
@@ -582,14 +580,10 @@
                                                                     class='form-label'>Status Kawin</label>
                                                                 <div class="form-input">
                                                                     @if (isset($user->status_kawin))
-                                                                    <select
-                                                                        class="form-select @error('status_kawin') isinvalid @enderror"
+                                                                    <select class="form-control @error('status_kawin') isinvalid @enderror"
                                                                         id="exampleInputstatus_kawin"
                                                                         name="status_kawin">
-                                                                        <option value="menikah" @if($user->status_kawin
-                                                                            ==
-                                                                            'menikah' || old('status_kawin')=='menikah'
-                                                                            )
+                                                                        <option value="menikah" @if($user->status_kawin == 'menikah' || old('status_kawin')=='menikah')
                                                                             selected @endif>Menikah</option>
                                                                         <option value="belum_menikah" @if($user->
                                                                             status_kawin == 'belum_menikah' ||
@@ -602,7 +596,7 @@
                                                                     @enderror
                                                                     @else
                                                                     <select
-                                                                        class="form-select @error('status_kawin') isinvalid @enderror"
+                                                                        class="form-control @error('status_kawin') isinvalid @enderror"
                                                                         id="exampleInputstatus_kawin"
                                                                         name="status_kawin">
                                                                         <option value="menikah">Menikah</option>
@@ -643,9 +637,8 @@
                                                                 <label for="tingkat_pendidikan"
                                                                     class='form-label'>Tingkat Pendidikan</label>
                                                                 <div class="form-input">
-                                                                    <select
-                                                                        class="form-select @error('tingkat_pendidikan') isinvalid @enderror"
-                                                                        id="exampleInputtingkat_pendidikan"
+                                                                    <select class="form-control @error('tingkat_pendidikan') isinvalid @enderror"
+                                                                        id="exampleInputtingkat_pendidikan" 
                                                                         name="id_tingkat_pendidikan">
                                                                         @foreach ($tingkat_pendidikans as $tp)
                                                                         <option value="{{ $tp->id_tingkat_pendidikan }}"
