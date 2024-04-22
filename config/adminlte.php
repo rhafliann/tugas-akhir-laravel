@@ -404,25 +404,24 @@ return [
             'icon' => 'fas fa-qrcode',
             'can' => '',
         ],
-
-		[
-            'text' => 'Short Link / QR Code',
-            'url' => '/url',
-            'icon' => 'fas fa-qrcode',
-            'can' => '',
-        ],
+		// [
+        //     'text' => 'Short Link / QR Code',
+        //     'url' => '/url',
+        //     'icon' => 'fas fa-qrcode',
+        //     'can' => '',
+        // ],
 		[
             'icon' => 'fas fa-envelope',
             'text' => 'Nomor Surat',
 			'url' => '/surat',
 			'can' => ['isBod', 'isPpk', 'isKadiv', 'isStaf'],
         ],
-		[
-            'icon' => 'fas fa-envelope',
-            'text' => 'Nomor Surat',
-			'url' => '/ajuansurat',
-			'can' => 'isAdmin',
-        ],
+		// [
+        //     'icon' => 'fas fa-envelope',
+        //     'text' => 'Nomor Surat',
+		// 	'url' => '/ajuansurat',
+		// 	'can' => 'isAdmin',
+        // ],
         [
             'icon' => 'fas fa-link',
             'text' => 'Pengajuan',
@@ -460,6 +459,12 @@ return [
                     'can' => '',
                 ],   
             ],
+        ],
+        [
+            'text' => 'Pemagang',
+            'url' => '/pemagang',
+            'icon' => 'fas fa-user-cog',
+            'can' => '',
         ],
         [
             'icon' => 'fas fa-box',

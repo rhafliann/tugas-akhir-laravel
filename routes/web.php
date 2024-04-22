@@ -14,6 +14,7 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KeluargaController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\PemagangController;
 use App\Http\Controllers\PendidikanController;
 use App\Http\Controllers\PengajuanBlastemailController;
 use App\Http\Controllers\PengajuanFormController;
@@ -328,3 +329,8 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('tanda-tangan/{id_users}', [TandaTanganController::class, 'view'])->name('tanda-tangan.view');
 Route::post('tanda-tangan/{id_users}/update', [TandaTanganController::class, 'update'])->name('tanda-tangan.update');
 Route::post('tanda-tangan/{id_users}/store', [TandaTanganController::class, 'store'])->name('tanda-tangan.store');
+
+
+Route::group(['middleware' => ['auth']], function($route){
+    $route->resource('pemagang', PemagangController::class);
+});
