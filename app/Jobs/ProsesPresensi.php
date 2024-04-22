@@ -57,7 +57,7 @@ class ProsesPresensi implements ShouldQueue
 
         $payload = [];
 
-        if(Carbon::createFromTimestamp($logFingerPrint->scan_time) >= $jam10pagi)
+        if(Carbon::createFromTimestamp($logFingerPrint->scan_time)->greaterThan($jam10pagi))
         {
             $payload['scan_pulang'] = $logFingerPrint->scan_time;
         } else {
