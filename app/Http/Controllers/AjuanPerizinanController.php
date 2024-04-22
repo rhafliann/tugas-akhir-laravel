@@ -25,8 +25,6 @@ enum UserLevel: String {
     case BOD   = 'bod';
 };
 
-
-
 class AjuanPerizinanController extends Controller
 {
     /**

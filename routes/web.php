@@ -24,6 +24,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PengajuanZoomController;
 use App\Http\Controllers\PengajuanDesainController;
+use App\Http\Controllers\ProsesPresensiController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\BarangPprController;
 use App\Http\Controllers\SirkulasiBarangController;
@@ -38,8 +39,11 @@ use App\Http\Controllers\AjuanSuratController;
 use App\Http\Controllers\PengajuanPerbaikanController;
 use App\Http\Controllers\WaktuKerjaController;
 use App\Models\BarangTik;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Svg\Tag\Group;
+
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -336,3 +340,5 @@ Route::group(['middleware' => ['auth']], function($route){
     $route->resource('pemagang', PemagangController::class);
     $route->resource('waktu-kerja', WaktuKerjaController::class);
 });
+
+Route::get('proses-presensi', ProsesPresensiController::class);

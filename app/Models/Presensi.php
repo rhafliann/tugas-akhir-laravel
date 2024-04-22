@@ -9,19 +9,21 @@ class Presensi extends Model
 {
     use HasFactory;
 
-    protected $primarykey = 'id_presensi';
+    protected $primaryKey = 'id_presensi';
 
     protected $table = 'presensi';
 
     protected $fillable = [
-        'kode_finger',
         'tanggal',
         'jam_masuk',
         'jam_pulang',
+        'scan_masuk',
+        'scan_pulang',
         'terlambat',
         'pulang_cepat',
         'kehadiran',
         'jenis_perizinan',
+        'nik',
     ];
 
     public function user()

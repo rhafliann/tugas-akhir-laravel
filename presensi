@@ -1,0 +1,4 @@
+#!/bin/bash
+   
+HTTP_CODE=$(curl --write-out "%{http_code}\n" "https://siklis.qiteplanguage.org/proses-presensi" --output output.txt --silent)
+echo $HTTP_CODE 
