@@ -36,6 +36,7 @@ use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AjuanSuratController;
 use App\Http\Controllers\PengajuanPerbaikanController;
+use App\Http\Controllers\WaktuKerjaController;
 use App\Models\BarangTik;
 use Illuminate\Support\Facades\Route;
 use Svg\Tag\Group;
@@ -333,4 +334,5 @@ Route::post('tanda-tangan/{id_users}/store', [TandaTanganController::class, 'sto
 
 Route::group(['middleware' => ['auth']], function($route){
     $route->resource('pemagang', PemagangController::class);
+    $route->resource('waktu-kerja', WaktuKerjaController::class);
 });

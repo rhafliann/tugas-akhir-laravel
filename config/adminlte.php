@@ -548,6 +548,11 @@ return [
                     'route' => 'emailConfiguration.show',
                     'can' => 'isAdmin',
                 ],
+                [
+                    'text' => 'Waktu Kerja',
+                    'route' => 'waktu-kerja.index',
+                    'can' => 'isAdmin',
+                ],
             ],
         ],
     ],
