@@ -45,31 +45,31 @@ class ProcessFingerprint extends Command
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer NOLQ4U14G2EWG5W3'
         ])
-        ->post('https://developer.fingerspot.io/api/get_attlog', [
-            'trans_id' => 1, 
-            'cloud_id' => $cloud_id,
-            "start_date" => $hari_ini,
-            "end_date" => $hari_ini
-        ]);
+            ->post('https://developer.fingerspot.io/api/get_attlog', [
+                'trans_id' => 1,
+                'cloud_id' => $cloud_id,
+                "start_date" => $hari_ini,
+                "end_date" => $hari_ini
+            ]);
 
         $log_fingerprints = [];
-        
+
         if ($response->failed()) {
             echo "Failed \n";
             Log::error('request failed with' . json_encode($response->json(), JSON_PRETTY_PRINT));
         } else {
-            echo "Success \n";  
+            echo "Success \n";
             $json = (object) $response->json();
-            // Log::info('request success with' . json_encode($json, JSON_PRETTY_PRINT));
+            Log::info('request success with' . json_encode($json, JSON_PRETTY_PRINT));
 
-            if(isset($json->data)){ // mengecek apakah data dapat diakses
-                foreach($json->data as $item){
+            if (isset($json->data)) { // mengecek apakah data dapat diakses
+                foreach ($json->data as $item) {
 
                     $log_fingerprint = [
-                        "cloud_id"   => $cloud_id,
-                        "nik"        => $item['pin'],
-                        "type"       => $item['verify'],
-                        "scan_time"  => $item['scan_date'],
+                        "cloud_id" => $cloud_id,
+                        "nik" => $item['pin'],
+                        "type" => $item['verify'],
+                        "scan_time" => $item['scan_date'],
                         "original_data" => json_encode($item)
                     ];
 
@@ -77,37 +77,44 @@ class ProcessFingerprint extends Command
                     try {
                         $inserted = LogFingerprint::create($log_fingerprint);
                         // mengecek apakah data berhasil di masukan
-                        if($inserted) { 
+                        if ($inserted) {
                             // data yang berhasil di masukan akan di gunakan kembali
-                            array_push($log_fingerprints, (object) $log_fingerprint); 
+                            array_push($log_fingerprints, (object) $log_fingerprint);
                         }
+
+                        $payload = [];
+                        $where = ['nik' => $item['pin'], 'tanggal' => $hari_ini];
+
+                        if ($item['scan_time'] <= $jam10pagi) {
+                            $payload['scan_masuk'] = $item['scan_time'];
+                        } else {
+                            $payload['scan_pulang'] = $item['scan_time'];
+                        }
+
+                        $presensi = Presensi::where($where);
+
+                        if ($presensi->exists()) {
+                            $presensi->update($payload);
+                        } else {
+                            Presensi::create(array_merge($where, $payload));
+                        }
+
                     } catch (\Throwable $e) {
                         // ketika data merupakan duplikat laravel akan melempar sebuah error
                         // namun akan di abaikan dan program akan terus berlanjut
-                        continue; 
+                        continue;
                     }
                 }
+
+                // Log::info('log_fingerprints ' . json_encode($log_fingerprints, JSON_PRETTY_PRINT));
+
+                // foreach ($json->data as $item) {
+                    
+                // }
+
             }
         }
 
-        Log::info('log_fingerprints ' . json_encode($log_fingerprints, JSON_PRETTY_PRINT));
 
-        foreach ($log_fingerprints as $item) {
-            $payload = [];
-            $where   = ['nik' => $item->nik, 'tanggal'=> $hari_ini];
-
-            if ($item->scan_time <= $jam10pagi) {
-                $payload['scan_masuk'] = $item->scan_time;
-            } else {
-                $payload['scan_pulang'] = $item->scan_time;
-            }
-            $presensi = Presensi::where($where);
-
-            if($presensi->exists()){
-                $presensi->update($payload);
-            } else {
-                Presensi::create(array_merge($where, $payload));
-            }
-        }
     }
 }

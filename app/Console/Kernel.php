@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         print_r($this->commands);
-        $schedule->command('app:process-fingerprint')->everyFiveMinutes();
+        $schedule->command('app:process-fingerprint')->everyTenSeconds();
+        $schedule->command('app:process-fingerprint-pemagang')->everyTenSeconds();
     }
 
     /**

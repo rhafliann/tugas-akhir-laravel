@@ -131,7 +131,6 @@ class DatabaseSeeder extends Seeder
             'kode_finger' => '989898',
             'id_jabatan' => '1',
             'is_deleted' => '0',
-            'kode_finger' => '88121',
         ]);
 
         User::create([
