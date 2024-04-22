@@ -101,7 +101,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="id_ruangan">Lokasi Barang</label>
-                                                    <select class="form-select @error('nama') isinvalid @enderror" id="id_ruangan" name="id_ruangan">
+                                                    <select class="form-control @error('nama') isinvalid @enderror" id="id_ruangan" name="id_ruangan">
                                                         @foreach ($ruangan as $pn)
                                                         <option value="{{$pn->id_ruangan}}" @if($bp-> id_ruangan === old('id_ruangan',$pn->id_ruangan )) selected @endif">
                                                             {{ $pn->nama_ruangan }}</option>
@@ -122,7 +122,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="image">Gambar</label>
-                                                    <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                                    <input type="file" class="form-control-file border @error('image') is-invalid @enderror"
                                                         id="image" name="image" accept="image/jpeg ,image/jpg ,image/png ,application/pdf ,application/docx"> 
                                                         @error('image') <span class="invalid" role="alert">{{$message}}</span> @enderror
                                                     <small class="form-text text-muted">Allow file extensions : .jpeg .jpg .png</small>
@@ -194,7 +194,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-6" for="id_ruangan">Lokasi Barang</label>
                                         <select id="id_ruangan" name="id_ruangan"
-                                            class="form-select @error('id_ruangan') is-invalid @enderror" required>
+                                            class="form-control @error('id_ruangan') is-invalid @enderror" required>
                                             @foreach ($ruangan as $rn)
                                             <option value="{{ $rn->id_ruangan }}" @if( old('id_ruangan')==$rn->id_ruangan )selected @endif>
                                                 {{ $rn->nama_ruangan }}</option>
@@ -210,7 +210,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="image">Gambar</label>
-                                        <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                        <input type="file" class="form-control-file border @error('image') is-invalid @enderror"
                                             id="image" enctype="multipart/form-data" name="image"
                                             accept="image/jpeg ,image/jpg ,image/png ,application/pdf ,application/docx">
                                         @error('image') <span class="invalid" role="alert">{{$message}}</span> @enderror

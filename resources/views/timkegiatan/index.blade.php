@@ -92,7 +92,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="id_kegiatan">Nama Kegiatan</label>
                                     <select id="id_kegiatan" name="id_kegiatan"
-                                        class="form-select @error('id_kegiatan') is-invalid @enderror">
+                                        class="form-control @error('id_kegiatan') is-invalid @enderror">
                                         @foreach ($kegiatan->sortByDesc('tgl_mulai') as $kg)
                                         @if (date('Y', strtotime($kg->tgl_mulai)) == now()->year)
                                         <option value="{{ $kg->id_kegiatan }}">{{ $kg->nama_kegiatan }}</option>
@@ -105,7 +105,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="id_users">Nama Pegawai</label>
                                     <select id="id_users" name="id_users"
-                                        class="form-select @error('id_users') is-invalid @enderror">
+                                        class="form-control @error('id_users') is-invalid @enderror">
                                         @foreach ($user as $us)
                                         <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users )
                                             sePlected @endif">
@@ -117,7 +117,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="id_peran">Peran</label>
-                                    <select class="form-select @error('nama') isinvalid @enderror" id="id_peran"
+                                    <select class="form-control @error('nama') isinvalid @enderror" id="id_peran"
                                         name="id_peran">
                                         @foreach ($peran as $p)
                                         <option value="{{ $p->id_peran }}" @if( old('id_peran')==$p->id_peran )selected @endif">
@@ -165,7 +165,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="id_kegiatan">Nama Kegiatan</label>
                                     <select id="id_kegiatan" name="id_kegiatan"
-                                        class="form-select @error('id_kegiatan') is-invalid @enderror">
+                                        class="form-control @error('id_kegiatan') is-invalid @enderror">
                                         @foreach ($kegiatan->sortByDesc('tgl_mulai') as $kg)
                                         @if (date('Y', strtotime($kg->tgl_mulai)) == now()->year)
                                         <option value="{{ $kg->id_kegiatan }}" @if( $tk->id_kegiatan ===
@@ -180,7 +180,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="id_users">Nama Pegawai</label>
                                     <select id="id_users" name="id_users"
-                                        class="form-select @error('id_users') is-invalid @enderror">
+                                        class="form-control @error('id_users') is-invalid @enderror">
                                         @foreach ($user as $us)
                                         <option value="{{ $us->id_users }}" @if( $tk->id_users === old('id_users',
                                             $us->id_users) ) selected @endif>
@@ -192,7 +192,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="id_peran">Peran</label>
-                                    <select class="form-select @error('nama') isinvalid @enderror" id="id_peran"
+                                    <select class="form-control @error('nama') isinvalid @enderror" id="id_peran"
                                         name="id_peran">
                                         @foreach ($peran as $p)
                                         <option value="{{ $p->id_peran }}" @if( $tk-> id_peran ===

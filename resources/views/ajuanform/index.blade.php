@@ -116,7 +116,7 @@
                     <div class="form-group">
                         <label for="jenis_form" class="form-label">Jenis Form</label>
                         <div class="form-input">
-                            <select class="form-select" id="jenis_form" name="jenis_form" required>
+                            <select class="form-control" id="jenis_form" name="jenis_form" required>
                                 <option value="Biodata">Biodata</option> 
                                 <option value="Daftar Hadir">Daftar Hadir</option> 
                                 <option value="Evaluasi">Evaluasi</option>                            
@@ -168,7 +168,7 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="template" class="form-label">Format (Template)</label>
                         <div class="form-input">
-                            <input type="file" class="form-control @error('template') is-invalid @enderror"
+                            <input type="file" class="form-control-file border @error('template') is-invalid @enderror"
                             id="template" name="template" accept=".jpg,.jpeg,.png,.doc,.docx,.xls,.zip">
                             <small class="form-text text-muted">Allow file extensions : .jpg .jpeg .png .doc .docx .xls .zip </small>
 
@@ -248,7 +248,7 @@
                     <div class="form-group">
                         <label for="jenis_form" class="form-label">Jenis Form</label>
                         <div class="form-input">
-                            <select class="form-select" id="jenis_form" name="jenis_form" required>
+                            <select class="form-control" id="jenis_form" name="jenis_form" required>
                                 <option value="Biodata" @if($form->jenis_form == 'Biodata' || old('Biodata') == 'Biodata') selected @endif>Biodata</option> 
                                 <option value="Daftar Hadir" @if($form->jenis_form  == 'Daftar Hadir' || old('Daftar Hadir') == 'Daftar Hadir') selected @endif>Daftar Hadir</option> 
                                 <option value="Evaluasi" @if($form->jenis_form == 'Evaluasi' || old('Evaluasi') == 'Evaluasi') selected @endif>Evaluasi</option>                            
@@ -291,7 +291,7 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="template" class="form-label">Format (Template)</label>
                         <div class="form-input">
-                            <input type="file" class="form-control @error('template') is-invalid @enderror"
+                            <input type="file" class="form-control-file border @error('template') is-invalid @enderror"
                             id="template" name="template" accept=".jpg,.jpeg,.png,.doc,.docx,.xls,.zip" >
                             <small class="form-text text-muted mt-0">Allow file extensions : .jpg .jpeg .png .doc .docx .xls .zip </small>
                             @if($form->template)
@@ -333,7 +333,7 @@
                     <div class="form-group">
                         <label for="nama_operator" class="form-label">Nama Operator</label>
                         <div class="form-input">
-                            <select id="nama_operator" name="nama_operator" class="form-select @error('nama_operator') is-invalid @enderror">
+                            <select id="nama_operator" name="nama_operator" class="form-control @error('nama_operator') is-invalid @enderror">
                                 <option value="Hana" @if($form->nama_operator == 'Hana' || old('Hana') == 'Hana') selected @endif>Hana</option>
                                 <option value="Bayu"@if($form->nama_operator == 'Bayu' || old('Bayu') == 'Bayu') selected @endif>Bayu</option>
                                 <option value="Wendy" @if($form->nama_operator == 'Wendy' || old('Wendy') == 'Wendy') selected @endif>Wendy</option>
@@ -346,7 +346,7 @@
                     <div class="form-group">
                         <label for="status" class="form-label">Status</label>
                         <div class="form-input">
-                            <select id="status" name="status" class="form-select @error('status') is-invalid @enderror">
+                            <select id="status" name="status" class="form-control @error('status') is-invalid @enderror">
                                 <option value="diajukan" @if($form->status == 'diajukan' || old('diajukan') == 'diajukan') selected @endif>Diajukan</option>
                                 <option value="diproses"@if($form->status == 'diproses' || old('diproses') == 'diproses') selected @endif>Diproses</option>
                                 <option value="ready" @if($form->status == 'ready' || old('ready') == 'ready') selected @endif>Ready</option>

@@ -20,7 +20,7 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="input-group">
-                                        <input type="file" name="file" id="file" class="form-control">
+                                        <input type="file" name="file" id="file" class="form-control-file">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-primary">Import</button>
                                         </div>

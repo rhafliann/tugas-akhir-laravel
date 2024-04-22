@@ -140,7 +140,7 @@
                                                     <label for="jenis_desain" class="col-sm-3 col-form-label">Jenis Desain</label>
                                                     <div class="col-sm-9">
                                                         <div class="form-input">
-                                                            <select class="form-select" id="jenis_desain" name="jenis_desain" required>
+                                                            <select class="form-control" id="jenis_desain" name="jenis_desain" required>
                                                                 <option value="Cover Petunjuk Teknis" @if($ad->jenis_desain == 'Cover Petunjuk Teknis' || old('Cover Petunjuk Teknis') == 'Cover Petunjuk Teknis') selected @endif>Cover Petunjuk Teknis</option>
                                                                 <option value="Cover Laporan" @if($ad->jenis_desain == 'Cover Laporan' || old('Cover Laporan') == 'Cover Laporan') selected @endif>Cover Laporan</option>
                                                                 <option value="Cover Dokumen Pedukung" @if($ad->jenis_desain == 'Cover Dokumen Pedukung' || old('Cover Dokumen Pedukung') == 'Cover Dokumen Pedukung') selected @endif>Cover Dokumen Pedukung</option>
@@ -199,7 +199,7 @@
                                                 <div class="form-group row">
                                                     <label for="lampiran_pendukung" class="col-sm-3 col-form-label">Lampiran Pendukung</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" class="form-control @error('lampiran_pendukung') is-invalid @enderror" id="lampiran_pendukung" name="lampiran_pendukung"
+                                                        <input type="file" class="form-control-file border @error('lampiran_pendukung') is-invalid @enderror" id="lampiran_pendukung" name="lampiran_pendukung"
                                                             enctype="multipart/form-data" accept="image/jpeg, image/jpg, image/png, application/pdf, application/doc, application/docx, application/zip, application/xlsx">
                                                         @error('lampiran_pendukung') <span class="invalid" role="alert">{{$message}}</span> @enderror
                                                         <small class="form-text text-muted">Allow file extensions : .jpeg .jpg .png .pdf .doc .docx .zip .xlsx</small>
@@ -213,7 +213,7 @@
                                                 <div class="form-group row">
                                                     <label for="lampiran_qrcode" class="col-sm-3 col-form-label">Lampiran QR-Code</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" class="form-control @error('lampiran_qrcode') is-invalid @enderror"
+                                                        <input type="file" class="form-control-file border @error('lampiran_qrcode') is-invalid @enderror"
                                                             id="lampiran_qrcode" name="lampiran_qrcode" enctype="multipart/form-data"
                                                             accept="image/jpeg, image/jpg, image/png, application/pdf, application/doc, application/docx, application/zip, application/xlsx">
                                                         @error('lampiran_qrcode') <span class="invalid" role="alert">{{$message}}</span> @enderror
@@ -238,7 +238,7 @@
                                                     <label for="status" class="col-sm-3 col-form-label">Status</label>
                                                     <div class="col-sm-9">
                                                         <div class="form-input">
-                                                            <select class="form-select" id="status" name="status" required>
+                                                            <select class="form-control" id="status" name="status" required>
                                                                 @if(auth()->user()->level == 'admin')
                                                                     <option value="diproses" @if($ad->status == 'diproses' || old('status') == 'diproses') selected @endif>Diproses</option>
                                                                     <option value="dicek_kadiv" @if($ad->status == 'dicek_kadiv' || old('status') == 'dicek_kadiv') selected @endif>Dicek Kadiv</option>
@@ -259,7 +259,7 @@
                                                 <div class="form-group row">
                                                     <label for="lampiran_desain" class="col-sm-3 col-form-label">Lampiran Desain</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" class="form-control @error('lampiran_desain') is-invalid @enderror"
+                                                        <input type="file" class="form-control-file border @error('lampiran_desain') is-invalid @enderror"
                                                             id="lampiran_desain" name="lampiran_desain" enctype="multipart/form-data"
                                                             accept="image/jpeg, image/jpg, image/png, application/pdf, application/doc, application/docx, application/zip, application/xlsx">
                                                         @error('lampiran_desain') <span class="invalid" role="alert">{{$message}}</span> @enderror
@@ -351,7 +351,7 @@
                                         <label for="jenis_desain" class="col-sm-3 col-form-label">Jenis Desain</label>
                                         <div class="col-sm-9">
                                             <div class="form-input">
-                                                <select class="form-select" id="jenis_desain" name="jenis_desain" required>
+                                                <select class="form-control" id="jenis_desain" name="jenis_desain" required>
                                                     <option value="Cover Petunjuk Teknis">Cover Petunjuk Teknis</option>
                                                     <option value="Cover Laporan">Cover Laporan</option>
                                                     <option value="Cover Dokumen Pedukung">Cover Dokumen Pedukung</option>
@@ -418,7 +418,7 @@
                                     <div class="form-group row">
                                         <label for="lampiran_pendukung" class="col-sm-3 col-form-label">Lampiran Pendukung</label>
                                         <div class="col-sm-9">
-                                            <input type="file" class="form-control @error('lampiran_pendukung') is-invalid @enderror" id="lampiran_pendukung" name="lampiran_pendukung"
+                                            <input type="file" class="form-control-file border @error('lampiran_pendukung') is-invalid @enderror" id="lampiran_pendukung" name="lampiran_pendukung"
                                                 enctype="multipart/form-data" accept="image/jpeg, image/jpg, image/png, application/pdf, application/doc, application/docx, application/zip, application/xlsx">
                                             @error('lampiran_qrcode') <span class="invalid" role="alert">{{$message}}</span> @enderror
                                             <small class="form-text text-muted">Allow file extensions : .jpeg .jpg .png .pdf .doc .docx .zip .xlsx</small>
@@ -428,7 +428,7 @@
                                     <div class="form-group row">
                                         <label for="lampiran_qrcode" class="col-sm-3 col-form-label">Lampiran QR-Code</label>
                                         <div class="col-sm-9">
-                                            <input type="file" class="form-control @error('lampiran_qrcode') is-invalid @enderror"
+                                            <input type="file" class="form-control-file border @error('lampiran_qrcode') is-invalid @enderror"
                                                 id="lampiran_qrcode" name="lampiran_qrcode" enctype="multipart/form-data"
                                                 accept="image/jpeg, image/jpg, image/png, application/pdf, application/doc, application/docx, application/zip, application/xlsx">
                                             @error('lampiran_qrcode') <span class="invalid" role="alert">{{$message}}</span> @enderror

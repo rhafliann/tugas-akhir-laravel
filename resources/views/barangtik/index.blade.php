@@ -160,7 +160,7 @@
                     <div class="form-group">
                         <label for="kondisi" class="form-label">Kondisi</label>
                         <div class="form-input">
-                            <select class="form-select" id="kondisi" name="kondisi" required>
+                            <select class="form-control" id="kondisi" name="kondisi" required>
                                 <option value="Baik">Baik</option>
                                 <option value="Perlu Perbaikan">Perlu Perbaikan</option>
                                 <option value="Rusak Total">Rusak Total</option>
@@ -179,7 +179,7 @@
                     <div class="form-group">
                         <label for="id_ruangan" class="form-label">Lokasi</label>
                         <div class="form-input">
-                            <select class="form-select" id="id_ruangan" name="id_ruangan" required>
+                            <select class="form-control pt-1 pb-2" id="id_ruangan" name="id_ruangan" required>
                                 @foreach($ruangan as $key => $rn)
                                 <option value="{{$rn->id_ruangan}}" @if( old('id_ruangan')==$rn->id_ruangan
                                     )selected @endif>
@@ -199,7 +199,7 @@
                     <div class="form-group-page">
                         <label for="image" class="form-label">Image</label>
                         <div class="form-input">
-                            <input type="file" class="form-control @error('image') is-invalid @enderror"
+                            <input type="file" class="form-control-file border @error('image') is-invalid @enderror"
                             id="image" name="image" accept="image/jpg, image/jpeg, image/png">
                             <small class="form-text text-muted">Allow file extensions : .jpeg .jpg .png </small>
                         @error('image') <span class="text-danger">{{ $message }}</span> @enderror
@@ -287,7 +287,7 @@
                     <div class="form-group">
                         <label for="kondisi" class="form-label">Kondisi</label>
                         <div class="form-input">
-                            <select class="form-select" id="kondisi" name="kondisi" required>
+                            <select class="form-control" id="kondisi" name="kondisi" required>
                                 <option value="Baik"  @if($bt->kondisi == 'Baik' || old('kondisi') == 'Baik') selected @endif>Baik</option>
                                 <option value="Perlu Perbaikan"  @if($bt->kondisi == 'Perlu Perbaikan' || old('kondisi') == 'Perlu Perbaikan') selected @endif>Perlu Perbaikan</option>
                                 <option value="Rusak Total"  @if($bt->kondisi == 'Rusak Total' || old('kondisi') == 'Rusak Total') selected @endif>Rusak Total</option>
@@ -306,7 +306,7 @@
                     <div class="form-group">
                         <label for="id_ruangan" class="form-label">Lokasi</label>
                         <div class="form-input">
-                            <select class="form-select" id="id_ruangan" name="id_ruangan" required>
+                            <select class="form-control" id="id_ruangan" name="id_ruangan" required>
                                 @foreach($ruangan as $key => $rn)
                                 <option value="{{$rn->id_ruangan}}" @if($bt->id_ruangan == $rn->id_ruangan || old('id_ruangan') == $rn->id_ruangan) selected @endif>
                                     {{ $rn->nama_ruangan }}</option>
@@ -325,7 +325,7 @@
                     <div class="form-group-page">
                         <label for="image" class="form-label">Image</label>
                         <div class="form-input">
-                            <input type="file" class="form-control @error('image') is-invalid @enderror"
+                            <input type="file" class="form-control-file border @error('image') is-invalid @enderror"
                             id="image" name="image" accept="image/jpg, image/jpeg, image/png">
                             @if($bt->image)
                             <p>Previous File: <a href="{{ asset('/storage/imageTIK/'. $bt->image) }}"

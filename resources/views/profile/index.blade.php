@@ -652,25 +652,27 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
+
                                                             <div class="my-2">
-                                                                <label for="photo">Photo Profile</label>
-                                                                <input type="file" name="photo" id="photo"
-                                                                    class="form-control" accept=".jpg, .jpeg, .png">
-                                                                <small class="form-text text-muted">Allow file
-                                                                    extensions : .jpeg .jpg .png</small>
-                                                                @error('photo')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                                @enderror
-                                                                @if ($user->photo == 'no_pp.png')
-                                                                <p>Previous File: <a
-                                                                        href="{{ asset('/images/' . $user->photo) }}"
-                                                                        target="_blank">{{ $user->photo }}</a></p>
-                                                                @elseif ( isset($user->photo) )
-                                                                <p>Previous File: <a
-                                                                        href="{{ asset('/storage/profile/' . $user->photo) }}"
-                                                                        target="_blank">{{ $user->photo }}</a></p>
-                                                                @endif
+                                                                    <label for="photo">Photo Profile</label>
+                                                                    <input type="file" name="photo" id="photo"
+                                                                        class="form-control-file border" accept=".jpg, .jpeg, .png">
+                                                                    <small class="form-text text-muted">Allow file
+                                                                        extensions : .jpeg .jpg .png</small>
+                                                                    @error('photo')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                    @enderror
+                                                                    @if ($user->photo == 'no_pp.png')
+                                                                    <p>Previous File: <a
+                                                                            href="{{ asset('/images/' . $user->photo) }}"
+                                                                            target="_blank">{{ $user->photo }}</a></p>
+                                                                    @elseif ( isset($user->photo) )
+                                                                    <p>Previous File: <a
+                                                                            href="{{ asset('/storage/profile/' . $user->photo) }}"
+                                                                            target="_blank">{{ $user->photo }}</a></p>
+                                                                    @endif
                                                             </div>
+
                                                             <div class="modal-footer">
                                                                 <button type="submit"
                                                                     class="btn btn-primary">Simpan</button>

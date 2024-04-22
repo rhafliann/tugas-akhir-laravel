@@ -226,7 +226,7 @@
                         <div class="form-group">
                             <label for="status" class='form-label'>Status</label>
                             <div class="form-input">
-                                <select class="form-select @error('status') is-invalid @enderror" id="status"
+                                <select class="form-control @error('status') is-invalid @enderror" id="status"
                                     name="status">
                                     <option value="belum_diajukan" @if($pj->status == 'belum_diajukan' ||
                                         old('status')=='belum_diajukan' )selected
