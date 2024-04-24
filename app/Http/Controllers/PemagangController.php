@@ -26,7 +26,7 @@ class PemagangController extends Controller
     public function presensi(Request $request)
     {
         $tanggalAwal = $request->input('tanggal_awal');
-        $tanggalAkhir = $request->input('tanggal_akhir');
+        $tanggalAkhir = $request->input('tanggal_akhir') ?? date('Y-m-d');
         $tanggal = $request->input('tanggal');
         $nik = $request->input('nik');
 

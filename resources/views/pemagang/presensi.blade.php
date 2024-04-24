@@ -12,20 +12,36 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-
-                    <form method="get" action="{{route('pemagang.presensi')}}" class="form-inline">
-                        <div class="form-group mb-2">
+                    <form method="get" action="{{route('pemagang.presensi')}}" class="row">
+                        <div class="col form-group mb-2">
                             <label for="tanggal">Tanggal Awal :</label> &nbsp;&nbsp;
                             <input type="date"
                                 class="form-control border-primary @error('tanggal_awal') is-invalid @enderror" id="tanggal_awal"
-                                name="tanggal_awal" value="{{request()->input('tanggal_awal')}}" required> &nbsp; &nbsp;&nbsp;
+                                name="tanggal_awal" value="{{request()->input('tanggal_awal')}}"> &nbsp; &nbsp;&nbsp;
+                        </div>
+                        <div class="col form-group mb-2">
                             <label for="tanggal">Tanggal Akhir :</label> &nbsp;&nbsp;
                             <input type="date"
                                 class="form-control border-primary @error('tanggal_akhir') is-invalid @enderror"
-                                id="tanggal_akhir" name="tanggal_akhir" value="{{request()->input('tanggal_akhir')}}" required> &nbsp;
-                            &nbsp;
-                            <button type="submit" class="btn btn-primary">&nbsp;Tampilkan</button>
-                        </div>
+                                id="tanggal_akhir" name="tanggal_akhir" value="{{request()->input('tanggal_akhir')}}"> &nbsp;
+                            &nbsp;                            
+                          </div>
+                          <div class="col form-group mb-2">
+                            <label for="nik">Pilih Pemagang</label>
+                            <select class="form-control border-primary mr-2" name="nik" id="nik">
+                              <option value="">Pilih Pemagang</option>
+                              @foreach($pemagang as $key => $item)
+                              <option value="{{ $item->nik }}">{{ $item->nama }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-4">
+                            <div class="form-group">
+                              <br>
+                              <button type="submit" class="btn btn-primary mt-2">&nbsp;Tampilkan</button>
+                            </div>
+                          </div>
+                          
                     </form>
 
                     <div>
