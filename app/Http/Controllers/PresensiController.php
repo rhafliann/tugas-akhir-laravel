@@ -6,6 +6,7 @@ use App\Exports\PresensiExportFilter;
 use App\Imports\PresensiImport;
 use App\Models\Presensi;
 use App\Models\User;
+use App\Models\WaktuKerja;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,24 +14,45 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PresensiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+
+        $tanggalAwal = $request->input('tanggal_awal');
+        $tanggalAkhir = $request->input('tanggal_akhir');
+        $tanggal = $request->input('tanggal');
+
+        $waktuKerja = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
 
         if ($user->level == 'admin') {
             // Fetch all work experiences for admin
             $presensi = Presensi::where('is_deleted', '0')
-                ->get();
+                ->whereHas('profile_user')
+                ->with(['profile_user', 'profile_user.user']);
         } else {
             // Fetch user's own work experiences using the relationship
-            $presensi = $user->presensi()->where('is_deleted', '0')->whereMonth('tanggal', '=', date('m'))
-                ->whereYear('tanggal', '=', date('Y'))
-                ->get();
+            $presensi = Presensi::where(['nik' => $user->profile->nik])
+                ->with(['profile_user', 'profile_user.user']);
+        }
+
+        if(!$tanggalAwal && !$tanggalAkhir){
+            $presensi
+            ->whereMonth('tanggal', '=', date('m'))
+            ->whereYear('tanggal', '=', date('Y'));
+        }
+
+        if($tanggal){
+            $presensi->whereDate('tanggal', $tanggal);
+        }
+
+        if($tanggalAwal && $tanggalAkhir){
+            $presensi->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
         }
 
         return view('presensi.index', [
-            'presensi' => $presensi,
+            'presensi' => $presensi->get(),
             'users' => User::where('is_deleted', '0')->get(),
+            'waktuKerja' => $waktuKerja
         ]);
     }
 
@@ -79,44 +101,6 @@ class PresensiController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function filter(Request $request)
-    {
-        $selectedDate = $request->input('tanggalFilter');
-        $selectedDate = Carbon::parse($selectedDate)->format('Y-m-d');
-
-        $user = Auth::user();
-        if ($user->level == 'admin') {
-            $presensi = Presensi::whereDate('tanggal', $selectedDate)->get();
-        } else {
-            $presensi = $user->presensi()->whereDate('tanggal', $selectedDate)->get();
-        }
-
-        return view('presensi.index', [
-            'presensi' => $presensi,
-        ]);
-    }
-
-    public function filteruser(Request $request)
-    {
-        $user = Auth::user();
-        if ($user->level == 'admin') {
-            $kode_finger = $request->input('kode_finger');
-        } else {
-            $kode_finger = $user->kode_finger;
-        }
-        $tglawal = $request->input('tglawal');
-        $tglakhir = date('Y-m-d', strtotime($request->input('tglakhir').' +1 day'));
-
-        $presensi = Presensi::where('kode_finger', $kode_finger)
-            ->whereBetween('tanggal', [$tglawal, $tglakhir])
-            ->orderBy('tanggal', 'desc')
-            ->get();
-
-        return view('presensi.index', compact('presensi', 'tglawal', 'tglakhir'));
-    }
 
     // filter data for export
     public function filterDataAdmin(Request $request)
@@ -390,17 +374,5 @@ class PresensiController extends Controller
             'success_message' => 'Data telah Tersimpan',
         ]);
     }
-
-    // public function filter(Request $request)
-    // {
-    //     $selectedDate = $request->input('tanggalFilter');
-    //     $selectedDate = Carbon::parse($selectedDate)->format('Y-m-d');
-
-    //     $presensi = Presensi::whereDate('tanggal', $selectedDate )->get();
-
-    //     return view('presensi.index',  [
-    //         'presensi' => $presensi,
-    //     ]);
-    // }
 
 }

@@ -20,5 +20,9 @@ class Profile extends Model
         return $this->belongsTo(TingkatPendidikan::class, 'id_tingkat_pendidikan', 'id_tingkat_pendidikan');
     }
 
+    public function user(){
+        return $this->belongsTo(User::class, 'id_users', 'id_users');
+    }
+
     protected $guarded = ['id_profile_user'];
 }

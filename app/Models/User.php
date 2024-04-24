@@ -27,6 +27,10 @@ class User extends Authenticatable
         '_password_',
     ];
 
+    public function profile(){
+        return $this->belongsTo(Profile::class, 'id_users', 'id_users');
+    }
+
     public function jabatan()
     {
         return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id_jabatan');
@@ -79,7 +83,7 @@ class User extends Authenticatable
 
     public function presensi()
     {
-        return $this->hasOne(Presensi::class, 'kode_finger', 'kode_finger');
+        return $this->hasMany(Presensi::class, 'nik', 'nik');
     }
 
     public function ajuanperizinan()

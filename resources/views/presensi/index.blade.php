@@ -15,36 +15,40 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if(auth()->user()->level === 'admin')
-                    <form action="{{ route('presensi.filter') }}" method="GET" class="form-inline mb-3">
+                    <form action="{{ route('presensi.index') }}" method="GET" class="form-inline mb-3">
                         <div class="input-group">
-                            <label for="tanggalFilter" class="my-label mr-2">Tanggal :</label>
-                            <input type="date" class="form-control" name="tanggalFilter" id="tanggalFilter"
-                                value="{{request()->input('tanggalFilter')}}" required>
+                            <label for="tanggal" class="my-label mr-2">Tanggal :</label>
+                            <input type="date" class="form-control" name="tanggal" id="tanggal"
+                                value="{{request()->input('tanggal')}}" required>
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">Cari</button>
                             </div>
                         </div>
                     </form>
                     @else
-                    <form method="get" action="{{route('presensi.user')}}" class="form-inline">
+                    <form method="get" action="{{route('presensi.index')}}" class="form-inline">
                         <div class="form-group mb-2">
                             <label for="tanggal">Tanggal Awal :</label> &nbsp;&nbsp;
                             <input type="date"
-                                class="form-control border-primary @error('tglawal') is-invalid @enderror" id="tglawal"
-                                name="tglawal" value="{{request()->input('tglawal')}}" required> &nbsp; &nbsp;&nbsp;
+                                class="form-control border-primary @error('tanggal_awal') is-invalid @enderror" id="tanggal_awal"
+                                name="tanggal_awal" value="{{request()->input('tanggal_awal')}}" required> &nbsp; &nbsp;&nbsp;
 
                             <label for="tanggal">Tanggal Akhir :</label> &nbsp;&nbsp;
                             <input type="date"
-                                class="form-control border-primary @error('tglakhir') is-invalid @enderror"
-                                id="tglakhir" name="tglakhir" value="{{request()->input('tglakhir')}}" required> &nbsp;
+                                class="form-control border-primary @error('tanggal_akhir') is-invalid @enderror"
+                                id="tanggal_akhir" name="tanggal_akhir" value="{{request()->input('tanggal_akhir')}}" required> &nbsp;
                             &nbsp;
 
                             <button type="submit" class="btn btn-primary">&nbsp;Tampilkan</button>
                         </div>
                     </form>
                     @endif
-
-                    <br>
+                    <div>
+                       <ul>
+                            <li>Jam Masuk: {{ $waktuKerja->jam_masuk }}</li>
+                            <li>Jam Pulang: {{ $waktuKerja->jam_pulang }}</li>
+                        </ul> 
+                    </div>
 
                     <table class="table table-hover table-bordered table-stripped" id="example2">
                         <thead>
@@ -53,10 +57,13 @@
                                 @if(auth()->user()->level === 'admin')
                                 <th>Nama Pegawai</th>
                                 @endif
-                                <th>Tanggal</th>
-                                <th>Jam Masuk</th>
-                                <th>Jam Keluar</th>
+                                <th >Tanggal</th>
+                                {{-- <th>Jam Masuk</th>
+                                <th>Jam Pulang</th> --}}
+                                <th>Scan Masuk</th>
+                                <th>Scan Pulang</th>
                                 <th>Terlambat</th>
+                                <th>Pulang Cepat</th>
                                 <th>Total Kehadiran</th>
                                 <th>Keterangan</th>
                             </tr>
@@ -66,13 +73,16 @@
                             <tr>
                                 <td>{{$key+1}}</td>
                                 @if(auth()->user()->level === 'admin')
-                                <td>{{optional($pn->user)->nama_pegawai}}</td>
+                                <td>{{ optional(optional($pn->profile_user)->user)->nama_pegawai }}</td>
                                 @endif
                                 <td> {{ \Carbon\Carbon::parse($pn->tanggal)->format('d M Y') }}</td>
-                                <td>{{$pn->jam_masuk}}</td>
-                                <td>{{$pn->jam_pulang}}</td>
+                                {{-- <td>{{$pn->jam_masuk}}</td>
+                                <td>{{$pn->jam_pulang}}</td> --}}
+                                <td>{{$pn->scan_masuk}}</td>
+                                <td>{{$pn->scan_pulang}}</td>
                                 <td>{{$pn->terlambat}}</td>
                                 <td>{{$pn->kehadiran}}</td>
+                                <td>{{$pn->pulang_cepat}}</td>
                                 <td>{{$pn->jenis_perizinan}}</td>
                             </tr>
                             @endforeach

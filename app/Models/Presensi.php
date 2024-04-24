@@ -30,6 +30,9 @@ class Presensi extends Model
     {
         return $this->belongsTo(User::class, 'kode_finger', 'kode_finger');
     }
-
     
+    public function profile_user()
+    {
+        return $this->belongsTo(Profile::class, 'nik', 'nik');
+    }
 }
