@@ -35,11 +35,11 @@ class ProsesPresensi implements ShouldQueue
         $hari_ini = date('Y-m-d');
         $jam10pagi = Carbon::parse($hari_ini)->hour(10)->minute(1);
 
-        $jamMasuk = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
+        $waktuKerja = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
         
         $presensiPayload = [
-            'jam_masuk' => $jamMasuk->jam_masuk,
-            'jam_pulang' => $jamMasuk->jam_pulang,
+            'jam_masuk' => $waktuKerja->jam_masuk,
+            'jam_pulang' => $waktuKerja->jam_pulang,
             'tanggal' => $hari_ini,
             'nik' => $this->nik
         ];
@@ -57,11 +57,24 @@ class ProsesPresensi implements ShouldQueue
 
         $payload = [];
 
-        if(Carbon::createFromTimestamp($logFingerPrint->scan_time)->greaterThan($jam10pagi))
+        $scanTime = Carbon::parse($logFingerPrint->scan_time);
+        $jamMasuk = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_masuk);
+        $jamPulang = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_pulang);
+
+        if($scanTime->greaterThan($jam10pagi))
         {
-            $payload['scan_pulang'] = $logFingerPrint->scan_time;
+            $payload['scan_pulang'] = $scanTime->toTimeString();
+            $payload['kehadiran'] =  Carbon::parse($presensi->scan_masuk)->diff($scanTime)->format('%H:%I:%S');
+
+            if($scanTime->lessThan($jamPulang)){
+                $payload['pulang_cepat'] = $jamPulang->diff($scanTime)->format('%H:%I:%S');
+            }
         } else {
-            $payload['scan_masuk'] = $logFingerPrint->scan_time;
+            $payload['scan_masuk'] = $scanTime->toTimeString();
+
+            if($scanTime->greaterThan($jamMasuk)){
+                $payload['terlambat'] = $scanTime->diff($jamMasuk)->format('%H:%I:%S');
+            }
         }
 
         $presensi->update($payload);
