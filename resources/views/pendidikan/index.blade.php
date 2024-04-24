@@ -84,7 +84,7 @@
                                                 <div class="form-group">
                                                     <label class="id_users" for="id_users">Nama Pegawai</label>
                                                     <select id="id_users" name="id_users"
-                                                        class="form-select @error('id_users') is-invalid @enderror">
+                                                        class="form-control @error('id_users') is-invalid @enderror">
                                                         @foreach ($user->sortBy('nama_pegawai') as $us)
                                                         <option value="{{ $us->id_users }}" @if( $pd->id_users ===
                                                             old('id_users', $us->id_users) ) selected @endif>
@@ -96,7 +96,7 @@
                                                 @endif
                                                 <div class="form-group">
                                                     <label for="id_tingkat_pendidikan"> Tingkat Pendidikan</label>
-                                                    <select class="form-select @error('nama') is-invalid @enderror"
+                                                    <select class="form-control @error('nama') is-invalid @enderror"
                                                         id="id_tingkat_pendidikan" name="id_tingkat_pendidikan"
                                                         required>
                                                         @foreach ($tingpen->sortBy('nama_tingkat_pendidikan') as $tp)
@@ -190,7 +190,7 @@
                     <div class="form-group">
                         <label class="id_users" for="id_users">Nama Pegawai</label>
                         <select id="id_users" name="id_users"
-                            class="form-select @error('id_users') is-invalid @enderror">
+                            class="form-control @error('id_users') is-invalid @enderror">
                             @foreach ($user->sortBy('nama_pegawai') as $us)
                             <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users) selected @endif>
                                 {{ $us->nama_pegawai }}
@@ -201,7 +201,7 @@
                     @endif
                     <div class="form-group">
                         <label for="id_tingkat_pendidikan"> Tingkat Pendidikan</label>
-                        <select class="form-select @error('nama') is-invalid @enderror" id="id_tingkat_pendidikan"
+                        <select class="form-control @error('nama') is-invalid @enderror" id="id_tingkat_pendidikan"
                             name="id_tingkat_pendidikan" required>
                             @foreach ($tingpen->sortBy('nama_tingkat_pendidikan') as $tp)
                             <option value="{{ $tp->id_tingkat_pendidikan }}" @if( old('id_tingkat_pendidikan')==$tp->id_tingkat_pendidikan) selected @endif > {{ $tp->nama_tingkat_pendidikan }}

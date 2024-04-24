@@ -90,7 +90,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputUsersHubkel">Hubungan Keluarga</label>
-                                        <select class="form-select @error('id_hubungan') isinvalid @enderror"
+                                        <select class="form-control @error('id_hubungan') isinvalid @enderror"
                                             id="exampleInputHubkel" name="id_hubungan">
                                             @foreach ($hubkel as $hk)
                                             <option value="{{ $hk->id_hubungan }}" @if( old('id_hubungan')==$hk->id_hubungan ) selected @endif">
@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputgender">Jenis Kelamin</label>
-                                        <select class="form-select @error('gender') isinvalid @enderror"
+                                        <select class="form-control @error('gender') isinvalid @enderror"
                                             id="exampleInputgender" name="gender" required>
                                             <option value="laki-laki" @if(old('gender')=='laki-laki' )selected @endif>
                                                 Laki-laki</option>
@@ -176,7 +176,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputUsersHubkel">Hubungan Keluarga</label>
-                                        <select class="form-select @error('id_hubungan') isinvalid @enderror"
+                                        <select class="form-control @error('id_hubungan') isinvalid @enderror"
                                             id="exampleInputHubkel" name="id_hubungan">
                                             @foreach ($hubkel as $hk)
                                             <option value="{{ $hk->id_hubungan }}" @if($kel->id_hubungan ==
@@ -202,7 +202,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputgender">Jenis Kelamin</label>
-                                        <select class="form-select @error('gender') isinvalid @enderror"
+                                        <select class="form-control @error('gender') isinvalid @enderror"
                                             id="exampleInputgender" name="gender" required>
                                             <option value="laki-laki" @if(old('gender', $kel->gender) == 'laki-laki' )
                                                 selected @endif>
@@ -277,7 +277,7 @@
                                 <div class="form-group">
                                     <label class="id_users" for="id_users">Nama Pegawai</label>
                                     <select id="id_users" name="id_users"
-                                        class="form-select @error('id_users') is-invalid @enderror">
+                                        class="form-control @error('id_users') is-invalid @enderror">
                                         @foreach ($users as $us)
                                         <option value="{{ $us->id_users }}" @if( old('id_users', $us->id_users) )
                                             selected @endif>
@@ -290,7 +290,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputUsersHubkel">Hubungan Keluarga</label>
-                                        <select class="form-select @error('id_hubungan') isinvalid @enderror"
+                                        <select class="form-control @error('id_hubungan') isinvalid @enderror"
                                             id="exampleInputHubkel" name="id_hubungan">
                                             @foreach ($hubkel as $hk)
                                             <option value="{{ $hk->id_hubungan }}" @if( old('id_hubungan')==$hk->
@@ -316,7 +316,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputgender">Jenis Kelamin</label>
-                                        <select class="form-select @error('gender') isinvalid @enderror"
+                                        <select class="form-control @error('gender') isinvalid @enderror"
                                             id="exampleInputgender" name="gender">
                                             <option value="laki-laki" @if(old('gender')=='laki-laki' )selected @endif>
                                                 Laki-laki</option>
@@ -379,7 +379,7 @@
                                 <div class="form-group">
                                     <label class="id_users" for="id_users">Nama Pegawai</label>
                                     <select id="id_users" name="id_users"
-                                        class="form-select @error('id_users') is-invalid @enderror">
+                                        class="form-control @error('id_users') is-invalid @enderror">
                                         @foreach ($users as $us)
                                         <option value="{{ $us->id_users }}" @if( $kel->id_users === old('id_users',
                                             $us->id_users) ) selected @endif>
@@ -392,7 +392,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputUsersHubkel">Hubungan Keluarga</label>
-                                        <select class="form-select @error('id_hubungan') isinvalid @enderror"
+                                        <select class="form-control @error('id_hubungan') isinvalid @enderror"
                                             id="exampleInputHubkel" name="id_hubungan">
                                             @foreach ($hubkel as $hk)
                                             <option value="{{ $hk->id_hubungan }}" @if($kel->id_hubungan ==
@@ -418,7 +418,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputgender">Jenis Kelamin</label>
-                                        <select class="form-select @error('gender') isinvalid @enderror"
+                                        <select class="form-control @error('gender') isinvalid @enderror"
                                             id="exampleInputgender" name="gender">
                                             <option value="laki-laki" @if(old('gender', $kel->gender) == 'laki-laki' )
                                                 selected @endif>

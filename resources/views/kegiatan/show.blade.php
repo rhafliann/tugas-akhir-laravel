@@ -164,7 +164,7 @@
                             <div class="form-group">
                                 <label class="control-label col-md-6" for="id_peran">Peran</label>
                                 <div class="form-input">
-                                    <select class="form-select @error('nama') isinvalid @enderror" id="id_peran"
+                                    <select class="form-control @error('nama') isinvalid @enderror" id="id_peran"
                                         name="id_peran">
                                         @foreach ($peran as $p)
                                         <option value="{{ $p->id_peran }}" @if( old('id_peran')==$p->

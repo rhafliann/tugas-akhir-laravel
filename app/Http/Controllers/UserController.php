@@ -61,7 +61,7 @@ class UserController extends Controller
             'password' => 'required|confirmed',
             'level' => 'required',
             'id_jabatan' => 'required',
-            'kode_finger' => 'required',
+            // 'kode_finger' => 'required',
         ];
 
         $request->validate($rules);
@@ -73,7 +73,6 @@ class UserController extends Controller
             'level',
             'id_jabatan',
             'kode_finger',
-            
         ]);
 
         $array['_password_'] = $request->password;

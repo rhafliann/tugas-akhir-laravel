@@ -322,7 +322,7 @@
                     <div class="form-group">
                         <label for="nama_operator" class="form-label">Nama Operator</label>
                         <div class="form-input">
-                            <select class="form-select" id="nama_operator" name="nama_operator" required>
+                            <select class="form-control" id="nama_operator" name="nama_operator" required>
                                 <option value="Hana" @if($pz->nama_operator == 'Hana' || old('nama_operator') == 'Hana')
                                     selected @endif>Hana</option>
                                 <option value="Bayu" @if($pz->nama_operator == 'Bayu' ||
@@ -339,7 +339,7 @@
                     <div class="form-group">
                         <label for="akun_zoom" class="form-label">Akun Zoom</label>
                         <div class="form-input">
-                            <select class="form-select" id="akun_zoom" name="akun_zoom" required>
+                            <select class="form-control" id="akun_zoom" name="akun_zoom" required>
                                 <option value="ict.seaqil@gmail.com" @if($pz->akun_zoom == 'ict.seaqil@gmail.com' ||
                                     old('akun_zoom') == 'ict.seaqil@gmail.com')
                                     selected @endif>ict.seaqil@gmail.com</option>

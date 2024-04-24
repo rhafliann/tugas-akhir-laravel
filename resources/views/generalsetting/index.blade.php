@@ -58,7 +58,7 @@
                                                     <label class="control-label col-md-6" for="tahun_aktif">Tahun
                                                         Aktif</label>
                                                     <select id="tahun_aktif" name="tahun_aktif"
-                                                        class="form-select @error('tahun_aktif') is-invalid @enderror">
+                                                        class="form-control @error('tahun_aktif') is-invalid @enderror">
                                                         <option value="2020"
                                                             {{ $gs->tahun_aktif === '2020' ? 'selected' : '' }}>2020
                                                         </option>
@@ -77,7 +77,7 @@
                                                     <label class="control-label col-md-6" for="id_users">Nama
                                                         Pegawai</label>
                                                     <select id="id_users" name="id_users"
-                                                        class="form-select @error('id_users') is-invalid @enderror">
+                                                        class="form-control @error('id_users') is-invalid @enderror">
                                                         @foreach ($user as $us)
                                                         <option value="{{ $us->id_users }}" @if( $gs->id_users ===
                                                             old('id_users', $us->id_users) ) selected @endif>
@@ -88,7 +88,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="status"></label>
-                                                    <select class="form-select @error('status') isinvalid @enderror"
+                                                    <select class="form-control @error('status') isinvalid @enderror"
                                                         id="status" name="status">
                                                         <option value="1" @if($gs->status == '1' ||
                                                             old('status')=='1'
@@ -137,7 +137,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-6" for="tahun_aktif">Tahun Aktif</label>
                         <select id="tahun_aktif" name="tahun_aktif"
-                            class="form-select @error('tahun_aktif') is-invalid @enderror">
+                            class="form-control @error('tahun_aktif') is-invalid @enderror">
                             <option value="2020">2020</option>
                             <option value="2021">2021</option>
                             <option value="2022">2022</option>
@@ -147,7 +147,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-6" for="id_users">Nama PPK</label>
                         <select id="id_users" name="id_users"
-                            class="form-select @error('id_users') is-invalid @enderror">
+                            class="form-control @error('id_users') is-invalid @enderror">
                             @foreach ($user as $us)
                             <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users )
                                 selected @endif">
@@ -157,7 +157,7 @@
                     </div>
                     <div class="form-group">
                         <label for="status"></label>
-                        <select class="form-select @error('status') isinvalid @enderror" id="status" name="status">
+                        <select class="form-control @error('status') isinvalid @enderror" id="status" name="status">
                             <option value="1" @if(old('status')=='1' )selected @endif>Aktif</option>
                             <option value="0" @if(old('status')=='0' )selected @endif>Tidak Aktif </option>
                         </select>

@@ -15,7 +15,7 @@ class Perizinan extends Model
 
     protected $fillable = [
         'id_atasan',
-        'kode_finger',
+        'id_users',
         'jenis_perizinan',
         'tgl_ajuan',
         'tgl_absen_awal',
@@ -32,22 +32,13 @@ class Perizinan extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'kode_finger', 'kode_finger');
+        return $this->belongsTo(User::class, 'id_users', 'id_users');
     }
 
     public function atasan()
     {
         return $this->belongsTo(User::class, 'id_atasan', 'id_users');
     }
-    // public function hitungJumlahHariPengajuan($tgl_awal, $tgl_akhir)
-    // {
-
-    //     $tanggal_awal = \Carbon\Carbon::parse($tgl_awal);
-    //     $tanggal_akhir = \Carbon\Carbon::parse($tgl_akhir);
-    //     $jumlah_hari = $tanggal_awal->diffInDays($tanggal_akhir);
-
-    //     return $jumlah_hari;
-    // }
 
     protected static function boot()
     {

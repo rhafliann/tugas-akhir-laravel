@@ -347,7 +347,7 @@
                         <label class="form-label" for="id_barang_tik">Nama Barang</label>
                         <div class="form-input">
                             <select id="id_barang_tik" name="id_barang_tik"
-                                class="form-select @error('id_barang_tik') is-invalid @enderror">
+                                class="form-control @error('id_barang_tik') is-invalid @enderror">
                                 @foreach ($barangs->all() as $id_barang_tik => $nama_barang)
                                 <option value="{{ $id_barang_tik }}" @if($dpj->id_barang_tik ==
                                     $id_barang_tik) selected @endif>{{ $nama_barang }}</option>

@@ -75,7 +75,7 @@ $tahunAktif = now()->year;
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="id_users">Pegawai</label>
-                                        <select class="form-select @error('id_users') is-invalid @enderror"
+                                        <select class="form-control @error('id_users') is-invalid @enderror"
                                             id="id_users" name="id_users">
                                             <option value="">Pilih Pegawai</option>
                                             @foreach ($users as $user)
@@ -127,7 +127,7 @@ $tahunAktif = now()->year;
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="id_users">Pegawai</label>
-                                        <select class="form-select @error('id_users') is-invalid @enderror"
+                                        <select class="form-control @error('id_users') is-invalid @enderror"
                                             id="id_users" name="id_users">
                                             <option value="">Pilih Pegawai</option>
                                             @foreach ($users as $user)

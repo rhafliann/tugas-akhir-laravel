@@ -97,7 +97,7 @@ class AjuanPerizinanController extends Controller
     {
         $request->validate([
             'id_atasan' => 'required',
-            'kode_finger' => 'required',
+            'id_users' => 'required',
             'jenis_perizinan' => 'required',
             'jumlah_hari_pengajuan' => 'required',
             'tgl_absen_awal' => 'required',
@@ -107,12 +107,12 @@ class AjuanPerizinanController extends Controller
         ]);
 
         $ajuanperizinan = new Perizinan();
-        $kode_finger    = $request->kode_finger || null; 
+        $id_user   = $request->id_users || null; 
         $jumlah_hari_pengajuan = $request->jumlah_hari_pengajuan || null;
 
-        $pengguna = User::where('kode_finger', $kode_finger)->first();
+        $pengguna = User::where('id_users', $id_user)->first();
 
-        if (! $pengguna) {
+        if (!$pengguna) {
             return redirect()->back()->with('error', 'Pengguna dengan kode finger tersebut tidak ditemukan.');
         }
 
@@ -143,7 +143,8 @@ class AjuanPerizinanController extends Controller
         }else {
             $ajuanperizinan->id_atasan = $request->id_atasan;
         }
-        $ajuanperizinan->kode_finger = $request->kode_finger;
+
+        $ajuanperizinan->id_users = $request->id_users;
         $ajuanperizinan->jenis_perizinan = $request->jenis_perizinan;
         $ajuanperizinan->tgl_ajuan = $request->tgl_ajuan;
         $ajuanperizinan->tgl_absen_awal = $request->tgl_absen_awal;
@@ -156,6 +157,7 @@ class AjuanPerizinanController extends Controller
         }else{
             $ajuanperizinan->status_izin_atasan = null;
         } // Default menunggu persetujuan
+        
         $ajuanperizinan->status_izin_ppk = null; // Default menunggu persetujuan
         $ajuanperizinan->save();
 

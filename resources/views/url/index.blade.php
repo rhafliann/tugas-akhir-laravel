@@ -81,7 +81,7 @@
                                                         <div class="form-group">
                                                             <label for="jenis">Jenis Shortlink</label>
                                                             <select
-                                                                class="form-select  @error('jenis') is-invalid @enderror"
+                                                                class="form-control  @error('jenis') is-invalid @enderror"
                                                                 id="jenis" name="jenis">
                                                                 <option value="Form" @if(old('jenis', $url->
                                                                     jenis)=='Form')selected

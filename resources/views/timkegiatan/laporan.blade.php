@@ -16,7 +16,7 @@
                                 <div class="form-group">
                                         <label class="control-label px-2" for="id_users">Nama Pegawai</label>
                                         <select id="id_users" name="id_users"
-                                            class="form-control form-select @error('id_users') is-invalid @enderror">
+                                            class="form-control form-control @error('id_users') is-invalid @enderror">
                                         <!-- Tambahkan opsi All dengan value 0 -->
                                         <option value="0" @if(session('selected_id_users', 0)==0) selected @endif>All
                                         </option>
@@ -34,7 +34,7 @@
                                 <div class="form-group">
                                         <label for="id_peran" class="px-2">Peran</label>
                                         <select id="id_peran" name="id_peran"
-                                            class="form-control form-select @error('id_peran') is-invalid @enderror">
+                                            class="form-control form-control @error('id_peran') is-invalid @enderror">
                                         <option value="0" @if(session('selected_id_peran', 0)==0) selected @endif>All
                                         </option>
                                         @foreach ($peran as $p)
@@ -51,7 +51,7 @@
                                 <div class="form-group ">
                                     <label for="tgl_selesai" class="px-2">Tahun</label>
                                     <select id="tgl_selesai" name="tgl_selesai"
-                                        class="form-select form-control @error('tgl_selesai') is-invalid @enderror">
+                                        class="form-control form-control @error('tgl_selesai') is-invalid @enderror">
                                         <option value="0" @if(session('selected_tgl_selesai', 0)==0) selected @endif>
                                             All
                                         </option>

@@ -82,7 +82,7 @@
                                                 <div class="form-group">
                                                     <label class="id_users" for="id_users">Nama Pegawai</label>
                                                     <select id="id_users" name="id_users"
-                                                        class="form-select @error('id_users') is-invalid @enderror">
+                                                        class="form-control @error('id_users') is-invalid @enderror">
                                                             @foreach ($users->sortBy('nama_pegawai') as $us)
                                                             <option value="{{ $us->id_users }}" @if( $dk->id_users === old('id_users', $us->id_users) ) selected @endif>
                                                             {{ $us->nama_pegawai }}
@@ -94,7 +94,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-6" for="id_jenis_diklat">Jenis Diklat</label>
                                                     <select id="id_jenis_diklat" name="id_jenis_diklat"
-                                                        class="form-select @error('id_jenis_diklat') is-invalid @enderror" required>
+                                                        class="form-control @error('id_jenis_diklat') is-invalid @enderror" required>
                                                         @foreach ($jenisdiklat as $jd)
                                                         <option value="{{ $jd->id_jenis_diklat }}" @if($dk->id_jenis_diklat == $jd->id_jenis_diklat || old('id_jenis_diklat') === $jd->id_jenis_diklat) selected @endif> 
                                                             {{ $jd->nama_jenis_diklat }}
@@ -201,7 +201,7 @@
                     <div class="form-group">
                     <label class="id_users" for="id_users">Nama Pegawai</label>
                     <select id="id_users" name="id_users"
-                    class="form-select @error('id_users') is-invalid @enderror">
+                    class="form-control @error('id_users') is-invalid @enderror">
                     @foreach ($users->sortBy('nama_pegawai') as $us)
                     <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users) selected @endif>
                     {{ $us->nama_pegawai }}
@@ -216,7 +216,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="id_jenis_diklat">Jenis Diklat</label>
                                     <select id="id_jenis_diklat" name="id_jenis_diklat"
-                                        class="form-select @error('id_jenis_diklat') is-invalid @enderror" required>
+                                        class="form-control @error('id_jenis_diklat') is-invalid @enderror" required>
                                         @foreach ($jenisdiklat->sortByDesc('id_jenis_diklat') as $jd)
                                         <option value="{{ $jd->id_jenis_diklat }}" @if( old('id_jenis_diklat')==$jd->id_jenis_diklat )selected @endif>
                                             {{ $jd->nama_jenis_diklat }}</option>

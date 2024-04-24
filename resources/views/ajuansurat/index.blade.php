@@ -186,7 +186,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputName">Jenis Surat </label>
-                                        <select class="form-select  @error('jenis_surat') is-invalid @enderror" id="jenis_surat" name="jenis_surat">
+                                        <select class="form-control  @error('jenis_surat') is-invalid @enderror" id="jenis_surat" name="jenis_surat">
                                             <option value="nota_dinas" @if($sr->jenis_surat === 'nota_dinas' || old('jenis_surat') === 'nota_dinas') selected @endif>Nota Dinas</option>
                                             <option value="notula_rapat" @if($sr->jenis_surat === 'notula_rapat' || old('jenis_surat') === 'notula_rapat') selected @endif>Notula Rapat</option>
                                             <option value="sertifikat_kegiatan" @if($sr->jenis_surat === 'sertifikat_kegiatan' || old('jenis_surat') === 'sertifikat_kegiatan') selected @endif>Sertifikat Kegiatan</option>
@@ -197,7 +197,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="id_kode_surat">Kode Surat</label>
-                                        <select id="id_kode_surat" name="id_kode_surat"class="form-select @error('id_kode_surat') is-invalid @enderror">
+                                        <select id="id_kode_surat" name="id_kode_surat"class="form-control @error('id_kode_surat') is-invalid @enderror">
                                             @foreach ($kodesurat as $ks)
                                             <option value="{{ $ks->id_kode_surat }}" @if($sr->id_kode_surat == $ks->id_kode_surat || old('id_kode_surat') === $ks->id_kode_surat) selected @endif>
                                                 {{ $ks->kode_surat }}</option>
@@ -217,7 +217,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="bulan_kegiatan">Bulan Kegiatan</label>
-                                        <select class="form-select" id="bulan_kegiatan" name="bulan_kegiatan">
+                                        <select class="form-control" id="bulan_kegiatan" name="bulan_kegiatan">
                                             <option value="I" @if($sr->bulan_kegiatan === "I" || old('bulan_kegiatan') === "I" ) selected @endif>Januari</option>
                                             <option value="II" @if($sr->bulan_kegiatan === "II" || old('bulan_kegiatan') === "II" ) selected @endif>Februari</option>
                                             <option value="III" @if($sr->bulan_kegiatan === "III" || old('bulan_kegiatan') === "III" ) selected @endif>Maret</option>

@@ -102,7 +102,7 @@
                                                                 <label class="id_atasan" for="id_atasan">Atasan
                                                                     Langsung</label>
                                                                 <select id="id_atasan" name="id_atasan"
-                                                                    class="form-select @error('id_atasan') is-invalid @enderror">
+                                                                    class="form-control @error('id_atasan') is-invalid @enderror">
                                                                     @foreach ($users as $us)
                                                                     <option value="{{ $us->id_users }}" @if( $lr->
                                                                         id_atasan == old('id_atasan', $us->id_users) )
@@ -178,7 +178,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="id_atasan">Atasan Langsung</label>
                                     <select id="id_atasan" name="id_atasan"
-                                        class="form-select @error('id_atasan') is-invalid @enderror">
+                                        class="form-control @error('id_atasan') is-invalid @enderror">
                                         @foreach ($users as $us)
                                         <option value="{{ $us->id_users }}" @if( old('id_atasan')==$us->
                                             id_users )selected

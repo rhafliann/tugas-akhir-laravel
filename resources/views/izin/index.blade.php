@@ -4,72 +4,78 @@
 <h1 class="m-0 text-dark"> Perizinan</h1>
 @stop
 @section('content')
-
+@php
+$kodeJenisPerizinan = [
+    'A' => 'Alpha', 
+    'CAP' => 'CAP', 
+    'CB' => 'Cuti Bersama', 
+    'CH' => 'Cuti Haji', 
+    'CM' => 'Cuti Melahirkan', 
+    'CS' => 'Cuti Sakit', 
+    'CT' => 'Cuti Tahunan', 
+    'DL' => 'Dinas Luar', 
+    'I' => 'Izin', 
+    'Prajab' => 'Prajab', 
+    'S' => 'Sakit', 
+    'TB' => 'Tugas Belajar'
+];   
+@endphp
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('ajuanperizinan.index') }}" method="GET" class="form-inline mb-3">
+                <form action="{{ route('ajuanperizinan.index') }}" method="GET" class="row">
                     <div class="col-md-12">
-                        <div class="form-group mb-2">
-                            <label for="kode_finger">Nama Pegawai:</label>
-                            <select class="form-select" name="kode_finger" id="kode_finger" class="form-control">
-                                <option value="all">Semua Pegawai</option>
-                                @foreach ($users as $user)
-                                <option value="{{ $user->kode_finger }}" @if(request()->input('kode_finger') ==
-                                    $user->kode_finger) selected @endif>{{ $user->nama_pegawai }}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label for="kode_finger">Nama Pegawai:</label>
+                                <select class="form-control" name="kode_finger" id="kode_finger" class="form-control">
+                                    <option value="all">Semua Pegawai</option>
+                                    @foreach ($users as $user)
+                                    <option value="{{ $user->kode_finger }}" @if(request()->input('kode_finger') == $user->kode_finger) selected @endif>
+                                        {{ $user->nama_pegawai }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col form-group">
+                                <label for="jenis_perizinan">Jenis Perizinan:</label>&nbsp;&nbsp;
+                                <select class="form-control" id="jenis_perizinan" name="jenis_perizinan">
+                                    <option value="all">Semua Jenis Perizinan</option>
+                                    @foreach ($kodeJenisPerizinan as $key => $item)
+                                    <option value="{{ $key }}" @if(request()->input('jenis_perizinan')== $key) selected @endif>
+                                        {{$item}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-2 form-group">
+                                <label for="tgl_absen_awal" class="my-label mr-2">Tanggal Awal: </label>
+                                <input type="date" id="tgl_absen_awal" name="tgl_absen_awal" required class="form-control" value="{{request()->input('tgl_absen_awal')}}">&nbsp;&nbsp;
+                            </div>
+
+                            <div class="col-2 form-group">
+                                <label for="tgl_absen_akhir" class="form-label">Tanggal Akhir: </label>&nbsp;&nbsp;
+                                <input type="date" id="tgl_absen_akhir" name="tgl_absen_akhir" required class="form-control" value="{{request()->input('tgl_absen_akhir')}}">&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="col">
+                                <br>
+                                <button type="submit" class="btn btn-primary my-2"> Tampilkan</button>&nbsp;&nbsp;
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="jenis_perizinan">Jenis Perizinan:</label>&nbsp;&nbsp;
-                            <select class="form-select" id="jenis_perizinan" name="jenis_perizinan">
-                                <option value="all">Semua Jenis Perizinan</option>
-                                <option value="A" @if(request()->input('jenis_perizinan')=='A' )selected @endif>Alpha
-                                </option>
-                                <option value="CAP" @if(request()->input('jenis_perizinan')=='CAP' )selected @endif>CAP
-                                </option>
-                                <option value="CB" @if(request()->input('jenis_perizinan')=='CB' )selected @endif>Cuti
-                                    Bersama</option>
-                                <option value="CH" @if(request()->input('jenis_perizinan')=='CH' )selected @endif>Cuti
-                                    Haji</option>
-                                <option value="CM" @if(request()->input('jenis_perizinan')=='CM' )selected @endif>Cuti
-                                    Melahirkan</option>
-                                <option value="CS" @if(request()->input('jenis_perizinan')=='CS' )selected @endif>Cuti
-                                    Sakit</option>
-                                <option value="CT" @if(request()->input('jenis_perizinan')=='CT' )selected @endif>Cuti
-                                    Tahunan</option>
-                                <option value="DL" @if(request()->input('jenis_perizinan')=='DL' )selected @endif>Dinas
-                                    Luar</option>
-                                <option value="I" @if(request()->input('jenis_perizinan')=='I' )selected @endif>Izin
-                                </option>
-                                <option value="Prajab" @if(request()->input('jenis_perizinan')=='Prajab' )selected
-                                    @endif>Prajab</option>
-                                <option value="S" @if(request()->input('jenis_perizinan')=='S' )selected @endif>Sakit
-                                </option>
-                                <option value="TB" @if(request()->input('jenis_perizinan')=='TB' )selected @endif>Tugas
-                                    Belajar</option>
-                            </select>&nbsp;&nbsp;
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="tgl_absen_awal" class="my-label mr-2">Tanggal Awal: </label>
-                            <input type="date" id="tgl_absen_awal" name="tgl_absen_awal" required class="form-control"
-                                value="{{request()->input('tgl_absen_awal')}}">&nbsp;&nbsp;
-                            <label for="tgl_absen_akhir" class="form-label">Tanggal Akhir: </label>&nbsp;&nbsp;
-                            <input type="date" id="tgl_absen_akhir" name="tgl_absen_akhir" required class="form-control"
-                                value="{{request()->input('tgl_absen_akhir')}}">&nbsp;&nbsp;&nbsp;
-                            <button type="submit" class="btn btn-primary"> Tampilkan</button>&nbsp;&nbsp;
-                        </div>
+                        {{-- <div class="col">
+                            
+                        </div> --}}
                     </div>
                 </form>
 
                 @can('isAdmin')
-                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal_form"
-                    role="dialog">
+                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal_form" role="dialog">
                     Tambah
                 </button>
                 @endcan
-
 
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered table-stripped" id="example2">
@@ -190,7 +196,7 @@
                                                 <div class="form-group">
                                                     <label for="kode_finger">Nama Pegawai</label>
                                                     <select type="hidden" id="kode_finger" name="kode_finger"
-                                                        class="form-select @error('kode_finger') is-invalid @enderror">
+                                                        class="form-control @error('kode_finger') is-invalid @enderror">
                                                         @foreach ($users as $u)
                                                         <option value="{{ $u->kode_finger }}" {{ $ap->kode_finger ==
                                                             $u->kode_finger ? 'selected' : '' }}>
@@ -245,7 +251,7 @@
                                                 <div class="form-group">
                                                     <label for="jenis_perizinan">Jenis Perizinan</label>
                                                     <select
-                                                        class="form-select  @error('jenis_perizinan') is-invalid @enderror"
+                                                        class="form-control  @error('jenis_perizinan') is-invalid @enderror"
                                                         id="jenis_perizinan" name="jenis_perizinan">
                                                         <option value="A" @if(old('jenis_perizinan', $ap->
                                                             jenis_perizinan)=='A' ) selected @endif>Alpha</option>
@@ -290,7 +296,7 @@
                                                 <div class="form-group">
                                                     <label class="id_atasan" for="id_atasan">Atasan Langsung</label>
                                                     <select id="id_atasan" name="id_atasan"
-                                                        class="form-select @error('id_atasan') is-invalid @enderror">
+                                                        class="form-control @error('id_atasan') is-invalid @enderror">
                                                         @foreach ($users as $us)
                                                         <option value="{{ $us->id_users }}" @if( $ap->id_atasan ==
                                                             old('id_atasan', $us->id_users) ) selected @endif>
@@ -390,48 +396,52 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('ajuanperizinan.store') }}" method="POST" id="form" class="form-horizontal"
-                    enctype="multipart/form-data">
+                <form action="{{ route('ajuanperizinan.store') }}" method="POST" id="form" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-6" for="kode_finger">Nama Pegawai</label>
-                                    <select id="kode_finger" name="kode_finger"
-                                        class="form-control @error('kode_finger') is-invalid @enderror">
-                                        @foreach ($users as $us)
-                                        <option value="{{ $us->kode_finger }}" @if( old('kode_finger')==$us->id_users
-                                            )selected @endif>
-                                            {{ $us->nama_pegawai }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('kode_finger') <span class="textdanger">{{$message}}</span> @enderror
-                                </div>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label class="control-label col-md-6" for="id_users">Nama Pegawai</label>
+                                <select id="id_users" name="id_users" class="form-control @error('id_users') is-invalid @enderror">
+                                    @foreach ($users as $us)
+                                    <option value="{{ $us->id_users }}" @if(old('id_users') == $us->id_users) selected @endif>
+                                        {{ $us->nama_pegawai }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('id_users') 
+                                    <span class="textdanger">{{$message}}</span> 
+                                @enderror
                             </div>
-                            <div class="form-group">
+                        </div>
+                        <div class="form-row">
+                            <div class="col form-group">
                                 <label for="tgl_absen_awal">Tanggal Awal Izin</label>
-                                <input type="date" class="form-control @error('tgl_absen_awal') is-invalid @enderror"
-                                    id="tgl_absen_awal" name="tgl_absen_awal" required>
-                                @error('tgl_absen_awal') <span class="textdanger">{{$message}}</span> @enderror
+                                <input type="date" class="form-control @error('tgl_absen_awal') is-invalid @enderror" id="tgl_absen_awal" name="tgl_absen_awal" required>
+                                @error('tgl_absen_awal') 
+                                    <span class="textdanger">{{$message}}</span> 
+                                @enderror
                             </div>
-                            <div class="form-group">
+                            <div class="col form-group">
                                 <label for="tgl_absen_akhir">Tanggal Akhir Izin</label>
-                                <input type="date" class="form-control @error('tgl_absen_akhir') is-invalid @enderror"
-                                    id="tgl_absen_akhir" name="tgl_absen_akhir" required>
-                                @error('tgl_absen_akhir') <span class="textdanger">{{$message}}</span> @enderror
-
+                                <input type="date" class="form-control @error('tgl_absen_akhir') is-invalid @enderror" id="tgl_absen_akhir" name="tgl_absen_akhir" required>
+                                @error('tgl_absen_akhir') 
+                                    <span class="textdanger">{{$message}}</span> 
+                                @enderror
                             </div>
-                            <div class="form-group">
+                        </div>
+                        <div class="form-row">
+                            <div class="col form-group">
                                 <label for="jumlah_hari_pengajuan" class="form-label">Jumlah Hari Pengajuan</label>
                                 <input type="number"
                                     class="form-control @error('jumlah_hari_pengajuan') is-invalid @enderror"
                                     id="jumlah_hari_pengajuan" name="jumlah_hari_pengajuan"
                                     value="{{  old('jumlah_hari_pengajuan') }}" min="0">
-                                @error('jumlah_hari_pengajuan') <span class="text-danger">{{ $message }}</span>
+                                @error('jumlah_hari_pengajuan') 
+                                    <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-group">
+                            <div class="col form-group">
                                 <label for="jenis_perizinan">Jenis Perizinan</label>
                                 <select class="form-control  @error('jenis_perizinan') is-invalid @enderror"
                                     id="jenis_perizinan" name="jenis_perizinan">
@@ -450,6 +460,8 @@
                                 </select>
                                 @error('jenis_perizinan') <span class="textdanger">{{$message}}</span> @enderror
                             </div>
+                        </div>
+
                             <div class="form-group">
                                 <label for="keterangan">Keterangan</label>
                                 <textarea rows="4" class="form-control @error('keterangan') is-invalid @enderror"
@@ -468,17 +480,17 @@
                             </div>
                             <div class="form-group">
                                 <label for="id_atasan">Atasan Langsung</label>
-                                <select id="id_atasan" name="id_atasan"
-                                    class="form-control @error('id_atasan') is-invalid @enderror">
+                                <select id="id_atasan" name="id_atasan" class="form-control @error('id_atasan') is-invalid @enderror">
                                     @foreach ($users as $us)
-                                    <option value="{{ $us->id_users }}" @if( old('id_atasan')==$us->
-                                        id_users )selected
-                                        @endif>
-                                        {{ $us->nama_pegawai }}</option>
+                                    <option value="{{ $us->id_users }}" @if( old('id_atasan') == $us->id_users) selected @endif>
+                                        {{ $us->nama_pegawai }}
+                                    </option>
                                     @endforeach
                                 </select>
                                 <small class="form-text text-muted">Direktur doesn't required</small>
-                                @error('id_atasan') <span class="textdanger">{{$message}}</span> @enderror
+                                @error('id_atasan') 
+                                <span class="textdanger">{{$message}}</span> 
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="file_perizinan">Unggah Lampiran</label>

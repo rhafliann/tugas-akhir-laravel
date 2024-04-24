@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ return new class extends Migration
         Schema::create('perizinan', function (Blueprint $table) {
             $table->increments('id_perizinan');
             $table->unsignedInteger('id_atasan')->nullable();
-            $table->string('kode_finger', 8);
+            $table->foreignIdFor(User::class, 'id_users');
             $table->enum('jenis_perizinan', ['I', 'DL', 'S', 'CS', 'Prajab', 'CT', 'CM', 'CAP', 'CH', 'CB', 'A', 'TB']);
             $table->date('tgl_ajuan');
             $table->date('tgl_absen_awal');

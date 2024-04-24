@@ -12,22 +12,14 @@ class CutiController extends Controller
 {
     public function export(Request $request)
     {
-        // $cutis['data'][] = [
-        //     'user' => Cuti::all()->nama_pegawai,
-        //     'jabatan' => $jabatan->id_jabatan,
-        //     'cutis' => $cuti->jatah_cuti,
-        // ];
-
-        $cutis = Cuti::all();
+        $cutis = Cuti::where(['is_deleted' => '0'])->get();
 
         return Excel::download(new CutiExport($cutis), 'cuti.xlsx');
     }
 
     public function index()
     {
-        $cuti = Cuti::where('is_deleted', '0')->get();
-
-        $cutis = Cuti::all();
+        $cutis = Cuti::where(['is_deleted' => '0'])->get();
         $users = User::all();
 
         return view('cuti.index', compact('cutis', 'users'));
