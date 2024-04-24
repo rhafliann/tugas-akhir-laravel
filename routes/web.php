@@ -337,6 +337,7 @@ Route::post('tanda-tangan/{id_users}/store', [TandaTanganController::class, 'sto
 
 
 Route::group(['middleware' => ['auth']], function($route){
+    $route->get('/pemagang/presensi', [PemagangController::class, 'presensi'])->name('pemagang.presensi');
     $route->resource('pemagang', PemagangController::class);
     $route->resource('waktu-kerja', WaktuKerjaController::class);
 });

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PemagangRequest;
 use App\Models\Pemagang;
+use App\Models\Presensi;
+use App\Models\WaktuKerja;
 use Illuminate\Http\Request;
 
 class PemagangController extends Controller
@@ -14,10 +16,49 @@ class PemagangController extends Controller
     public function index(Request $request)
     {
         $page = $request->input('page');
-        $pemagang = Pemagang::paginate($page);
+        $pemagang = Pemagang::all();
 
         return view('pemagang.index', [
             'data' => $pemagang
+        ]);
+    }
+
+    public function presensi(Request $request)
+    {
+        $tanggalAwal = $request->input('tanggal_awal');
+        $tanggalAkhir = $request->input('tanggal_akhir');
+        $tanggal = $request->input('tanggal');
+        $nik = $request->input('nik');
+
+        $pemagang = Pemagang::all();
+        $waktuKerja = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
+        
+        $presensi = Presensi::where('is_deleted', '0')
+            ->whereHas('profile_pemagang')
+            ->with(['profile_pemagang']);
+
+        if ($nik) {
+            $presensi = $presensi->where(['nik' => $nik]);
+        }
+
+        if(!$tanggalAwal && !$tanggalAkhir){
+            $presensi
+            ->whereMonth('tanggal', '=', date('m'))
+            ->whereYear('tanggal', '=', date('Y'));
+        }
+
+        if($tanggal){
+            $presensi->whereDate('tanggal', $tanggal);
+        }
+
+        if($tanggalAwal && $tanggalAkhir){
+            $presensi->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
+        }
+
+        return view('pemagang.presensi', [
+            'pemagang' => $pemagang,
+            'presensi' => $presensi->get(),
+            'waktuKerja' => $waktuKerja
         ]);
     }
 

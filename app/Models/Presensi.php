@@ -35,4 +35,8 @@ class Presensi extends Model
     {
         return $this->belongsTo(Profile::class, 'nik', 'nik');
     }
+
+    public function profile_pemagang(){
+        return $this->belongsTo(Pemagang::class, 'nik', 'nik');
+    }
 }

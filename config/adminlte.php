@@ -462,9 +462,17 @@ return [
         ],
         [
             'text' => 'Pemagang',
-            'url' => '/pemagang',
             'icon' => 'fas fa-user-cog',
-            'can' => '',
+            'submenu' => [
+                [
+                    'text' => 'Data Pemagang',
+                    'url' => '/pemagang',
+                ],
+                [
+                    'text' => 'Presensi Pemagang',
+                    'url' => '/pemagang/presensi',
+                ],
+            ]
         ],
         [
             'icon' => 'fas fa-box',
