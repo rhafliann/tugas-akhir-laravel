@@ -73,8 +73,8 @@
                                                 <div class="form-body">
                                                     <div class="form-group">
                                                         <div class="row">
-                                                            <input type="hidden" name="kode_finger"
-                                                                value="{{ Auth::user()->kode_finger}}">
+                                                            <input type="hidden" name="id_users"
+                                                                value="{{ Auth::user()->id_users}}">
                                                             <div class="form-group">
                                                                 <label for="tanggal">Tanggal</label>
                                                                 <input type="date" name="tanggal" id="tanggal"
@@ -104,9 +104,7 @@
                                                                 <select id="id_atasan" name="id_atasan"
                                                                     class="form-control @error('id_atasan') is-invalid @enderror">
                                                                     @foreach ($users as $us)
-                                                                    <option value="{{ $us->id_users }}" @if( $lr->
-                                                                        id_atasan == old('id_atasan', $us->id_users) )
-                                                                        selected @endif>
+                                                                    <option value="{{ $us->id_users }}" @if( $lr->id_atasan == old('id_atasan', $us->id_users) ) selected @endif>
                                                                         {{ $us->nama_pegawai }}
                                                                     </option>
                                                                     @endforeach
@@ -154,7 +152,7 @@
                     <div class="form-body">
                         <div class="form-group">
                             <div class="row">
-                                <input type="hidden" name="kode_finger" value="{{ Auth::user()->kode_finger}}">
+                                <input type="hidden" name="id_users" value="{{ Auth::user()->id_users}}">
                                 <div class="form-group">
                                     <label for="tanggal">Tanggal</label>
                                     <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal')}}"

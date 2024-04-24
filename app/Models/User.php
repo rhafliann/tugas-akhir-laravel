@@ -19,7 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'nama_pegawai',
-        'kode_finger',
+        // 'kode_finger',
         'email',
         'password',
         'level',
@@ -93,12 +93,12 @@ class User extends Authenticatable
 
     public function ajuanperizinans()
     {
-        return $this->hasMany(Perizinan::class, 'kode_finger', 'kode_finger');
+        return $this->hasMany(Perizinan::class, 'id_users', 'id_users');
     }
 
     public function lembur()
     {
-        return $this->hasMany(Lembur::class, 'kode_finger', 'kode_finger');
+        return $this->hasMany(Lembur::class, 'id_users', 'id_users');
     }
 
     public function lemburs()

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('lembur', function (Blueprint $table) {
             $table->increments('id_lembur');
-            $table->unsignedInteger('kode_finger');
-            $table->unsignedInteger('id_atasan');
+            $table->foreignIdFor(User::class, 'id_users');
+            $table->foreignIdFor(User::class, 'id_atasan');
             $table->date('tanggal');
             $table->time('jam_mulai');
             $table->time('jam_selesai');

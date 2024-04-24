@@ -106,12 +106,12 @@
                                                         <div class="row">
                                                             @can('isAdmin')
                                                             <div class="form-group">
-                                                                <label for="kode_finger">Nama Pegawai</label>
-                                                                <select id="kode_finger" name="kode_finger"
-                                                                    class="form-control @error('kode_finger') is-invalid @enderror">
+                                                                <label for="id_users">Nama Pegawai</label>
+                                                                <select id="id_users" name="id_users"
+                                                                    class="form-control @error('id_users') is-invalid @enderror">
                                                                     @foreach ($users as $u)
-                                                                    <option value="{{ $u->kode_finger }}"
-                                                                        {{ $lr->kode_finger == $u->kode_finger ? 'selected' : '' }}>
+                                                                    <option value="{{ $u->id_users }}"
+                                                                        {{ $lr->id_users == $u->id_users ? 'selected' : '' }}>
                                                                         {{ $u->nama_pegawai }}
                                                                     </option>
                                                                     @endforeach
@@ -215,16 +215,16 @@
                     <div class="form-body">
 
                         <div class="form-group">
-                            <label class="control-label col-md-6" for="kode_finger">Nama Pegawai</label>
-                            <select id="kode_finger" name="kode_finger"
-                                class="form-control @error('kode_finger') is-invalid @enderror">
+                            <label class="control-label col-md-6" for="id_users">Nama Pegawai</label>
+                            <select id="id_users" name="id_users"
+                                class="form-control @error('id_users') is-invalid @enderror">
                                 @foreach ($users as $us)
-                                <option value="{{ $us->kode_finger }}" @if( old('kode_finger')==$us->id_users
+                                <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users
                                     )selected @endif>
                                     {{ $us->nama_pegawai }}</option>
                                 @endforeach
                             </select>
-                            @error('kode_finger') <span class="textdanger">{{$message}}</span> @enderror
+                            @error('id_users') <span class="textdanger">{{$message}}</span> @enderror
                         </div>
                         <div class="form-group">
                             <label for="tanggal">Tanggal</label>

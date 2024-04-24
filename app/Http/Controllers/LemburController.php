@@ -45,7 +45,7 @@ class LemburController extends Controller
         $start_date = $request->input('start_date', $defaultStartDate);
         $end_date = $request->input('end_date', $defaultEndDate);
 
-        $lemburData = Lembur::where('kode_finger', $users->kode_finger)->whereBetween('tanggal', [$start_date, $end_date])->get();
+        $lemburData = Lembur::where('id_users', $users->id_users)->whereBetween('tanggal', [$start_date, $end_date])->get();
 
         return view('lembur.filter', [
             'lembur' => $lembur,
@@ -57,7 +57,7 @@ class LemburController extends Controller
     {
         $user = auth()->user();
         $lembur = Lembur::where('is_deleted', '0')
-            ->whereIn('kode_finger', $user->lembur->pluck('kode_finger'))
+            ->whereIn('id_users', $user->lembur->pluck('id_users'))
             ->get();
 
         return view('lembur.index', [
@@ -111,7 +111,7 @@ class LemburController extends Controller
         $lembur->save();
         
         // dd($lembur);
-        $pengguna = User::where('kode_finger', $lembur->kode_finger)->first();
+        $pengguna = User::where('id_users', $lembur->id_users)->first();
         if ($lembur->status_izin_atasan === '1') {
 
             $notifikasi = new Notifikasi();
@@ -178,7 +178,7 @@ class LemburController extends Controller
         // Validasi data yang diterima dari form
         $request->validate([
             'id_atasan' => 'required',
-            'kode_finger' => 'required',
+            'id_users' => 'required',
             'tanggal' => 'required|date',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
@@ -199,7 +199,7 @@ class LemburController extends Controller
         // Membuat objek Lembur baru dan mengisi atributnya
         $lembur = new Lembur();
 
-        $lembur->kode_finger = $request->kode_finger;
+        $lembur->id_users = $request->id_users;
         $lembur->id_atasan = $request->id_atasan;
         $lembur->tanggal = $request->input('tanggal');
         $lembur->jam_mulai = $request->input('jam_mulai');
@@ -210,7 +210,7 @@ class LemburController extends Controller
 
         $lembur->save();
 
-        $pengguna = User::where('kode_finger', $request->kode_finger)->first();
+        $pengguna = User::where('id_users', $request->id_users)->first();
 
         $notifikasi = new Notifikasi();
         $notifikasi->judul = 'Pengajuan Lembur';
@@ -272,7 +272,7 @@ class LemburController extends Controller
     {
         $rules = [
             'id_atasan' => 'required',
-            'kode_finger' => 'required',
+            'id_users' => 'required',
             'tanggal' => 'required|date',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
@@ -298,7 +298,7 @@ class LemburController extends Controller
         $diffInMinutes = $jamMulai->diffInMinutes($jamSelesai);
         $lembur->jam_lembur = floor($diffInMinutes / 60).':'.($diffInMinutes % 60);
 
-        $lembur->kode_finger = $request->kode_finger;
+        $lembur->id_users = $request->id_users;
         $lembur->id_atasan = $request->id_atasan;
         $lembur->tanggal = $request->input('tanggal');
         $lembur->jam_mulai = $request->input('jam_mulai');
@@ -309,7 +309,7 @@ class LemburController extends Controller
 
         $lembur->save();
 
-        $pengguna = User::where('kode_finger', $request->kode_finger)->first();
+        $pengguna = User::where('id_users', $request->id_users)->first();
        
 
         $notifikasi = new Notifikasi();

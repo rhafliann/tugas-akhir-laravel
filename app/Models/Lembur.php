@@ -14,7 +14,7 @@ class Lembur extends Model
     protected $table = 'lembur';
 
     protected $fillable = [
-        'kode_finger',
+        'id_users',
         'id_atasan',
         'tanggal',
         'jam_mulai',
@@ -28,7 +28,7 @@ class Lembur extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'kode_finger', 'kode_finger');
+        return $this->belongsTo(User::class, 'id_users', 'id_users');
     }
 
     public function atasan()
