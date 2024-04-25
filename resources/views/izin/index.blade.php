@@ -28,11 +28,11 @@ $kodeJenisPerizinan = [
                     <div class="col-md-12">
                         <div class="form-row">
                             <div class="col-sm-3 col-md-3 form-group">
-                                <label for="kode_finger">Nama Pegawai:</label>
-                                <select class="form-control" name="kode_finger" id="kode_finger" class="form-control">
+                                <label for="id_users">Nama Pegawai:</label>
+                                <select class="form-control" name="id_users" id="id_users" class="form-control">
                                     <option value="all">Semua Pegawai</option>
                                     @foreach ($users as $user)
-                                    <option value="{{ $user->kode_finger }}" @if(request()->input('kode_finger') == $user->kode_finger) selected @endif>
+                                    <option value="{{ $user->id_users }}" @if(request()->input('id_users') == $user->id_users) selected @endif>
                                         {{ $user->nama_pegawai }}
                                     </option>
                                     @endforeach
@@ -107,14 +107,14 @@ $kodeJenisPerizinan = [
                                 <td id={{$key+1}}>{{$ap->user->nama_pegawai}}</td>
                                 <td id={{$key+1}}>{{$ap->jenis_perizinan}}</td>
                                 <td id={{$key+1}}> {{ \Carbon\Carbon::parse($ap->tgl_ajuan)->format('d M Y') }}</td>
-                                <td id={{$key+1}}> {{ \Carbon\Carbon::parse($ap->tgl_absen_awal)->format('d M Y') }} -
-                                    {{ \Carbon\Carbon::parse($ap->tgl_absen_akhir)->format('d M Y') }}</td>
+                                <td id={{$key+1}}> 
+                                    {{ \Carbon\Carbon::parse($ap->tgl_absen_awal)->format('d M Y') }} - {{ \Carbon\Carbon::parse($ap->tgl_absen_akhir)->format('d M Y') }}
+                                </td>
                                 <td id={{$key+1}}>{{$ap->keterangan}}</td>
                                 <td id="{{ $key + 1 }}" style="text-align: center; vertical-align: middle;">
                                     @if($ap->file_perizinan)
                                     <a href="{{ asset('storage/file_perizinan/' . $ap->file_perizinan) }}" download>
-                                        <i class="fas fa-download"
-                                            style="display: inline-block; line-height: normal; vertical-align: middle;"></i>
+                                        <i class="fas fa-download" style="display: inline-block; line-height: normal; vertical-align: middle;"></i>
                                     </a>
                                     @else
                                     -
@@ -194,12 +194,11 @@ $kodeJenisPerizinan = [
                                                 @method('PUT')
                                                 @can('isAdmin')
                                                 <div class="form-group">
-                                                    <label for="kode_finger">Nama Pegawai</label>
-                                                    <select type="hidden" id="kode_finger" name="kode_finger"
-                                                        class="form-control @error('kode_finger') is-invalid @enderror">
+                                                    <label for="id_users">Nama Pegawai</label>
+                                                    <select type="hidden" id="id_users" name="id_users"
+                                                        class="form-control @error('id_users') is-invalid @enderror">
                                                         @foreach ($users as $u)
-                                                        <option value="{{ $u->kode_finger }}" {{ $ap->kode_finger ==
-                                                            $u->kode_finger ? 'selected' : '' }}>
+                                                        <option value="{{ $u->id_users }}" {{ $ap->id_users == $u->id_users ? 'selected' : '' }}>
                                                             {{ $u->nama_pegawai }}
                                                         </option>
                                                         @endforeach
@@ -215,8 +214,8 @@ $kodeJenisPerizinan = [
                                                             name="tgl_absen_awal"
                                                             value="{{$ap -> tgl_absen_awal ?? old('tgl_absen_awal')}}"
                                                             required>
-                                                        @error('tgl_absen_awal') <span
-                                                            class="textdanger">{{$message}}</span>
+                                                        @error('tgl_absen_awal') 
+                                                        <span class="textdanger">{{$message}}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -230,8 +229,8 @@ $kodeJenisPerizinan = [
                                                             name="tgl_absen_akhir"
                                                             value="{{$ap -> tgl_absen_akhir ?? old('tgl_absen_akhir')}}"
                                                             required>
-                                                        @error('tgl_absen_akhir') <span
-                                                            class="textdanger">{{$message}}</span>
+                                                        @error('tgl_absen_akhir') 
+                                                        <span class="textdanger">{{$message}}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -253,44 +252,18 @@ $kodeJenisPerizinan = [
                                                     <select
                                                         class="form-control  @error('jenis_perizinan') is-invalid @enderror"
                                                         id="jenis_perizinan" name="jenis_perizinan">
-                                                        <option value="A" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='A' ) selected @endif>Alpha</option>
-                                                        <option value="CAP" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CAP' ) selected @endif>CAP</option>
-                                                        <option value="CB" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CB' ) selected @endif>Cuti Bersama
+                                                        @foreach($kodeJenisPerizinan as $key => $item)
+                                                        <option value="{{ $key }}" @if(old('jenis_perizinan') == $key) selected @endif>
+                                                            {{$item}}
                                                         </option>
-                                                        <option value="CH" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CH' ) selected @endif>Cuti Haji</option>
-                                                        <option value="CM" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CM' ) selected @endif>Cuti Melahirkan
-                                                        </option>
-                                                        <option value="CS" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CS' ) selected @endif>Cuti Sakit</option>
-                                                        <option value="CT" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CT' ) selected @endif>Cuti Tahunan
-                                                        </option>
-                                                        <option value="DL" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='DL' ) selected @endif>Dinas Luar</option>
-                                                        <option value="I" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='I')selected
-                                                            @endif>Izin</option>
-                                                        <option value="Prajab" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='Prajab'
-                                                            )selected @endif>Prajab</option>
-                                                        <option value="S" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='S' )selected
-                                                            @endif>Sakit</option>
-                                                        <option value="TB" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='TB' )selected
-                                                            @endif>Tugas Belajar</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="keterangan" class="form-label">Keterangan</label>
-                                                    <textarea rows="4" class="form-control" id="keterangan"
-                                                        name="keterangan"
-                                                        required>{{$ap -> keterangan ?? old('keterangan')}}</textarea>
+                                                    <textarea rows="4" class="form-control" id="keterangan" name="keterangan" required>
+                                                        {{$ap -> keterangan ?? old('keterangan')}}
+                                                    </textarea>
                                                 </div>
                                                 @if($user->id_jabatan != '7')
                                                 <div class="form-group">
