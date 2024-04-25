@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('tgl_pengajuan');
             $table->enum('jenis_zoom', ['meeting' ,'webinar']);
             $table->string('nama_kegiatan');
+            $table->string('judul_zoom');
             $table->integer('jumlah_peserta');
             $table->date('tgl_pelaksanaan');
             $table->time('jam_mulai');

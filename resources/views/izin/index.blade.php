@@ -27,7 +27,7 @@ $kodeJenisPerizinan = [
                 <form action="{{ route('ajuanperizinan.index') }}" method="GET" class="row">
                     <div class="col-md-12">
                         <div class="form-row">
-                            <div class="col form-group">
+                            <div class="col-sm-3 col-md-3 form-group">
                                 <label for="kode_finger">Nama Pegawai:</label>
                                 <select class="form-control" name="kode_finger" id="kode_finger" class="form-control">
                                     <option value="all">Semua Pegawai</option>
@@ -39,7 +39,7 @@ $kodeJenisPerizinan = [
                                 </select>
                             </div>
 
-                            <div class="col form-group">
+                            <div class="col-sm-3 col-md-3 form-group">
                                 <label for="jenis_perizinan">Jenis Perizinan:</label>&nbsp;&nbsp;
                                 <select class="form-control" id="jenis_perizinan" name="jenis_perizinan">
                                     <option value="all">Semua Jenis Perizinan</option>
@@ -51,16 +51,16 @@ $kodeJenisPerizinan = [
                                 </select>
                             </div>
 
-                            <div class="col-2 form-group">
+                            <div class="col-sm-3 col-md-2 form-group">
                                 <label for="tgl_absen_awal" class="my-label mr-2">Tanggal Awal: </label>
                                 <input type="date" id="tgl_absen_awal" name="tgl_absen_awal" required class="form-control" value="{{request()->input('tgl_absen_awal')}}">&nbsp;&nbsp;
                             </div>
 
-                            <div class="col-2 form-group">
+                            <div class="col-sm-3 col-md-2 form-group">
                                 <label for="tgl_absen_akhir" class="form-label">Tanggal Akhir: </label>&nbsp;&nbsp;
                                 <input type="date" id="tgl_absen_akhir" name="tgl_absen_akhir" required class="form-control" value="{{request()->input('tgl_absen_akhir')}}">&nbsp;&nbsp;&nbsp;
                             </div>
-                            <div class="col">
+                            <div class="col-sm-12 col-md-2">
                                 <br>
                                 <button type="submit" class="btn btn-primary my-2"> Tampilkan</button>&nbsp;&nbsp;
                             </div>

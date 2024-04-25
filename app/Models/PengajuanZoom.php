@@ -28,6 +28,7 @@ class PengajuanZoom extends Model
         'akun_zoom',
         'status',      
         'is_deleted',
+        'judul_zoom'
     ];
     public function users()
     {

@@ -166,22 +166,25 @@
 
                         <div class="form-group">
                             <label for="tgl_pelaksanaan" class='form-label'>Waktu Pelaksanaan (WIB)</label>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <input type="time"
-                                        class="form-control @error('jam_mulai') is-invalid @enderror custom-time-input mr-2"
-                                        id="jam_mulai" name="jam_mulai" value="{{ old('jam_mulai')}}">
-                                    @error('jam_mulai') <span class="text-danger">{{$message}}</span> @enderror
-                                    <small><b>s/d</b></small>
+                            <div class="form-row w-50">
+                                <div class="col-md-5">
+                                    <input type="time" class="form-control @error('jam_mulai') is-invalid @enderror custom-time-input mr-2" id="jam_mulai" name="jam_mulai" value="{{ old('jam_mulai')}}">
+                                    @error('jam_mulai') 
+                                        <span class="text-danger">{{$message}}</span> 
+                                    @enderror
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="time"
-                                        class="form-control @error('jam_selesai') is-invalid @enderror custom-time-input ml-2"
-                                        id="jam_selesai" name="jam_selesai" value="{{ old('jam_selesai')}}">
-                                    @error('jam_selesai') <span class="text-danger">{{$message}}</span> @enderror
+                                <div class="col-md-1 text-center">
+                                    <small class="mt-2"><b>s/d</b></small>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="time" class="form-control @error('jam_selesai') is-invalid @enderror custom-time-input ml-2" id="jam_selesai" name="jam_selesai" value="{{ old('jam_selesai')}}">
+                                    @error('jam_selesai') 
+                                        <span class="text-danger">{{$message}}</span> 
+                                    @enderror
                                 </div>
                             </div>
                         </div>
+                        
 
                         <div class="form-group">
                             <label for="keterangan_pemohon" class='form-label'>Keterangan Tambahan</label>

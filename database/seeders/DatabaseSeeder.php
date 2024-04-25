@@ -119,7 +119,7 @@ class DatabaseSeeder extends Seeder
             'level' => 'staf',
             'id_jabatan' => '4',
             'is_deleted' => '0',
-            'kode_finger' => '82121',
+            // 'kode_finger' => '82121',
         ]);
 
         User::create([
@@ -128,7 +128,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'admin',
-            'kode_finger' => '989898',
+            // 'kode_finger' => '989898',
             'id_jabatan' => '1',
             'is_deleted' => '0',
         ]);
@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'kadiv',
-            'kode_finger' => '989898',
+            // 'kode_finger' => '989898',
             'id_jabatan' => '2',
             'is_deleted' => '0',
         ]);
@@ -150,7 +150,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'kadiv',
-            'kode_finger' => '989898',
+            // 'kode_finger' => '989898',
             'id_jabatan' => '8',
             'is_deleted' => '0',
         ]);
@@ -161,7 +161,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'kadiv',
-            'kode_finger' => '989390',
+            // 'kode_finger' => '989390',
             'id_jabatan' => '9',
             'is_deleted' => '0',
         ]);
@@ -172,7 +172,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'bod',
-            'kode_finger' => '919898',
+            // 'kode_finger' => '919898',
             'id_jabatan' => '6',
             'is_deleted' => '0',
         ]);
@@ -183,7 +183,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'ppk',
-            'kode_finger' => '983898',
+            // 'kode_finger' => '983898',
             'id_jabatan' => '6',
             'is_deleted' => '0',
 
@@ -195,7 +195,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'staf',
-            'kode_finger' => '545621',
+            // 'kode_finger' => '545621',
             'id_jabatan' => '4',
             'is_deleted' => '0',
         ]);
@@ -206,7 +206,7 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
             '_password_' => '12345678',
             'level' => 'bod',
-            'kode_finger' => '784028',
+            // 'kode_finger' => '784028',
             'id_jabatan' => '7',
             'is_deleted' => '0',
         ]);
