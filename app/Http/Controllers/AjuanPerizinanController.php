@@ -6,6 +6,7 @@ use App\Models\Cuti;
 use App\Models\GeneralSetting;
 use App\Models\Notifikasi;
 use App\Models\Perizinan;
+use App\Models\Profile;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Presensi;
@@ -232,6 +233,9 @@ class AjuanPerizinanController extends Controller
         //
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id_perizinan)
     {
         $rules = [];
@@ -281,9 +285,7 @@ class AjuanPerizinanController extends Controller
             }
         }
         
-        
         $validated = $request->validate($rules);
-        
         
         if($validated){
             $ajuanPerizinan->id_atasan = $request->id_atasan;
@@ -307,6 +309,17 @@ class AjuanPerizinanController extends Controller
                 $ajuanPerizinan->alasan_ditolak_ppk = $request->alasan_ditolak_ppk;
             }
 
+            if ($request->hasFile('file_perizinan')) {
+                // Menghapus file file_perizinan sebelumnya
+                if ($ajuanPerizinan->file_perizinan && Storage::disk('public')->exists($ajuanPerizinan->file_perizinan)) {
+                    Storage::disk('public')->delete('file_perizinan/'.$ajuanPerizinan->file_perizinan);
+                }
+                // // Upload file file_perizinan baru
+                $file = $request->file('file_perizinan');
+                $namafile_perizinan = $file->storeAs('file_perizinan', time() . $file->getClientOriginalExtension(), 'public');
+                $ajuanPerizinan->file_perizinan = $namafile_perizinan;
+            }
+
             if ($request->jenis_perizinan === 'CT'){
                 $izinCutiUser = Cuti::where(['id_users' => $request->id_users])->first();
                 
@@ -314,96 +327,31 @@ class AjuanPerizinanController extends Controller
                     return redirect()->back()->with('error', 'Anda belum memiliki cuti tahunan.');
                 }
 
-                if ($izinCutiUser) {
-                    if ($izinCutiUser->cuti == null) {
-                        return redirect()->back()->with('error', 'Anda belum memiliki cuti tahunan.');
-                    }
-                    $jumlahCuti = $ajuanperizinan->jumlah_hari_pengajuan;
-                    $jatahCutiTahunan = $perizinanUser->cuti->jatah_cuti;
-                    if ($jatahCutiTahunan < $jumlahCuti) {
-                        return redirect()->back()->with('error', 'Anda tidak memiliki jatah cuti tahunan yang cukup.');
-                    }
-                    if ($perizinanUser->cuti) {
-                        $perizinanUser->cuti->jatah_cuti -= $jumlahCuti;
-                        if ($perizinanUser->cuti->save()) {
+                $jumlahCuti = $ajuanPerizinan->jumlah_hari_pengajuan;
+                $jatahCutiTahunan = $izinCutiUser->jatah_cuti;
 
-                        } else {
-                            return redirect()->back()->with('error', 'Gagal mengurangi jatah cuti pengguna.');
-                        }
-                    }
-            }
-        }
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id_perizinan)
-    {
-        
-        if (auth()->user()->level === 'bod' || auth()->user()->level === 'kadiv') {
-            $rules = [
-                'status_izin_atasan' => 'required',
-            ];
-
-            $ajuanperizinan = Perizinan::find($id_perizinan);
-            
-            $request->validate($rules);
-            $ajuanperizinan->status_izin_atasan = $request->status_izin_atasan;
-            
-
-            if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
-                $ajuanperizinan->alasan_ditolak_atasan = $request->alasan_ditolak_atasan;
-            } else {
-                $statusPPK = $ajuanperizinan->status_izin_ppk;
-                $CutiTahunan = $ajuanperizinan->jenis_perizinan;
-
-                if ($statusPPK === '1' && $CutiTahunan === 'CT') {
-                    $id_users = $ajuanperizinan->id_users;
-                    $perizinanUser = User::with('cuti')->where('id_users', $id_users)->first();
-
-                    if ($perizinanUser) {
-                        if ($perizinanUser->cuti == null) {
-                            return redirect()->back()->with('error', 'Anda belum memiliki cuti tahunan.');
-                        }
-
-                        $jumlahCuti = $ajuanperizinan->jumlah_hari_pengajuan;
-                        $jatahCutiTahunan = $perizinanUser->cuti->jatah_cuti;
-
-                        if ($jatahCutiTahunan < $jumlahCuti) {
-                            return redirect()->back()->with('error', 'Anda tidak memiliki jatah cuti tahunan yang cukup.');
-                        }
-
-                        $perizinanUser->cuti->jatah_cuti -= $jumlahCuti;
-
-                        if ($perizinanUser->cuti->save()) {
-                            // Logika tambahan setelah mengurangkan jatah cuti.
-                        } else {
-                            return redirect()->back()->with('error', 'Gagal mengurangi jatah cuti pengguna.');
-                        }
-
-                    } else {
-                        return redirect()->back()->with('error', 'Pengguna dengan kode finger tersebut tidak ditemukan.');
-                    }
+                if ($jatahCutiTahunan < $jumlahCuti) {
+                    return redirect()->back()->with('error', 'Anda tidak memiliki jatah cuti tahunan yang cukup.');
                 }
 
+                if($izinCutiUser->jatah_cuti >= $jumlahCuti){
+                    $izinCutiUser->jatah_cuti -= $jumlahCuti;
+                    $izinCutiUser->save();
+                } else {
+                    return redirect()->back()->with('error', 'Gagal mengurangi jatah cuti pengguna.');
+                }
             }
-            // dd($request);
-            // dd($statusPPK, $request->jenis_perizinan);
-            $ajuanperizinan->save();
 
-            $pengguna = User::where('id_users', $ajuanperizinan->id_users)->first();
-            if($ajuanperizinan->jenis_perizinan === 'I') {
-                if ($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === null) {
-                    
-                    $tanggalAwalIzin = Carbon::parse($ajuanperizinan->tgl_absen_awal);
-                    $tanggalAkhirIzin = Carbon::parse($ajuanperizinan->tgl_absen_akhir);
-                  
-                    // Jenis perizinan
-                    $jenisPerizinan = $ajuanperizinan->jenis_perizinan;
-                    $pegawai = $ajuanperizinan->id_users;
-    
+            // save presensi ketika disetujui
+            if ($ajuanPerizinan->status_izin_atasan === '1'){
+
+                $tanggalAwalIzin = Carbon::parse($ajuanPerizinan->tgl_absen_awal);
+                $tanggalAkhirIzin = Carbon::parse($ajuanPerizinan->tgl_absen_akhir);
+                // Jenis perizinan
+                $jenisPerizinan = $ajuanPerizinan->jenis_perizinan;
+                $pegawai = Profile::where(['id_users' => $ajuanPerizinan->id_users])->first();
+
+                if($pegawai){
                     // Perulangan untuk mengisi data presensi harian
                     while ($tanggalAwalIzin <= $tanggalAkhirIzin) {
                         if ($tanggalAwalIzin->isWeekend()) {
@@ -411,768 +359,79 @@ class AjuanPerizinanController extends Controller
                             $tanggalAwalIzin->addDay();
                             continue;
                         }
-                        
                         // Periksa apakah tanggal izin harian sudah ada dalam tabel presensi
                         $tanggalPresensi = $tanggalAwalIzin->toDateString();
-    
-                        $presensiHarian = Presensi::where([
-                            'nik' => $pegawai,
+        
+                        $payloadPresensi = [
+                            'nik' => $pegawai->nik,
                             'tanggal' => $tanggalPresensi,
-                            'jenis_perizinan' => $jenisPerizinan
-                        ])->first();
-    
+                            'jenis_perizinan' => $jenisPerizinan // Simpan jenis perizinan di sini
+                        ];
+        
+                        $presensiHarian = Presensi::where($payloadPresensi)->first();
+        
                         if (!$presensiHarian) {
                             // Jika tidak ada presensi untuk tanggal ini, buat entri presensi baru
-                            Presensi::create([
-                                'nik' => $pegawai,
-                                'tanggal' => $tanggalPresensi,
-                                'jenis_perizinan' => $jenisPerizinan, // Simpan jenis perizinan di sini
-                            ]);
-                        } else {
-                            // Jika sudah ada entri presensi untuk tanggal ini, Anda dapat memperbarui jenis perizinan atau status presensinya sesuai kebutuhan
-                            $presensiHarian->jenis_perizinan = $jenisPerizinan;
-                            $presensiHarian->save();
+                            $presensiHarian = Presensi::create($payloadPresensi);
                         }
-                        
-    
+        
+                        $presensiHarian->jenis_perizinan = $jenisPerizinan; // Simpan jenis perizinan di sini
+                        $presensiHarian->save();    
                         // Lanjutkan ke tanggal berikutnya
                         $tanggalAwalIzin->addDay();
                     }
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-
-                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-
                 }
 
             }
-            if ($ajuanperizinan->jenis_perizinan != 'I') {
-                if ($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === '1') {
-                    
-                    $tanggalAwalIzin = Carbon::parse($ajuanperizinan->tgl_absen_awal);
-                    $tanggalAkhirIzin = Carbon::parse($ajuanperizinan->tgl_absen_akhir);
-                  
-                    // Jenis perizinan
-                    $jenisPerizinan = $ajuanperizinan->jenis_perizinan;
-                    $pegawai = $ajuanperizinan ->kode_finger;
-    
-                    // Perulangan untuk mengisi data presensi harian
-                    while ($tanggalAwalIzin <= $tanggalAkhirIzin) {
-                        if ($tanggalAwalIzin->isWeekend()) {
-                            // Lewati hari Sabtu dan Minggu
-                            $tanggalAwalIzin->addDay();
-                            continue;
-                        }
 
-                        $tanggalPresensi = $tanggalAwalIzin->toDateString();
-    
-                        $presensiHarian = Presensi::where([
-                            'kode_finger' => $pegawai,
-                            'tanggal' => $tanggalPresensi,
-                            'jenis_perizinan' => $jenisPerizinan
-                        ])->first();
-    
-                        if (!$presensiHarian) {
-                            // Jika tidak ada presensi untuk tanggal ini, buat entri presensi baru
-                            Presensi::create([
-                                'kode_finger' => $pegawai,
-                                'tanggal' => $tanggalPresensi,
-                                'jenis_perizinan' => $jenisPerizinan, // Simpan jenis perizinan di sini
-                            ]);
-                        } else {
-                            // Jika sudah ada entri presensi untuk tanggal ini, Anda dapat memperbarui jenis perizinan atau status presensinya sesuai kebutuhan
-                            $presensiHarian->jenis_perizinan = $jenisPerizinan;
-                            $presensiHarian->save();
-                        }
-                        
-    
-                        // Lanjutkan ke tanggal berikutnya
-                        $tanggalAwalIzin->addDay();
-                    }
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
+            if($ajuanPerizinan->jenis_perizinan === 'I') {
 
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }elseif($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
+                $notifikasi = new Notifikasi();
+                $notifikasi->judul = 'Persetujuan Izin';        
+                $notifikasi->is_dibaca = 'tidak_dibaca';
+                $notifikasi->send_email = 'yes';
+                $notifikasi->label = 'info';
+                $notifikasi->link = '/perizinan';
+                $notifikasi->id_users = $ajuanPerizinan->id_users;
+
+                if($ajuanPerizinan->status_izin_atasan === null && $ajuanPerizinan->status_izin_ppk === null){
+                    $notifikasi->pesan = 'Pengajuan perizinan anda belum mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
+                }
+
+                if ($ajuanPerizinan->status_izin_atasan === '1' && $ajuanPerizinan->status_izin_ppk === null) {
+                    // Kondisi pesan notifikasi yang disetujui oleh atasan
                     $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                
-                }elseif($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === '1') {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                    
-                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
                 }
+
+                if($ajuanPerizinan->status_izin_atasan === null && $ajuanPerizinan->status_izin_ppk === '1'){
+                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
+                }
+
+                if($ajuanPerizinan->status_izin_atasan === null && $ajuanPerizinan->status_izin_ppk === '0'){
+                    $notifikasi->pesan = 'Pengajuan perizinan anda ditolak oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
+                }
+
+                if($ajuanPerizinan->status_izin_atasan === '0' && $ajuanPerizinan->status_izin_ppk === null){
+                    $notifikasi->pesan = 'Pengajuan perizinan anda ditolak oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
+                }
+
+                if($ajuanPerizinan->status_izin_atasan === '0' && $ajuanPerizinan->status_izin_ppk === '0'){
+                    $notifikasi->pesan = 'Pengajuan perizinan anda ditolak oleh atasan dan ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
+                }
+
+                if($ajuanPerizinan->status_izin_atasan === '1' && $ajuanPerizinan->status_izin_ppk === '1'){
+                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh atasan dan ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
+                }
+                
+                $notifikasi->save();
             }
-            
-      
-            
+
+            $ajuanPerizinan->save();
 
             return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-        } elseif (auth()->user()->level === UserLevel::PPK) {
-            $ajuanperizinan = Perizinan::find($id_perizinan);
-
-            $rules = [
-                'status_izin_ppk' => 'required',
-            ];
-
-            if ($ajuanperizinan) {
-                if ($ajuanperizinan->id_atasan === auth()->user()->id_users) {
-                    $rules['status_izin_atasan'] = 'required';
-                }
-            }
-
-            $request->validate($rules);
-
-            $ajuanperizinan->status_izin_ppk = $request->status_izin_ppk;
-            if ($ajuanperizinan) {
-                if ($ajuanperizinan->id_atasan === auth()->user()->id_users) {
-                    $ajuanperizinan->status_izin_atasan = $request->status_izin_atasan;
-                }
-            }
-
-            $statusAtasan = $ajuanperizinan->status_izin_atasan;
-
-            if ($request->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                $ajuanperizinan->alasan_ditolak_ppk = $request->alasan_ditolak_ppk;
-            }
-            if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
-                $ajuanperizinan->alasan_ditolak_atasan = $request->alasan_ditolak_atasan;
-            }
-
-            if ($request->status_izin_ppk === '1' || $request->status_izin_atasan === '1') {
-                $statusAtasan = $ajuanperizinan->status_izin_atasan;
-                $CutiTahunan = $ajuanperizinan->jenis_perizinan;
-
-                if ($statusAtasan === '1' && $CutiTahunan === 'CT') {
-                    $kodeFinger = $ajuanperizinan->kode_finger;
-                    $perizinanUser = User::with('cuti')->where('kode_finger', $kodeFinger)->first();
-
-                    if ($perizinanUser) {
-                        $jumlahCuti = $ajuanperizinan->jumlah_hari_pengajuan;
-                        $jatahCutiTahunan = $perizinanUser->cuti->jatah_cuti;
-                        if ($jatahCutiTahunan < $jumlahCuti) {
-                            return redirect()->back()->with('error', 'Anda tidak memiliki jatah cuti tahunan yang cukup.');
-                        }
-                        if ($perizinanUser->cuti) {
-                            $perizinanUser->cuti->jatah_cuti -= $jumlahCuti;
-                            if ($perizinanUser->cuti->save()) {
-
-                            } else {
-                                return redirect()->back()->with('error', 'Gagal mengurangi jatah cuti pengguna.');
-                            }
-                        }
-                    } else {
-                        return redirect()->back()->with('error', 'Pengguna dengan kode finger tersebut tidak ditemukan.');
-                    }
-
-                }
-            }
-            $ajuanperizinan->status_izin_atasan = $statusAtasan;
-            // dd($request);
-
-            $ajuanperizinan->save();
-            $pengguna = User::where('kode_finger', $ajuanperizinan->kode_finger)->first();
-            if($ajuanperizinan->jenis_perizinan === 'I') {
-                if ($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === null) {
-                    
-                    $tanggalAwalIzin = Carbon::parse($ajuanperizinan->tgl_absen_awal);
-                    $tanggalAkhirIzin = Carbon::parse($ajuanperizinan->tgl_absen_akhir);
-                  
-                    // Jenis perizinan
-                    $jenisPerizinan = $ajuanperizinan->jenis_perizinan;
-                    $pegawai = $ajuanperizinan ->kode_finger;
-    
-                    // Perulangan untuk mengisi data presensi harian
-                    while ($tanggalAwalIzin <= $tanggalAkhirIzin) {
-                        if ($tanggalAwalIzin->isWeekend()) {
-                            // Lewati hari Sabtu dan Minggu
-                            $tanggalAwalIzin->addDay();
-                            continue;
-                        }
-                        
-                        // Periksa apakah tanggal izin harian sudah ada dalam tabel presensi
-                        $tanggalPresensi = $tanggalAwalIzin->toDateString();
-    
-                        $presensiHarian = Presensi::where([
-                            'kode_finger' => $pegawai,
-                            'tanggal' => $tanggalPresensi,
-                            'jenis_perizinan' => $jenisPerizinan
-                        ])->first();
-    
-                        if (!$presensiHarian) {
-                            // Jika tidak ada presensi untuk tanggal ini, buat entri presensi baru
-                            Presensi::create([
-                                'kode_finger' => $pegawai,
-                                'tanggal' => $tanggalPresensi,
-                                'jenis_perizinan' => $jenisPerizinan, // Simpan jenis perizinan di sini
-                            ]);
-                        } else {
-                            // Jika sudah ada entri presensi untuk tanggal ini, Anda dapat memperbarui jenis perizinan atau status presensinya sesuai kebutuhan
-                            $presensiHarian->jenis_perizinan = $jenisPerizinan;
-                            $presensiHarian->save();
-                        }
-                        
-    
-                        // Lanjutkan ke tanggal berikutnya
-                        $tanggalAwalIzin->addDay();
-                    }
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-
-                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-
-                }
-
-            }
-            if ($ajuanperizinan->jenis_perizinan != 'I') {
-                if ($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === '1') {
-                    
-                    $tanggalAwalIzin = Carbon::parse($ajuanperizinan->tgl_absen_awal);
-                    $tanggalAkhirIzin = Carbon::parse($ajuanperizinan->tgl_absen_akhir);
-                  
-                    // Jenis perizinan
-                    $jenisPerizinan = $ajuanperizinan->jenis_perizinan;
-                    $pegawai = $ajuanperizinan ->kode_finger;
-    
-                    // Perulangan untuk mengisi data presensi harian
-                    while ($tanggalAwalIzin <= $tanggalAkhirIzin) {
-
-                        if ($tanggalAwalIzin->isWeekend()) {
-                            // Lewati hari Sabtu dan Minggu
-                            $tanggalAwalIzin->addDay();
-                            continue;
-                        }
-                        
-                        // Periksa apakah tanggal izin harian sudah ada dalam tabel presensi
-                        $tanggalPresensi = $tanggalAwalIzin->toDateString();
-    
-                        $presensiHarian = Presensi::where([
-                            'kode_finger' => $pegawai,
-                            'tanggal' => $tanggalPresensi,
-                            'jenis_perizinan' => $jenisPerizinan
-                        ])->first();
-    
-                        if (!$presensiHarian) {
-                            // Jika tidak ada presensi untuk tanggal ini, buat entri presensi baru
-                            Presensi::create([
-                                'kode_finger' => $pegawai,
-                                'tanggal' => $tanggalPresensi,
-                                'jenis_perizinan' => $jenisPerizinan, // Simpan jenis perizinan di sini
-                            ]);
-                        } else {
-                            // Jika sudah ada entri presensi untuk tanggal ini, Anda dapat memperbarui jenis perizinan atau status presensinya sesuai kebutuhan
-                            $presensiHarian->jenis_perizinan = $jenisPerizinan;
-                            $presensiHarian->save();
-                        }
-                        
-    
-                        // Lanjutkan ke tanggal berikutnya
-                        $tanggalAwalIzin->addDay();
-                    }
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }elseif($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                
-                }elseif($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === '1') {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                    
-                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }
-            }
-
-            return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-        } else {
-            $rules = [
-                'kode_finger' => 'required',
-                'id_atasan' => 'required',
-                'jenis_perizinan' => 'required',
-                // 'tgl_ajuan' => 'required',
-                'tgl_absen_awal' => 'required',
-                'tgl_absen_akhir' => 'required',
-                'keterangan' => 'required',
-                // 'status_izin_atasan' => 'required',
-                // 'status_izin_ppk' => 'required',
-            ];
-
-            if ($request->file('file_perizinan')) {
-                $rules['file_perizinan'] = 'required|mimes:pdf,doc,docx,png,jpg,jpeg';
-            }
-
-            if (isset($request->status_izin_atasan)) {
-                if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
-                    $rules['alasan_ditolak_atasan'] = 'required';
-                }
-            }
-
-            if (isset($request->status_izin_ppk)) {
-                if ($request->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $rules['alasan_ditolak_ppk'] = 'required';
-                }
-            }
-
-            $request->validate($rules);
-
-            $ajuanperizinan = Perizinan::find($id_perizinan);
-
-            dd($request->all(), $ajuanperizinan);
-
-            if (! $ajuanperizinan) {
-                return redirect()->route('ajuanperizinan.index')->with('error', 'Data tidak ditemukan');
-            }
-            $ajuanperizinan->id_atasan = $request->id_atasan;
-            $ajuanperizinan->kode_finger = $request->kode_finger;
-            $ajuanperizinan->jenis_perizinan = $request->jenis_perizinan;
-            $ajuanperizinan->tgl_absen_awal = $request->tgl_absen_awal;
-            $ajuanperizinan->tgl_absen_akhir = $request->tgl_absen_akhir;
-            $ajuanperizinan->keterangan = $request->keterangan;
-
-            if (isset($request->status_izin_atasan)) {
-                $ajuanperizinan->status_izin_atasan = $request->status_izin_atasan;
-            }
-            if (isset($request->status_izin_ppk)) {
-                $ajuanperizinan->status_izin_ppk = $request->status_izin_ppk;
-            }
-
-            if (isset($request->status_izin_atasan)) {
-                if ($request->status_izin_atasan === PersetujuanIzin::Ditolak) {
-                    $ajuanperizinan->alasan_ditolak_atasan = $request->alasan_ditolak_atasan;
-                }
-            }
-            if (isset($request->status_izin_ppk)) {
-                if ($request->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $ajuanperizinan->alasan_ditolak_ppk = $request->alasan_ditolak_ppk;
-                }
-            }
-
-            if ($request->status_izin_ppk && $request->status_izin_atasan) {
-                if ($request->jenis_perizinan === 'CT') {
-                    $perizinanUser = User::with('cuti')->where('kode_finger', $request->kode_finger)->first();
-
-                    if ($perizinanUser) {
-                        if ($perizinanUser->cuti == null) {
-                            return redirect()->back()->with('error', 'Anda belum memiliki cuti tahunan.');
-                        }
-                        $jumlahCuti = $ajuanperizinan->jumlah_hari_pengajuan;
-                        $jatahCutiTahunan = $perizinanUser->cuti->jatah_cuti;
-                        if ($jatahCutiTahunan < $jumlahCuti) {
-                            return redirect()->back()->with('error', 'Anda tidak memiliki jatah cuti tahunan yang cukup.');
-                        }
-                        if ($perizinanUser->cuti) {
-                            $perizinanUser->cuti->jatah_cuti -= $jumlahCuti;
-                            if ($perizinanUser->cuti->save()) {
-
-                            } else {
-                                return redirect()->back()->with('error', 'Gagal mengurangi jatah cuti pengguna.');
-                            }
-                        }
-                    } else {
-                        return redirect()->back()->with('error', 'Pengguna dengan kode finger tersebut tidak ditemukan.');
-                    }
-                }
-
-            }
-            // dd($request, $ajuanperizinan);
-
-            if ($request->hasFile('file_perizinan')) {
-                // Menghapus file file_perizinan sebelumnya
-                if ($ajuanperizinan->file_perizinan) {
-                    Storage::disk('public')->delete('file_perizinan/'.$ajuanperizinan->file_perizinan);
-                }
-
-                // Upload file file_perizinan baru
-                $file_perizinan = $request->file('file_perizinan');
-                $namafile_perizinan = time().'.'.$file_perizinan->getClientOriginalExtension();
-                Storage::disk('public')->put('file_perizinan/'.$namafile_perizinan, file_get_contents($file_perizinan));
-                $ajuanperizinan->file_perizinan = $namafile_perizinan;
-            }
-
-            $request->validate($rules);
-
-            $ajuanperizinan->save();
-
-            $pengguna = User::where('kode_finger', $request->kode_finger)->first();
-            if($ajuanperizinan->jenis_perizinan === 'I') {
-                if ($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === null) {
-                    
-                    $tanggalAwalIzin = Carbon::parse($ajuanperizinan->tgl_absen_awal);
-                    $tanggalAkhirIzin = Carbon::parse($ajuanperizinan->tgl_absen_akhir);
-                  
-                    // Jenis perizinan
-                    $jenisPerizinan = $ajuanperizinan->jenis_perizinan;
-                    $pegawai = $ajuanperizinan ->kode_finger;
-    
-                    // Perulangan untuk mengisi data presensi harian
-                    while ($tanggalAwalIzin <= $tanggalAkhirIzin) {
-                        if ($tanggalAwalIzin->isWeekend()) {
-                            // Lewati hari Sabtu dan Minggu
-                            $tanggalAwalIzin->addDay();
-                            continue;
-                        }
-                        
-                        // Periksa apakah tanggal izin harian sudah ada dalam tabel presensi
-                        $tanggalPresensi = $tanggalAwalIzin->toDateString();
-    
-                        $presensiHarian = Presensi::where([
-                            'kode_finger' => $pegawai,
-                            'tanggal' => $tanggalPresensi,
-                            'jenis_perizinan' => $jenisPerizinan
-                        ])->first();
-    
-                        if (!$presensiHarian) {
-                            // Jika tidak ada presensi untuk tanggal ini, buat entri presensi baru
-                            Presensi::create([
-                                'kode_finger' => $pegawai,
-                                'tanggal' => $tanggalPresensi,
-                                'jenis_perizinan' => $jenisPerizinan, // Simpan jenis perizinan di sini
-                            ]);
-                        } else {
-                            // Jika sudah ada entri presensi untuk tanggal ini, Anda dapat memperbarui jenis perizinan atau status presensinya sesuai kebutuhan
-                            $presensiHarian->jenis_perizinan = $jenisPerizinan;
-                            $presensiHarian->save();
-                        }
-                        
-    
-                        // Lanjutkan ke tanggal berikutnya
-                        $tanggalAwalIzin->addDay();
-                    }
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-
-                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-
-                }
-
-            }
-            if ($ajuanperizinan->jenis_perizinan != 'I') {
-                if ($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === '1') {
-                
-                        $tanggalAwalIzin = Carbon::parse($ajuanperizinan->tgl_absen_awal);
-                        $tanggalAkhirIzin = Carbon::parse($ajuanperizinan->tgl_absen_akhir);
-                      
-                        // Jenis perizinan
-                        $jenisPerizinan = $ajuanperizinan->jenis_perizinan;
-                        $pegawai = $ajuanperizinan ->kode_finger;
-        
-                        // Perulangan untuk mengisi data presensi harian
-                        while ($tanggalAwalIzin <= $tanggalAkhirIzin) {
-                            if ($tanggalAwalIzin->isWeekend()) {
-                                // Lewati hari Sabtu dan Minggu
-                                $tanggalAwalIzin->addDay();
-                                continue;
-                            }
-                            
-                            // Periksa apakah tanggal izin harian sudah ada dalam tabel presensi
-                            $tanggalPresensi = $tanggalAwalIzin->toDateString();
-        
-                            $presensiHarian = Presensi::where([
-                                'kode_finger' => $pegawai,
-                                'tanggal' => $tanggalPresensi,
-                                'jenis_perizinan' => $jenisPerizinan
-                            ])->first();
-        
-                            if (!$presensiHarian) {
-                                // Jika tidak ada presensi untuk tanggal ini, buat entri presensi baru
-                                Presensi::create([
-                                    'kode_finger' => $pegawai,
-                                    'tanggal' => $tanggalPresensi,
-                                    'jenis_perizinan' => $jenisPerizinan, // Simpan jenis perizinan di sini
-                                ]);
-                            } else {
-                                // Jika sudah ada entri presensi untuk tanggal ini, Anda dapat memperbarui jenis perizinan atau status presensinya sesuai kebutuhan
-                                $presensiHarian->jenis_perizinan = $jenisPerizinan;
-                                $presensiHarian->save();
-                            }
-                            
-        
-                            // Lanjutkan ke tanggal berikutnya
-                            $tanggalAwalIzin->addDay();
-                        }
-                    
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }elseif($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                
-                }elseif($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh atasan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === '1') {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                
-                }elseif($ajuanperizinan->status_izin_atasan === null && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan oleh ppk. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                    
-                } elseif($ajuanperizinan->status_izin_atasan === '1' && $ajuanperizinan->status_izin_ppk === null) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda sudah berhasil disetujui oleh kadiv. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                    
-                } elseif ($ajuanperizinan->status_izin_atasan === PersetujuanIzin::Ditolak && $ajuanperizinan->status_izin_ppk === PersetujuanIzin::Ditolak) {
-                    $notifikasi = new Notifikasi();
-                    $notifikasi->judul = 'Persetujuan Izin ';
-                    $notifikasi->pesan = 'Pengajuan perizinan anda gagal mendapatkan persetujuan. Klik link di bawah ini untuk melihat info lebih lanjut.';
-                    $notifikasi->is_dibaca = 'tidak_dibaca';
-                    $notifikasi->send_email = 'yes';
-                    $notifikasi->label = 'info';
-                    $notifikasi->link = '/perizinan';
-                    $notifikasi->id_users = $pengguna->id_users;
-                    $notifikasi->save();
-
-                    return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-                }
-            }
-            // $pengguna = User::where('kode_finger', $request->kode_finger)->first();
-        
-            
-
         }
 
-        return redirect()->route('ajuanperizinan.index')->with('success_message', 'Data telah tersimpan');
-
+        return redirect()->route('ajuanperizinan.index')->with('error_message', 'Gagal Menyimpan data');
     }
 
     /**
