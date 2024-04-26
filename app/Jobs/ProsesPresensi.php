@@ -57,26 +57,30 @@ class ProsesPresensi implements ShouldQueue
 
         $payload = [];
 
-        $scanTime = Carbon::parse($logFingerPrint->scan_time);
-        $jamMasuk = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_masuk);
-        $jamPulang = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_pulang);
-
-        if($scanTime->greaterThan($jam10pagi))
-        {
-            $payload['scan_pulang'] = $scanTime->toTimeString();
-            $payload['kehadiran'] =  Carbon::parse($presensi->scan_masuk)->diff($scanTime)->format('%H:%I:%S');
-
-            if($scanTime->lessThan($jamPulang)){
-                $payload['pulang_cepat'] = $jamPulang->diff($scanTime)->format('%H:%I:%S');
+        if($logFingerPrint){
+            
+            $scanTime = Carbon::parse($logFingerPrint->scan_time);
+            $jamMasuk = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_masuk);
+            $jamPulang = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_pulang);
+    
+            if($scanTime->greaterThan($jam10pagi))
+            {
+                $payload['scan_pulang'] = $scanTime->toTimeString();
+                $payload['kehadiran'] =  Carbon::parse($presensi->scan_masuk)->diff($scanTime)->format('%H:%I:%S');
+    
+                if($scanTime->lessThan($jamPulang)){
+                    $payload['pulang_cepat'] = $jamPulang->diff($scanTime)->format('%H:%I:%S');
+                }
+            } else {
+                $payload['scan_masuk'] = $scanTime->toTimeString();
+    
+                if($scanTime->greaterThan($jamMasuk)){
+                    $payload['terlambat'] = $scanTime->diff($jamMasuk)->format('%H:%I:%S');
+                }
             }
-        } else {
-            $payload['scan_masuk'] = $scanTime->toTimeString();
-
-            if($scanTime->greaterThan($jamMasuk)){
-                $payload['terlambat'] = $scanTime->diff($jamMasuk)->format('%H:%I:%S');
-            }
+    
+            $presensi->update($payload);
         }
 
-        $presensi->update($payload);
     }
 }

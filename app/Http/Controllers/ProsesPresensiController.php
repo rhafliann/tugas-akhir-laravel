@@ -17,7 +17,8 @@ class ProsesPresensiController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $hari_ini = Carbon::now()->format('Y-m-d');
+        $hari_ini =  Carbon::now()->format('Y-m-d');
+        $start_date = $request->input('start_date') ?? $hari_ini;
     
         $cloud_id = "C2630450C3051F24";
         $response = Http::withHeaders([
@@ -27,7 +28,7 @@ class ProsesPresensiController extends Controller
         ->post('https://developer.fingerspot.io/api/get_attlog', [
             'trans_id' => 1,
             'cloud_id' => $cloud_id,
-            "start_date" => $hari_ini,
+            "start_date" => $start_date,
             "end_date" => $hari_ini
         ]);
 
@@ -39,6 +40,11 @@ class ProsesPresensiController extends Controller
         } else {
     
             $json = (object) $response->json();
+
+            if($json->success == false){
+                return response()->json($json, 400);
+            }
+
             Log::info('request success with' . json_encode($json, JSON_PRETTY_PRINT));
         
             if (isset($json->data)) { // mengecek apakah data dapat diakses
