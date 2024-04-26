@@ -236,7 +236,9 @@ class PresensiController extends Controller
 
     public function filterAdmin(Request $request)
     {
-        $users = User::where('is_deleted', '0')->get();
+        $users = User::where('is_deleted', '0')
+        ->whereNotIn('id_users', [1,2,3,4,5])
+        ->with('profile')->get();
 
         $presensis = [];
 
@@ -262,7 +264,12 @@ class PresensiController extends Controller
             $cap = 0;
             $prajab = 0;
 
-            $presensiData = Presensi::where('kode_finger', $user->kode_finger)->whereBetween('tanggal', [$start_date, $end_date])->get();
+            if(!$user->profile){
+                // dd($user);
+                continue;
+            }
+
+            $presensiData = Presensi::where('nik', $user->profile->nik)->whereBetween('tanggal', [$start_date, $end_date])->get();
 
             foreach ($presensiData as $pd) {
                 if ($pd->kehadiran !== null && $pd->kehadiran !== '00:00:00') {
