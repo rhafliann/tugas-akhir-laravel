@@ -59,6 +59,17 @@ class PresensiController extends Controller
     public function create()
     {
         //
+        $hari_ini = date('Y-m-d');;
+        $jam10pagi = Carbon::parse($hari_ini)->hour(10)->minute(1)->toDateTimeString();
+
+        $now = Carbon::now()->setTimezone('Asia/Jakarta');
+
+        dd($now->greaterThan($jam10pagi), $now ,$jam10pagi);
+
+        // $scanTime = Carbon::parse($logFingerPrint->scan_time);
+        // $jamMasuk = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_masuk);
+        // $jamPulang = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_pulang);
+
     }
 
     /**
