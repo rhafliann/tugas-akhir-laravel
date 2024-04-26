@@ -81,8 +81,8 @@
                                 <td>{{$pn->scan_masuk}}</td>
                                 <td>{{$pn->scan_pulang}}</td>
                                 <td>{{$pn->terlambat}}</td>
-                                <td>{{$pn->kehadiran}}</td>
                                 <td>{{$pn->pulang_cepat}}</td>
+                                <td>{{$pn->kehadiran}}</td>
                                 <td>{{$pn->jenis_perizinan}}</td>
                             </tr>
                             @endforeach

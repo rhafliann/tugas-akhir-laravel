@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProsesPresensi;
+use App\Jobs\ProsesPresensiLogFingerprint;
 use App\Models\LogFingerprint;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -77,7 +78,7 @@ class ProsesPresensiController extends Controller
         $log_fingerprints = LogFingerprint::whereDate('scan_time', $start_date)->get();
 
         foreach ($log_fingerprints as $key => $value) {
-            dispatch(new ProsesPresensi($value->nik, Carbon::parse($value->scan_time)->format('Y-m-d')));
+            dispatch(new ProsesPresensiLogFingerprint($value->nik, Carbon::parse($value->scan_time)->format('Y-m-d'), $value));
         }
 
         return response()->json([
