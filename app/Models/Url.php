@@ -19,11 +19,15 @@ class Url extends Model
         'qrcode_image',
         'jenis',
         'id_users',
-
+        'nama_kegiatan'
     ];
 
     public function users()
     {
         return $this->belongsTo(User::class, 'id_users', 'id_users');
+    }
+
+    public function kegiatan(){
+        return $this->belongsTo(Kegiatan::class, 'nama_kegiatan', 'id_kegiatan');
     }
 }
