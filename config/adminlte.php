@@ -410,12 +410,12 @@ return [
         //     'icon' => 'fas fa-qrcode',
         //     'can' => '',
         // ],
-		[
-            'icon' => 'fas fa-envelope',
-            'text' => 'Nomor Surat',
-			'url' => '/surat',
-			'can' => ['isBod', 'isPpk', 'isKadiv', 'isStaf'],
-        ],
+		// [
+        //     'icon' => 'fas fa-envelope',
+        //     'text' => 'Nomor Surat',
+		// 	'url' => '/surat',
+		// 	'can' => ['isBod', 'isPpk', 'isKadiv', 'isStaf'],
+        // ],
 		// [
         //     'icon' => 'fas fa-envelope',
         //     'text' => 'Nomor Surat',
