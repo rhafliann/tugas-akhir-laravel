@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
 use App\Models\Notifikasi;
 use App\Models\PengajuanForm;
 use App\Models\User;
@@ -18,9 +19,11 @@ class PengajuanFormController extends Controller
     public function index()
     {
         $form = PengajuanForm::where('is_deleted', '0')->get();
+        $kegiatan = Kegiatan::all();
         // dd($form);
         return view('ajuanform.index', [
             'ajuanform' => $form,
+            'kegiatan' => $kegiatan
         ]);
         
     }
