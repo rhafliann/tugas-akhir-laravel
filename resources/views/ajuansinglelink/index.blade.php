@@ -92,8 +92,13 @@
                                                 <div class="form-group row">
                                                     <label for="nama_kegiatan" class="col-sm-3 col-form-label">Nama Kegiatan</label>
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" class="form-control @error('nama_kegiatan') is-invalid @enderror"
-                                                            id="nama_kegiatan" name="nama_kegiatan" value="{{$as-> nama_kegiatan ?? old('nama_kegiatan')}}">
+                                                        
+                                                        <select name="nama_kegiatan" id="nama_kegiatan" class="form-control">
+                                                            <option value="">Pilih Kegiatan</option>
+                                                            @foreach($kegiatan as $key => $item)
+                                                            <option value="{{ $item->nama_kegiatan }}" @if($item->nama_kegiatan == ($as-> nama_kegiatan ?? old('nama_kegiatan'))) selected @endif>{{ $item->nama_kegiatan }}</option>
+                                                            @endforeach
+                                                        </select>
                                                         @error('nama_kegiatan') <span class="textdanger">{{$message}}</span>@enderror
                                                     </div>
                                                 </div>
@@ -177,9 +182,15 @@
                                 <div class="form-group row">
                                         <label for="nama_kegiatan" class="col-sm-3 col-form-label">Nama Kegiatan</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control @error('nama_kegiatan') is-invalid @enderror"
-                                                id="nama_kegiatan" name="nama_kegiatan" value="{{ old('nama_kegiatan') }}">
-                                            @error('nama_kegiatan')<span class="text-danger">{{$message}}</span>@enderror
+                                            <select name="nama_kegiatan" id="nama_kegiatan" class="form-control">
+                                                <option value="">Pilih Kegiatan</option>
+                                                @foreach($kegiatan as $key => $item)
+                                                <option value="{{ $item->nama_kegiatan }}">{{ $item->nama_kegiatan }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('nama_kegiatan')
+                                            <span class="text-danger">{{$message}}</span>
+                                            @enderror
                                         </div>
                                     </div>
 

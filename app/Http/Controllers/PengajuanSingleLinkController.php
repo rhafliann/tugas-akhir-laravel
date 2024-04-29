@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
 use App\Models\PengajuanSingleLink;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,9 +18,11 @@ class PengajuanSingleLinkController extends Controller
     {
         $user = auth()->user();
         $ajuansinglelink = PengajuanSingleLink::where('is_deleted', '0')->orderByDesc('id_pengajuan_singlelink')->get();
+        $kegiatan = Kegiatan::all();
 
         return view('ajuansinglelink.index', [
             'ajuansinglelink' => $ajuansinglelink,
+            'kegiatan' => $kegiatan,
             'users' => User::where('is_deleted', '0')->orderByRaw("LOWER(nama_pegawai)")->get(),
         ]);
     }
