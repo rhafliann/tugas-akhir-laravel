@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Kegiatan;
 use App\Models\User;
 use App\Models\PengajuanZoom;
 use App\Models\Notifikasi;
@@ -14,11 +15,13 @@ class PengajuanZoomController extends Controller
     public function index()
     {
       
-            $zoom = PengajuanZoom::where('is_deleted', '0')->get();
+        $zoom = PengajuanZoom::where('is_deleted', '0')->get();
+        $kegiatan = Kegiatan::all();
       
 
         return view('ajuanzoom.index', [
             'zoom' => $zoom,
+            'kegiatan' => $kegiatan,
             'user' => User::where('is_deleted', '0')->orderByRaw("LOWER(nama_pegawai)")->get(),
         ]);
     }

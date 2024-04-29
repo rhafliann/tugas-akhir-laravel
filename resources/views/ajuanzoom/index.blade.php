@@ -132,8 +132,14 @@
                         <div class="form-group d-flex flex-wrap">
                             <label for="nama_kegiatan" class='form-label'>Nama Kegiatan</label>
                             <div class="form-input">
-                                <input type="text" class="form-control @error('nama_kegiatan') is-invalid @enderror"
-                                    id="nama_kegiatan" name="nama_kegiatan" value="{{ old('nama_kegiatan')}}">
+                                <select name="nama_kegiatan" id="nama_kegiatan" class="form-control">
+                                    <option value="">Pilih Kegiatan</option>
+                                    @foreach($kegiatan as $key => $item)
+                                    <option value="{{ $item->nama_kegiatan }}">{{ $item->nama_kegiatan }}</option>
+                                    @endforeach
+                                </select>
+                                {{-- <input type="text" class="form-control @error('nama_kegiatan') is-invalid @enderror"
+                                    id="nama_kegiatan" name="nama_kegiatan" value="{{ old('nama_kegiatan')}}"> --}}
                                 @error('nama_kegiatan') <span class="textdanger">{{$message}}</span> @enderror
                             </div>
                         </div>
@@ -166,26 +172,17 @@
 
                         <div class="form-group">
                             <label for="tgl_pelaksanaan" class='form-label'>Waktu Pelaksanaan (WIB)</label>
-                            <div class="form-row w-50">
-                                <div class="col-md-5">
-                                    <input type="time" class="form-control @error('jam_mulai') is-invalid @enderror custom-time-input mr-2" id="jam_mulai" name="jam_mulai" value="{{ old('jam_mulai')}}">
-                                    @error('jam_mulai') 
-                                        <span class="text-danger">{{$message}}</span> 
-                                    @enderror
-                                </div>
-                                <div class="col-md-1 text-center">
-                                    <small class="mt-2"><b>s/d</b></small>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="time" class="form-control @error('jam_selesai') is-invalid @enderror custom-time-input ml-2" id="jam_selesai" name="jam_selesai" value="{{ old('jam_selesai')}}">
-                                    @error('jam_selesai') 
-                                        <span class="text-danger">{{$message}}</span> 
-                                    @enderror
+                            <div class="form-input">
+                                <div class="form-inline">
+                                    <input type="time" class="form-control @error('jam_mulai') is-invalid @enderror custom-time-input mr-2" id="jam_mulai" name="jam_mulai" value="{{old('jam_mulai')}}">
+                                    @error('jam_mulai') <span class="text-danger">{{$message}}</span> @enderror
+                                    <small><b>s/d</b></small>
+                                    <input type="time" class="form-control @error('jam_selesai') is-invalid @enderror custom-time-input ml-2" id="jam_selesai" name="jam_selesai" value="{{old('jam_selesai')}}">
+                                    @error('jam_selesai') <span class="text-danger">{{$message}}</span> @enderror
                                 </div>
                             </div>
                         </div>
                         
-
                         <div class="form-group">
                             <label for="keterangan_pemohon" class='form-label'>Keterangan Tambahan</label>
                             <div class="form-input">
@@ -257,9 +254,12 @@
                     <div class="form-group">
                         <label for="nama_kegiatan" class='form-label'>Nama Kegiatan</label>
                         <div class="form-input">
-                            <input type="text" class="form-control @error('nama_kegiatan') is-invalid @enderror"
-                                id="nama_kegiatan" name="nama_kegiatan"
-                                value="{{$pz->nama_kegiatan ?? old('nama_kegiatan')}}">
+                            <select name="nama_kegiatan" id="nama_kegiatan" class="form-control">
+                                <option value="">Pilih Kegiatan</option>
+                                @foreach($kegiatan as $key => $item)
+                                <option value="{{ $item->nama_kegiatan }}" @if($item->nama_kegiatan == ($pz->nama_kegiatan ?? old('nama_kegiatan'))) selected @endif>{{ $item->nama_kegiatan }}</option>
+                                @endforeach
+                            </select>
                             @error('nama_kegiatan') <span class="textdanger">{{$message}}</span> @enderror
                         </div>
                     </div>
