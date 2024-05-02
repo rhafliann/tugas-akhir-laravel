@@ -41,8 +41,9 @@
 
                 <div class="box-1 mt-md-0 mt-5">
                     <img src="https://source.unsplash.com/random/600x1000?nature" class="image" alt="Random Image">
-                    <div class="text">
-                        <p>"SEAMEO QITEP in Language: Prioritising Language, Advancing Education"</p>
+                    <div class="text w-100">
+                        <p>SEAMEO QITEP in Language</p>
+                        <p>Prioritising Language, Advancing Education</p>
                     </div>
                 </div>
 
