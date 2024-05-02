@@ -6,6 +6,7 @@ use App\Models\LogFingerprint;
 use App\Models\Presensi;
 use App\Models\WaktuKerja;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -48,7 +49,14 @@ class ProsesPresensiLogFingerprint implements ShouldQueue
 
         $jam10pagi = Carbon::parse($hari_ini)->hour(10)->minute(1)->setTimezone('Asia/Jakarta');
 
-        $waktuKerja = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
+        $payloadWaktuKerja = [];
+        if(Carbon::parse($hari_ini)->isDayOfWeek(CarbonInterface::FRIDAY)){
+            $payloadWaktuKerja['nama_waktu'] = 'waktu-jumat';
+        } else {
+            $payloadWaktuKerja['nama_waktu'] = 'waktu-normal';
+        }
+
+        $waktuKerja = WaktuKerja::where($payloadWaktuKerja)->first();
         
         $presensiPayload = [
             'jam_masuk' => $waktuKerja->jam_masuk,
