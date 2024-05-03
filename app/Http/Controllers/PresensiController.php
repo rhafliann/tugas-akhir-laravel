@@ -49,6 +49,8 @@ class PresensiController extends Controller
             $presensi->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
         }
 
+        $presensi->orderBy('tanggal', 'desc');
+        
         return view('presensi.index', [
             'presensi' => $presensi->get(),
             'users' => User::where('is_deleted', '0')->get(),

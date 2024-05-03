@@ -55,6 +55,8 @@ class PemagangController extends Controller
             $presensi->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
         }
 
+        $presensi->orderBy('tanggal', 'desc');
+
         return view('pemagang.presensi', [
             'pemagang' => $pemagang,
             'presensi' => $presensi->get(),

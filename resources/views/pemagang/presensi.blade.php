@@ -56,7 +56,9 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Pemagang</th>
-                                <th >Tanggal</th>
+                                <th>Tanggal</th>
+                                <th>Institusi</th>
+                                <th>Divisi</th>
                                 <th>Scan Masuk</th>
                                 <th>Scan Pulang</th>
                                 <th>Terlambat</th>
@@ -71,6 +73,8 @@
                                 <td>{{$key+1}}</td>
                                 <td>{{ $pn->profile_pemagang->nama  }}</td>
                                 <td> {{ \Carbon\Carbon::parse($pn->tanggal)->format('d M Y') }}</td>
+                                <td>{{$pn->profile_pemagang->institusi}}</td>
+                                <td>{{$pn->profile_pemagang->divisi}}</td>
                                 <td>{{$pn->scan_masuk}}</td>
                                 <td>{{$pn->scan_pulang}}</td>
                                 <td>{{$pn->terlambat}}</td>
