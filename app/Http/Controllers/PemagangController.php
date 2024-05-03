@@ -80,6 +80,7 @@ class PemagangController extends Controller
         $pemagang->nik = $request->nik;
         $pemagang->nama = $request->nama;
         $pemagang->institusi = $request->institusi;
+        $pemagang->divisi = $request->divisi;
         $pemagang->save();
 
         return redirect(route('pemagang.index'))->with([
@@ -113,6 +114,7 @@ class PemagangController extends Controller
         $pemagang->nik = $request->nik;
         $pemagang->nama = $request->nama;
         $pemagang->institusi = $request->institusi;
+        $pemagang->divisi = $request->divisi;
         $pemagang->save();
 
         return redirect(route('pemagang.index'))->with([

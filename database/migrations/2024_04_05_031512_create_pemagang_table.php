@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('institusi');
+            $table->string('divisi')->nullable();
             $table->string('nik')->unique();
             $table->softDeletes();
             $table->timestamps();
