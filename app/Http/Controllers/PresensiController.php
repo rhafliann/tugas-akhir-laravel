@@ -8,6 +8,7 @@ use App\Models\Presensi;
 use App\Models\User;
 use App\Models\WaktuKerja;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,7 +24,15 @@ class PresensiController extends Controller
         $tanggal = $request->input('tanggal');
         $id_users = $request->input('id_users');
 
-        $waktuKerja = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
+        $payloadWaktuKerja = [];
+
+        if(Carbon::now()->isDayOfWeek(CarbonInterface::FRIDAY)){
+            $payloadWaktuKerja['nama_waktu'] = 'waktu-jumat';
+        } else {
+            $payloadWaktuKerja['nama_waktu'] = 'waktu-normal';
+        }
+
+        $waktuKerja = WaktuKerja::where($payloadWaktuKerja)->first();
 
         if ($user->level == 'admin') {
             // Fetch all work experiences for admin

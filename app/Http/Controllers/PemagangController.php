@@ -6,6 +6,8 @@ use App\Http\Requests\PemagangRequest;
 use App\Models\Pemagang;
 use App\Models\Presensi;
 use App\Models\WaktuKerja;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 
 class PemagangController extends Controller
@@ -31,7 +33,14 @@ class PemagangController extends Controller
         $nik = $request->input('nik');
 
         $pemagang = Pemagang::all();
-        $waktuKerja = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
+        
+        if(Carbon::now()->isDayOfWeek(CarbonInterface::FRIDAY)){
+            $payloadWaktuKerja['nama_waktu'] = 'waktu-jumat';
+        } else {
+            $payloadWaktuKerja['nama_waktu'] = 'waktu-normal';
+        }
+
+        $waktuKerja = WaktuKerja::where($payloadWaktuKerja)->first();
         
         $presensi = Presensi::where('is_deleted', '0')
             ->whereHas('profile_pemagang')
