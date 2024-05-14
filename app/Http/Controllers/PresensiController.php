@@ -21,6 +21,7 @@ class PresensiController extends Controller
         $tanggalAwal = $request->input('tanggal_awal');
         $tanggalAkhir = $request->input('tanggal_akhir');
         $tanggal = $request->input('tanggal');
+        $id_users = $request->input('id_users');
 
         $waktuKerja = WaktuKerja::where(['nama_waktu' => 'waktu-normal'])->first();
 
@@ -28,11 +29,16 @@ class PresensiController extends Controller
             // Fetch all work experiences for admin
             $presensi = Presensi::where('is_deleted', '0')
                 ->whereHas('profile_user')
-                ->with(['profile_user', 'profile_user.user']);
+                ->with(['profile_user:nik,id_users', 'profile_user.user:id_users,nama_pegawai']);
         } else {
             // Fetch user's own work experiences using the relationship
             $presensi = Presensi::where(['nik' => $user->profile->nik])
-                ->with(['profile_user', 'profile_user.user']);
+                ->with(['profile_user:nik,id_users', 'profile_user.user:id_users,nama_pegawai']);
+        }
+        
+        if($id_users){
+            $user = User::where(['id_users' => $id_users])->first();
+            $presensi->where(['nik' => $user->profile->nik]);
         }
 
         if(!$tanggalAwal && !$tanggalAkhir){
@@ -51,9 +57,18 @@ class PresensiController extends Controller
 
         $presensi->orderBy('tanggal', 'desc');
         
+        $users = User::where('is_deleted', '0');
+
+        if($request->isJson()){
+            return response()->json([
+                'type' => 'success',
+                'data' => $presensi->get()
+            ]);
+        }
+                
         return view('presensi.index', [
             'presensi' => $presensi->get(),
-            'users' => User::where('is_deleted', '0')->get(),
+            'users' => $users->get(),
             'waktuKerja' => $waktuKerja
         ]);
     }

@@ -39,6 +39,7 @@
                             <div class="form-group">
                               <br>
                               <button type="submit" class="btn btn-primary mt-2">&nbsp;Tampilkan</button>
+                              <a class="btn btn-danger mt-2" id="download-button">&nbsp;Export</a>
                             </div>
                           </div>
                           
@@ -94,6 +95,77 @@
 </section>
 @stop
 @push('js')
+
+<!-- used for exporting data to excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- exporting data to excel -->
+<script type="text/javascript">    
+    const d = new Date();
+    const filename = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+
+    async function downloadExcelData(items){
+        const workbook = new ExcelJS.Workbook();
+        workbook.creator = "{{ Auth::user()->nama_pegawai }}";
+        workbook.lastModifiedBy = "{{ Auth::user()->nama_pegawai }}";
+        workbook.created = new Date();
+        workbook.modified = new Date();
+
+        // add a sheet with name the data data downloaded
+        const sheet = workbook.addWorksheet(filename);
+
+        sheet.columns = [
+            { header: 'No', key: 'no', width: 10 },
+            { header: 'Nama Pemagang', key: 'nama_pemagang', width: 32 },
+            { header: 'Insitusi', key: 'institusi', width: 32 },
+            { header: 'Divisi', key: 'divisi', width: 32 },
+            { header: 'Tanggal', key: 'tanggal', width: 10 },
+            { header: 'Jam Masuk', key: 'jam_masuk', width: 10 },
+            { header: 'Jam Pulang', key: 'jam_pulang', width: 10 },
+            { header: 'Scan Masuk', key: 'scan_masuk', width: 10 },
+            { header: 'Scan Pulang', key: 'scan_pulang', width: 10 },
+            { header: 'Terlambat', key: 'terlambat', width: 10 },
+            { header: 'Pulang Cepat', key: 'pulang_cepat', width: 10 },
+            { header: 'Total Kehadiran', key: 'kehadiran', width: 10 },
+        ];
+
+        items.map((item, index) => {
+            sheet.addRow({no: index + 1, ...item});
+        });
+        return workbook.xlsx.writeBuffer();
+    }
+
+    document.getElementById('download-button').addEventListener('click', async function(){
+
+        fetch(window.location.href, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(async result => {
+            let data = result.data.map((item) => {
+                item.nama_pemagang = item.profile_pemagang.nama;
+                item.institusi = item.profile_pemagang.institusi;
+                item.divisi = item.profile_pemagang.divisi;
+                delete item.profile_pemagang;
+                return item;
+            });
+            let buffer = await downloadExcelData(data);
+            let blob = new Blob(
+                [buffer], 
+                {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"}
+            );
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = 'export-presensi-pemagang-' + filename + ".xlsx";
+            link.click();
+        });
+    });
+</script>
+
 <script>
 $('#example2').DataTable({
     "responsive": true,

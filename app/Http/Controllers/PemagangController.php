@@ -57,6 +57,13 @@ class PemagangController extends Controller
 
         $presensi->orderBy('tanggal', 'desc');
 
+        if($request->isJson()){
+            return response()->json([
+                'type' => 'success',
+                'data' => $presensi->get()
+            ]);
+        }
+
         return view('pemagang.presensi', [
             'pemagang' => $pemagang,
             'presensi' => $presensi->get(),
