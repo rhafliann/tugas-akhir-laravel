@@ -322,7 +322,7 @@
                     <div class="form-group">
                         <label for="nama_operator" class="form-label">Nama Operator</label>
                         <div class="form-input">
-                            <select class="form-control" id="nama_operator" name="nama_operator" required>
+                            <select class="form-control " id="nama_operator" name="nama_operator" required>
                                 <option value="Hana" @if($pz->nama_operator == 'Hana' || old('nama_operator') == 'Hana')
                                     selected @endif>Hana</option>
                                 <option value="Bayu" @if($pz->nama_operator == 'Bayu' ||

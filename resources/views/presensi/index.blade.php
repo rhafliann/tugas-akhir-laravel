@@ -14,35 +14,40 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    @if(auth()->user()->level === 'admin')
-                    <form action="{{ route('presensi.index') }}" method="GET" class="form-inline mb-3">
-                        <div class="input-group">
-                            <label for="tanggal" class="my-label mr-2">Tanggal :</label>
-                            <input type="date" class="form-control" name="tanggal" id="tanggal"
-                                value="{{request()->input('tanggal')}}" required>
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Cari</button>
-                            </div>
-                        </div>
-                    </form>
-                    @else
-                    <form method="get" action="{{route('presensi.index')}}" class="form-inline">
-                        <div class="form-group mb-2">
+                @if(auth()->user()->level === 'admin')
+                    <form method="get" action="{{route('presensi.user')}}" class="row">
+                        <div class="col form-group mb-2">
                             <label for="tanggal">Tanggal Awal :</label> &nbsp;&nbsp;
                             <input type="date"
                                 class="form-control border-primary @error('tanggal_awal') is-invalid @enderror" id="tanggal_awal"
-                                name="tanggal_awal" value="{{request()->input('tanggal_awal')}}" required> &nbsp; &nbsp;&nbsp;
-
+                                name="tanggal_awal" value="{{request()->input('tanggal_awal')}}"> &nbsp; &nbsp;&nbsp;
+                        </div>
+                        <div class="col form-group mb-2">
                             <label for="tanggal">Tanggal Akhir :</label> &nbsp;&nbsp;
                             <input type="date"
                                 class="form-control border-primary @error('tanggal_akhir') is-invalid @enderror"
-                                id="tanggal_akhir" name="tanggal_akhir" value="{{request()->input('tanggal_akhir')}}" required> &nbsp;
-                            &nbsp;
-
-                            <button type="submit" class="btn btn-primary">&nbsp;Tampilkan</button>
-                        </div>
+                                id="tanggal_akhir" name="tanggal_akhir" value="{{request()->input('tanggal_akhir')}}"> &nbsp;
+                            &nbsp;                            
+                          </div>
+                          <div class="col form-group mb-2">
+                            <label for="nik">Pilih Pegawai</label>
+                            <select class="form-control border-primary mr-2" name="nik" id="nik">
+                              <option value="">Pilih Pegawai</option>
+                              @foreach($users as $key => $item)
+                              <option value="{{ $item->nik }}">{{ $item->nama }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-4">
+                            <div class="form-group">
+                              <br>
+                              <button type="submit" class="btn btn-primary mt-2">&nbsp;Tampilkan</button>
+                            </div>
+                          </div>
+                          
                     </form>
                     @endif
+
                     <div>
                        <ul>
                             <li>Jam Masuk: {{ $waktuKerja->jam_masuk }}</li>
