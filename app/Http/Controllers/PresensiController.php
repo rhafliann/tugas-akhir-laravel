@@ -49,6 +49,8 @@ class PresensiController extends Controller
             $presensi->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir]);
         }
 
+        $presensi->orderBy('tanggal', 'desc');
+        
         return view('presensi.index', [
             'presensi' => $presensi->get(),
             'users' => User::where('is_deleted', '0')->get(),
@@ -59,6 +61,17 @@ class PresensiController extends Controller
     public function create()
     {
         //
+        $hari_ini = date('Y-m-d');;
+        $jam10pagi = Carbon::parse($hari_ini)->hour(10)->minute(1)->toDateTimeString();
+
+        $now = Carbon::now()->setTimezone('Asia/Jakarta');
+
+        dd($now->greaterThan($jam10pagi), $now ,$jam10pagi);
+
+        // $scanTime = Carbon::parse($logFingerPrint->scan_time);
+        // $jamMasuk = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_masuk);
+        // $jamPulang = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_pulang);
+
     }
 
     /**
@@ -236,7 +249,9 @@ class PresensiController extends Controller
 
     public function filterAdmin(Request $request)
     {
-        $users = User::where('is_deleted', '0')->get();
+        $users = User::where('is_deleted', '0')
+        ->whereNotIn('id_users', [1,2,3,4,5])
+        ->with('profile')->get();
 
         $presensis = [];
 
@@ -262,7 +277,12 @@ class PresensiController extends Controller
             $cap = 0;
             $prajab = 0;
 
-            $presensiData = Presensi::where('kode_finger', $user->kode_finger)->whereBetween('tanggal', [$start_date, $end_date])->get();
+            if(!$user->profile){
+                // dd($user);
+                continue;
+            }
+
+            $presensiData = Presensi::where('nik', $user->profile->nik)->whereBetween('tanggal', [$start_date, $end_date])->get();
 
             foreach ($presensiData as $pd) {
                 if ($pd->kehadiran !== null && $pd->kehadiran !== '00:00:00') {

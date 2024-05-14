@@ -72,27 +72,30 @@
                                                 @method('PUT')
                                                 <div class="form-body">
                                                     <div class="form-group">
-                                                        <div class="row">
+                                                        <div class="form-row">
                                                             <input type="hidden" name="id_users"
                                                                 value="{{ Auth::user()->id_users}}">
-                                                            <div class="form-group">
+                                                            <div class="col form-group">
                                                                 <label for="tanggal">Tanggal</label>
                                                                 <input type="date" name="tanggal" id="tanggal"
                                                                     value="{{$lr -> tanggal ?? old('tanggal')}}"
                                                                     class="form-control" required>
                                                             </div>
-                                                            <div class="form-group">
+                                                            <div class="col form-group">
                                                                 <label for="jam_mulai">Jam Mulai</label>
                                                                 <input type="time" name="jam_mulai" id="jam_mulai"
                                                                     value="{{$lr -> jam_mulai ?? old('jam_mulai')}}"
                                                                     class="form-control" required>
                                                             </div>
-                                                            <div class="form-group">
+                                                            <div class="col form-group">
                                                                 <label for="jam_selesai">Jam Selesai</label>
                                                                 <input type="time" name="jam_selesai" id="jam_selesai"
                                                                     value="{{$lr -> jam_selesai ?? old('jam_selesai')}}"
                                                                     class="form-control" required>
                                                             </div>
+                                                        </div>
+
+                                                        <div>
                                                             <div class="form-group">
                                                                 <label for="tugas">Uraian Tugas</label>
                                                                 <textarea name="tugas" id="tugas" class="form-control"
@@ -151,23 +154,25 @@
                     @csrf
                     <div class="form-body">
                         <div class="form-group">
-                            <div class="row">
+                            <div class="form-row">
                                 <input type="hidden" name="id_users" value="{{ Auth::user()->id_users}}">
-                                <div class="form-group">
+                                <div class="col form-group">
                                     <label for="tanggal">Tanggal</label>
                                     <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal')}}"
                                         class="form-control" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="jam_masuk">Jam Masuk</label>
-                                    <input type="time" name="jam_masuk" id="jam_masuk" value="{{ old('jam_masuk')}}"
+                                <div class="col form-group">
+                                    <label for="jam_mulai">Jam Mulai</label>
+                                    <input type="time" name="jam_mulai" id="jam_mulai" value="{{old('jam_mulai')}}"
                                         class="form-control" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="jam_pulang">Jam Pulang</label>
-                                    <input type="time" name="jam_pulang" id="jam_pulang" value="{{ old('jam_pulang')}}"
+                                <div class="col form-group">
+                                    <label for="jam_selesai">Jam Selesai</label>
+                                    <input type="time" name="jam_selesai" id="jam_selesai" value="{{old('jam_selesai')}}"
                                         class="form-control" required>
                                 </div>
+                            </div>
+                            <div>
                                 <div class="form-group">
                                     <label for="tugas">Uraian Tugas</label>
                                     <textarea name="tugas" id="tugas" class="form-control" value="{{ old('tugas')}}"

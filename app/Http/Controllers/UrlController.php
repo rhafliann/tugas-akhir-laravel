@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
 use App\Models\Url;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,29 +30,29 @@ class UrlController extends Controller
     public function index()
     {
         $url = Url::All();
+        $kegiatan = Kegiatan::where(['is_deleted' => '0'])->get();
 
         return view('url.index', [
             'url' => $url,
+            'kegiatan' => $kegiatan,
             'user' => User::where('is_deleted', '0')->get(),
         ]);
     }
 
     public function store(Request $request)
     {
-        //Menyimpan Data Keluarga Baru
+        //Menyimpan Data Kegiatan
         $request->validate([
             'id_users' => 'required',
             'url_address' => 'nullable|url',
-            'nama_kegiatansl' => 'required',
+            'nama_kegiatan' => 'required',
             'jenis' => 'required',
             'url_short' => 'required',
         ]);
 
-        // dd($request->all());
+        $existingUrl = Url::where('url_short', $request->url_short)->first();
 
-        $existingUrl = Url::where('url_short', $request->input('url_short'))->first();
-
-        if ($existingUrl) {
+        if ($existingUrl != null) {
             return redirect()->back()->with('error_message', 'URL pendek sudah ada dalam basis data.');
         }
 
@@ -59,15 +60,15 @@ class UrlController extends Controller
         $url->id_users = $request->id_users;
         $url->url_address = $request->url_address;
         $url->jenis = $request->jenis;
-        $url->nama_kegiatansl = $request->nama_kegiatansl;
-        $customCode = $request->input('url_short');
+        $url->nama_kegiatan = $request->nama_kegiatan;
+        $customCode = $request->url_short;
+
         $slug = Str::slug($customCode, '-');
-        $short = $this->generateShortCode( $slug);
+        $short = $this->generateShortCode($slug);
         $url->url_short = $short;
         $qrcode = $this->generateQRCode($url->url_short, $short);
         $url->qrcode_image = $qrcode;
 
-        // dd($url);
         $url->save();
 
         return redirect()->back()->with('success_message', 'Data telah tersimpan');
@@ -110,25 +111,20 @@ class UrlController extends Controller
         }
     }
 
-    private function generateQRCode( $url, $imageName)
+    private function generateQRCode($url, $imageName)
     {
         if (is_null($imageName)) {
-            $imageName = uniqid('qrcode_',);
+            $imageName = uniqid('qrcode_');
         }
 
-        $urlExists = Url::where('url_short', $url)->exists();
-
-
         $qrCode = QrCode::create($url)->setSize(200)->setMargin(10)->setErrorCorrectionLevel(new ErrorCorrectionLevelLow());
-
-        $storagePath = public_path('qrcodes/' . $imageName . '.png');
 
         // Create a PngWriter instance
         $writer = new PngWriter();
 
         $qrCodeData = $writer->write($qrCode)->getString();
 
-        file_put_contents($storagePath, $qrCodeData);
+        Storage::disk('public')->put('qrcodes/'. $imageName . '.png', $qrCodeData, 'public');
 
         // Return the filename (including the extension) for further use if needed
         return $imageName . '.png';

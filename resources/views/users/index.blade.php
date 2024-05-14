@@ -146,16 +146,6 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="kode_finger">Kode Finger</label>
-                                                    <input type="number" name="kode_finger" id="kode_finger"
-                                                        class="form-control @error('kode_finger') is-invalid @enderror" value="{{ old('kode_finger', $user->kode_finger) }}">
-                                                    @error('kode_finger')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                    @enderror
-                                                </div>
-                                                <div class="form-group">
                                                     <label for="exampleInputPassword">Password</label>
                                                     <input type="password" name="password" id="exampleInputPassword"
                                                         class="form-control @error('password') is-invalid @enderror">
@@ -256,16 +246,6 @@
 
                         </select>
                         @error('jabatan')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="kode_finger">Kode Finger</label>
-                        <input type="number" name="kode_finger" id="kode_finger"
-                            class="form-control @error('kode_finger') is-invalid @enderror">
-                        @error('kode_finger')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>

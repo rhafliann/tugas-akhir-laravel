@@ -24,6 +24,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PengajuanZoomController;
 use App\Http\Controllers\PengajuanDesainController;
+use App\Http\Controllers\ProsesLogFingerprintPresensiController;
 use App\Http\Controllers\ProsesPresensiController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\BarangPprController;
@@ -164,6 +165,7 @@ Route::get('/laporan', [App\Http\Controllers\TimKegiatanController::class, 'lapo
 Route::resource('/kodesurat', \App\Http\Controllers\KodeSuratController::class)->middleware('auth');
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/presensi/create', [PresensiController::class, 'create'])->name('presensi.create');
     Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi.index');
     Route::get('/presensi/filter', [PresensiController::class, 'filter'])->name('presensi.filter');
     Route::get('/presensi/filteruser', [App\Http\Controllers\PresensiController::class, 'filteruser'])->name('presensi.user');
@@ -343,3 +345,4 @@ Route::group(['middleware' => ['auth']], function($route){
 });
 
 Route::get('proses-presensi', ProsesPresensiController::class);
+Route::get('proses-log-fingerprint-presensi', ProsesLogFingerprintPresensiController::class);

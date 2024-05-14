@@ -187,8 +187,8 @@ class LemburController extends Controller
 
 
         // Menghitung jam lembur dari jam mulai dan jam selesai
-        $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->input('jam_mulai'));
-        $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->input('jam_selesai'));
+        $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_mulai);
+        $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_selesai);
         $diffInMinutes = $jamMulai->diffInMinutes($jamSelesai);
 
         // Validasi: Jam selesai harus lebih besar dari jam mulai
@@ -201,11 +201,11 @@ class LemburController extends Controller
 
         $lembur->id_users = $request->id_users;
         $lembur->id_atasan = $request->id_atasan;
-        $lembur->tanggal = $request->input('tanggal');
-        $lembur->jam_mulai = $request->input('jam_mulai');
-        $lembur->jam_selesai = $request->input('jam_selesai');
+        $lembur->tanggal = $request->tanggal;
+        $lembur->jam_mulai = $request->jam_mulai;
+        $lembur->jam_selesai = $request->jam_selesai;
         $lembur->jam_lembur = floor($diffInMinutes / 60).':'.($diffInMinutes % 60); // Jam dan menit
-        $lembur->tugas = $request->input('tugas');
+        $lembur->tugas = $request->tugas;
         $lembur->status_izin_atasan = null;
 
         $lembur->save();
@@ -232,18 +232,18 @@ class LemburController extends Controller
         $notifikasi->id_users = $request->id_atasan;
         $notifikasi->save();
 
-         $notifikasiAdmin = User::where('level', 'admin')->get();
+        $notifikasiAdmin = User::where('level', 'admin')->get();
         
         foreach($notifikasiAdmin as $na){
-        $notifikasi = new Notifikasi();
-        $notifikasi->judul = 'Pengajuan Lembur ';
-        $notifikasi->pesan = 'Pengajuan Lembur dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
-        $notifikasi->is_dibaca = 'tidak_dibaca';
-        $notifikasi->send_email = 'yes';
-        $notifikasi->label = 'info';
-        $notifikasi->link = '/ajuanlembur';
-        $notifikasi->id_users = $na->id_users;
-        $notifikasi->save();
+            $notifikasi = new Notifikasi();
+            $notifikasi->judul = 'Pengajuan Lembur ';
+            $notifikasi->pesan = 'Pengajuan Lembur dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+            $notifikasi->is_dibaca = 'tidak_dibaca';
+            $notifikasi->send_email = 'yes';
+            $notifikasi->label = 'info';
+            $notifikasi->link = '/ajuanlembur';
+            $notifikasi->id_users = $na->id_users;
+            $notifikasi->save();
         }
 
         return redirect()->back()->with('success_message', 'Data telah tersimpan.');
@@ -278,14 +278,13 @@ class LemburController extends Controller
             'jam_selesai' => 'required',
             'tugas' => 'required|string',
         ];
-        // dd($request->all());
 
         $request->validate($rules);
         $lembur = Lembur::find($id_lembur);
 
         // Ubah format jam_mulai dan jam_selesai dari 'H:i:s' menjadi 'H:i'
-        $lembur->jam_mulai = date('H:i', strtotime($request->input('jam_mulai')));
-        $lembur->jam_selesai = date('H:i', strtotime($request->input('jam_selesai')));
+        $lembur->jam_mulai = date('H:i', strtotime($request->jam_mulai));
+        $lembur->jam_selesai = date('H:i', strtotime($request->jam_selesai));
 
         // Validasi: Jam selesai harus lebih besar dari jam mulai
         if ($lembur->jam_mulai >= $lembur->jam_selesai) {
@@ -300,11 +299,11 @@ class LemburController extends Controller
 
         $lembur->id_users = $request->id_users;
         $lembur->id_atasan = $request->id_atasan;
-        $lembur->tanggal = $request->input('tanggal');
-        $lembur->jam_mulai = $request->input('jam_mulai');
-        $lembur->jam_selesai = $request->input('jam_selesai');
+        $lembur->tanggal = $request->tanggal;
+        $lembur->jam_mulai = $request->jam_mulai;
+        $lembur->jam_selesai = $request->jam_selesai;
 
-        $lembur->tugas = $request->input('tugas');
+        $lembur->tugas = $request->tugas;
         $lembur->status_izin_atasan = $request->status_izin_atasan;
 
         $lembur->save();
@@ -335,15 +334,15 @@ class LemburController extends Controller
         $notifikasiAdmin = User::where('level', 'admin')->get();
         
         foreach($notifikasiAdmin as $na){
-        $notifikasi = new Notifikasi();
-        $notifikasi->judul = 'Pengajuan Lembur ';
-        $notifikasi->pesan = 'Pengajuan Lembur dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
-        $notifikasi->is_dibaca = 'tidak_dibaca';
-        $notifikasi->send_email = 'yes';
-        $notifikasi->label = 'info';
-        $notifikasi->link = '/ajuanlembur';
-        $notifikasi->id_users = $na->id_users;
-        $notifikasi->save();
+            $notifikasi = new Notifikasi();
+            $notifikasi->judul = 'Pengajuan Lembur ';
+            $notifikasi->pesan = 'Pengajuan Lembur dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+            $notifikasi->is_dibaca = 'tidak_dibaca';
+            $notifikasi->send_email = 'yes';
+            $notifikasi->label = 'info';
+            $notifikasi->link = '/ajuanlembur';
+            $notifikasi->id_users = $na->id_users;
+            $notifikasi->save();
         }
 
         return redirect()->back()->with('success_message', 'Data telah tersimpan.');

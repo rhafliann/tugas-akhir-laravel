@@ -18,7 +18,7 @@ class Lembur extends Model
         'id_atasan',
         'tanggal',
         'jam_mulai',
-        'kam_selesai',
+        'jam_selesai',
         'jam_lembur',
         'tugas',
         'status_izin_atasan',

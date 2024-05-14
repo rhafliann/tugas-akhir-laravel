@@ -54,6 +54,19 @@
                 @enderror
               </div>
             </div>
+            <div class="form-group">
+              <div class="col-3">
+                <label for="institusi">Divisi Pemagang</label>
+              </div>
+              <div class="col-9">
+                <input type="text" name="divisi" id="divisi" value="{{$pemagang->divisi}}" class="form-control @error('divisi') is-invalid @enderror" value="{{ old('divisi') }}" required>
+                @error('divisi')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+              </div>
+            </div>
 
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Simpan</button>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
 use App\Models\Notifikasi;
 use App\Models\PengajuanBlastemail;
 use App\Models\User;
@@ -18,9 +19,11 @@ class PengajuanBlastemailController extends Controller
     public function index()
     {
         $BlastEmail = PengajuanBlastemail::where('is_deleted', '0')->get();
+        $kegiatan = Kegiatan::all();
         
         return view('ajuanblastemail.index', [
             'BlastEmail' => $BlastEmail,
+            'kegiatan' => $kegiatan
         ]);
     }
     public function show($id_pengajuan_blastemail)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
 use App\Models\PengajuanDesain;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,9 +20,10 @@ class PengajuanDesainController extends Controller
     {
         $user = auth()->user();
         $ajuandesain = PengajuanDesain::where('is_deleted', '0')->orderByDesc('id_pengajuan_desain')->get();
-
+        $kegiatan = Kegiatan::all();
         return view('ajuandesain.index', [
             'ajuandesain' => $ajuandesain,
+            'kegiatan' => $kegiatan,
             'users' => User::where('is_deleted', '0')->orderByRaw("LOWER(nama_pegawai)")->get(),
         ]);
     }

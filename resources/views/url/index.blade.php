@@ -11,13 +11,17 @@
                 @if (session()->has('success_message'))
                 <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
                     {{ session('success_message') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>                    
                 </div>
                 @endif
                 @if (session()->has('error_message'))
                 <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
                     {{ session('error_message') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>                    
                 </div>
                 @endif
 
@@ -42,17 +46,14 @@
                             @foreach($url as $key => $url)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td> <a href="https://s.qiteplanguage.org/{{ $url->url_short }}"
-                                        target="_blank">https://s.qiteplanguage.org/{{$url->url_short}}</a></td>
+                                <td>{{ $url->kegiatan->nama_kegiatan }}</td>
+                                <td> <a href="https://s.qiteplanguage.org/{{ $url->url_short }}" target="_blank">https://s.qiteplanguage.org/{{$url->url_short}}</a></td>
                                 <td>{{$url->jenis}}</td>
                                 <td>{{$url->url_address}}</td>
                                 <td id={{$key+1}}>
-
-                                    <a href="{{ asset('/laravel/public/qrcodes/' . $url->qrcode_image) }}" download>
-                                        <img src="{{ asset('/laravel/public/qrcodes/' . $url->qrcode_image) }}"
-                                            alt="Gambar Dokumen" width="95%">
-                                                    </a>
-
+                                    <a href="{{ asset('/storage/qrcodes/' . $url->qrcode_image) }}" download>
+                                        <img src="{{ asset('/storage/qrcodes/' . $url->qrcode_image) }}" alt="Gambar Dokumen" width="95%">
+                                    </a>
                                 </td>
                                 <td>
                                     @include('components.action-buttons', ['id' => $url->id_url, 'key' => $key, 'route'
@@ -77,51 +78,50 @@
                                                 <input type="hidden" value="{{ Auth::user()->id_users}}"
                                                     name="id_users">
                                                 <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="form-group">
-                                                            <label for="jenis">Jenis Shortlink</label>
-                                                            <select
-                                                                class="form-control  @error('jenis') is-invalid @enderror"
-                                                                id="jenis" name="jenis">
-                                                                <option value="Form" @if(old('jenis', $url->
-                                                                    jenis)=='Form')selected
-                                                                    @endif>Form</option>
-                                                                <option value="Leaflet" @if(old('jenis', $url->
-                                                                    jenis)=='Leaflet')selected
-                                                                    @endif>Leaflet</option>
-                                                                <option value="Sertifikat" @if(old('jenis', $url->
-                                                                    jenis)=='Sertifikat')selected
-                                                                    @endif>Seritfikat</option>
-                                                                <option value="Laporan" @if(old('jenis', $url->
-                                                                    jenis)=='Laporan')selected
-                                                                    @endif>Laporan</option>
-                                                                <option value="Single-link" @if(old('jenis', $url->
-                                                                    jenis)=='Single-link')selected
-                                                                    @endif>Single-link</option>
-                                                                <option value="Zoom" @if(old('jenis', $url->
-                                                                    jenis)=='Zoom')selected
-                                                                    @endif>Zoom</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="nama_kegiatansl">Nama Kegiatan</label>
-                                                            <input type="text" class="form-control" id="nama_kegiatansl"
-                                                                value="{{$url -> nama_kegiatansl ?? old('nama_kegiatansl') }}"
-                                                                name="nama_kegiatansl" required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="url_short">Nama Shortlink </label>
-                                                            <input type="text" class="form-control" id="url_short"
-                                                                name="url_short"
-                                                                value="{{ str_replace(url('') . '/s/', '',  $url -> url_short) ??  str_replace(url('') . '/s/', '',  old('url_short')) }}"
-                                                                required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="url_address">Tautan</label>
-                                                            <input type="text" class="form-control" id="url_address"
-                                                                value="{{$url -> url_address ?? old('url_address') }}"
-                                                                name="url_address" required>
-                                                        </div>
+                                                    <div class=" form-group">
+                                                        <label for="jenis">Jenis Shortlink</label>
+                                                        <select
+                                                            class="form-control  @error('jenis') is-invalid @enderror"
+                                                            id="jenis" name="jenis">
+                                                            <option value="Form" @if(old('jenis', $url->
+                                                                jenis)=='Form')selected
+                                                                @endif>Form</option>
+                                                            <option value="Leaflet" @if(old('jenis', $url->
+                                                                jenis)=='Leaflet')selected
+                                                                @endif>Leaflet</option>
+                                                            <option value="Sertifikat" @if(old('jenis', $url->
+                                                                jenis)=='Sertifikat')selected
+                                                                @endif>Seritfikat</option>
+                                                            <option value="Laporan" @if(old('jenis', $url->
+                                                                jenis)=='Laporan')selected
+                                                                @endif>Laporan</option>
+                                                            <option value="Single-link" @if(old('jenis', $url->
+                                                                jenis)=='Single-link')selected
+                                                                @endif>Single-link</option>
+                                                            <option value="Zoom" @if(old('jenis', $url->
+                                                                jenis)=='Zoom')selected
+                                                                @endif>Zoom</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nama_kegiatansl">Nama Kegiatan</label>
+                                                        <input type="text" class="form-control" id="nama_kegiatansl"
+                                                            value="{{$url -> nama_kegiatansl ?? old('nama_kegiatansl') }}"
+                                                            name="nama_kegiatansl" required>
+                                                    </div>
+                                    
+                                                    <div class="form-group">
+                                                        <label for="url_short">Nama Shortlink </label>
+                                                        <input type="text" class="form-control" id="url_short"
+                                                            name="url_short"
+                                                            value="{{ str_replace(url('') . '/s/', '',  $url -> url_short) ??  str_replace(url('') . '/s/', '',  old('url_short')) }}"
+                                                            required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="url_address">Tautan</label>
+                                                        <input type="text" class="form-control" id="url_address"
+                                                            value="{{$url -> url_address ?? old('url_address') }}"
+                                                            name="url_address" required>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -159,30 +159,33 @@
                     @csrf
                     <input type="hidden" value="{{ Auth::user()->id_users}}" name="id_users">
                     <div class="form-group">
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="jenis">Jenis Shortlink</label>
-                                <select class="form-control  @error('jenis') is-invalid @enderror" id="jenis" name="jenis" required>
-                                    <option value="Form">Form</option>
-                                    <option value="Sertifikat">Sertifikat</option>
-                                    <option value="Laporan">Laporan</option>
-                                    <option value="Single-link">Single-link</option>
-                                    <option value="Zoom">Zoom</option>
-                                    <option value="Leaflet">Leaflet</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="nama_kegiatansl">Nama Kegiatan</label>
-                                <input type="text" class="form-control" id="nama_kegiatansl" name="nama_kegiatansl" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="url_short">Nama Shortlink</label>
-                                <input type="text" class="form-control" id="url_short" name="url_short" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="url_address">Tautan</label>
-                                <input type="text" class="form-control" id="url_address" name="url_address">
-                            </div>
+                        <div class="form-group">
+                            <label for="jenis">Jenis Shortlink</label>
+                            <select class="form-control  @error('jenis') is-invalid @enderror" id="jenis" name="jenis" required>
+                                <option value="Form">Form</option>
+                                <option value="Sertifikat">Sertifikat</option>
+                                <option value="Laporan">Laporan</option>
+                                <option value="Single-link">Single-link</option>
+                                <option value="Zoom">Zoom</option>
+                                <option value="Leaflet">Leaflet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_kegiatan">Nama Kegiatan</label>
+                            <select name="nama_kegiatan" id="nama_kegiatan" class="form-control" required>
+                                <option value="">Pilih Kegiatan</option>
+                                @foreach($kegiatan as $item)
+                                <option value="{{ $item->id_kegiatan }}">{{ $item->nama_kegiatan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="url_short">Nama Shortlink</label>
+                            <input type="text" class="form-control" id="url_short" name="url_short" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="url_address">Tautan</label>
+                            <input type="text" class="form-control" id="url_address" name="url_address">
                         </div>
                     </div>
                     <div class="modal-footer">

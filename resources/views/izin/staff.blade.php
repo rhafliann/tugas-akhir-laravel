@@ -288,9 +288,9 @@
                     @csrf
                     <div class="form-body">
                         <div class="form-group">
-                            <div class="row">
+                            <div class="form-row">
                                 <input type="hidden" name="kode_finger" value="{{ Auth::user()->kode_finger}}">
-                                <div class="form-group">
+                                <div class="col form-group">
                                     <label for="tgl_absen_awal" class="form-label">Tanggal Awal Izin </label>
                                     <div class="form-input">
                                         <input type="date"
@@ -300,7 +300,7 @@
                                         @error('tgl_absen_awal') <span class="textdanger">{{$message}}</span> @enderror
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="col form-group">
                                     <label for="tgl_absen_akhir" class="form-label">Tanggal Akhir Izin</label>
                                     <div class="form-input">
                                         <input type="date"
@@ -310,7 +310,7 @@
                                         @error('tgl_absen_akhir') <span class="textdanger">{{$message}}</span> @enderror
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="col form-group">
                                     <label for="jumlah_hari_pengajuan" class="form-label">Jumlah Hari Pengajuan</label>
                                     <input type="number"
                                         class="form-control @error('jumlah_hari_pengajuan') is-invalid @enderror"
@@ -337,6 +337,9 @@
                                         <option value="TB">Tugas Belajar</option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div>
                                 @if(auth()->user()->id_jabatan != '7')
                                 <div class="form-group">
                                     <label class="control-label col-md-6" for="id_atasan">Atasan Langsung</label>
@@ -360,9 +363,10 @@
                                     @foreach ($settingperizinan as $ps)
                                     @if ($ps->setting && $ps->setting->status == '1')
                                     <label for="id">PPK</label>
-                                    <input type="text" class="form-control @error('') is-invalid @enderror" id="id"
-                                        name="" value="{{ $ps->nama_pegawai}}" readonly>
-                                    @error('') <span class="text-danger">{{$message}}</span> @enderror
+                                    <input type="text" class="form-control @error('') is-invalid @enderror" id="id" name="" value="{{ $ps->nama_pegawai}}" readonly>
+                                    @error('') 
+                                        <span class="text-danger">{{$message}}</span> 
+                                    @enderror
                                     @endif
                                     @endforeach
                                 </div>

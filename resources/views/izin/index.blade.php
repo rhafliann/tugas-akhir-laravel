@@ -27,19 +27,19 @@ $kodeJenisPerizinan = [
                 <form action="{{ route('ajuanperizinan.index') }}" method="GET" class="row">
                     <div class="col-md-12">
                         <div class="form-row">
-                            <div class="col form-group">
-                                <label for="kode_finger">Nama Pegawai:</label>
-                                <select class="form-control" name="kode_finger" id="kode_finger" class="form-control">
+                            <div class="col-sm-3 col-md-3 form-group">
+                                <label for="id_users">Nama Pegawai:</label>
+                                <select class="form-control" name="id_users" id="id_users" class="form-control">
                                     <option value="all">Semua Pegawai</option>
                                     @foreach ($users as $user)
-                                    <option value="{{ $user->kode_finger }}" @if(request()->input('kode_finger') == $user->kode_finger) selected @endif>
+                                    <option value="{{ $user->id_users }}" @if(request()->input('id_users') == $user->id_users) selected @endif>
                                         {{ $user->nama_pegawai }}
                                     </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="col form-group">
+                            <div class="col-sm-3 col-md-3 form-group">
                                 <label for="jenis_perizinan">Jenis Perizinan:</label>&nbsp;&nbsp;
                                 <select class="form-control" id="jenis_perizinan" name="jenis_perizinan">
                                     <option value="all">Semua Jenis Perizinan</option>
@@ -51,16 +51,16 @@ $kodeJenisPerizinan = [
                                 </select>
                             </div>
 
-                            <div class="col-2 form-group">
-                                <label for="tgl_absen_awal" class="my-label mr-2">Tanggal Awal: </label>
-                                <input type="date" id="tgl_absen_awal" name="tgl_absen_awal" required class="form-control" value="{{request()->input('tgl_absen_awal')}}">&nbsp;&nbsp;
+                            <div class="col-sm-3 col-md-2 form-group">
+                                <label for="tgl_absen_awal-filter" class="my-label mr-2">Tanggal Awal: </label>
+                                <input type="date" id="tgl_absen_awal-filter" name="tgl_absen_awal" required class="form-control" value="{{request()->input('tgl_absen_awal')}}">&nbsp;&nbsp;
                             </div>
 
-                            <div class="col-2 form-group">
-                                <label for="tgl_absen_akhir" class="form-label">Tanggal Akhir: </label>&nbsp;&nbsp;
-                                <input type="date" id="tgl_absen_akhir" name="tgl_absen_akhir" required class="form-control" value="{{request()->input('tgl_absen_akhir')}}">&nbsp;&nbsp;&nbsp;
+                            <div class="col-sm-3 col-md-2 form-group">
+                                <label for="tgl_absen_akhir-filter" class="form-label">Tanggal Akhir: </label>&nbsp;&nbsp;
+                                <input type="date" id="tgl_absen_akhir-filter" name="tgl_absen_akhir" required class="form-control" value="{{request()->input('tgl_absen_akhir')}}">&nbsp;&nbsp;&nbsp;
                             </div>
-                            <div class="col">
+                            <div class="col-sm-12 col-md-2">
                                 <br>
                                 <button type="submit" class="btn btn-primary my-2"> Tampilkan</button>&nbsp;&nbsp;
                             </div>
@@ -107,14 +107,14 @@ $kodeJenisPerizinan = [
                                 <td id={{$key+1}}>{{$ap->user->nama_pegawai}}</td>
                                 <td id={{$key+1}}>{{$ap->jenis_perizinan}}</td>
                                 <td id={{$key+1}}> {{ \Carbon\Carbon::parse($ap->tgl_ajuan)->format('d M Y') }}</td>
-                                <td id={{$key+1}}> {{ \Carbon\Carbon::parse($ap->tgl_absen_awal)->format('d M Y') }} -
-                                    {{ \Carbon\Carbon::parse($ap->tgl_absen_akhir)->format('d M Y') }}</td>
+                                <td id={{$key+1}}> 
+                                    {{ \Carbon\Carbon::parse($ap->tgl_absen_awal)->format('d M Y') }} - {{ \Carbon\Carbon::parse($ap->tgl_absen_akhir)->format('d M Y') }}
+                                </td>
                                 <td id={{$key+1}}>{{$ap->keterangan}}</td>
                                 <td id="{{ $key + 1 }}" style="text-align: center; vertical-align: middle;">
                                     @if($ap->file_perizinan)
                                     <a href="{{ asset('storage/file_perizinan/' . $ap->file_perizinan) }}" download>
-                                        <i class="fas fa-download"
-                                            style="display: inline-block; line-height: normal; vertical-align: middle;"></i>
+                                        <i class="fas fa-download" style="display: inline-block; line-height: normal; vertical-align: middle;"></i>
                                     </a>
                                     @else
                                     -
@@ -167,7 +167,7 @@ $kodeJenisPerizinan = [
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         @if(auth()->user()->level=='admin' )
-                                        <a href="{{ route('ajuanperizinan' . '.destroy', $ap->id_perizinan) }}"
+                                        <a href="{{ route('ajuanperizinan.destroy', $ap->id_perizinan) }}"
                                             onclick="notificationBeforeDelete(event, this, {{$key+1}})"
                                             class="btn btn-danger btn-xs mx-1">
                                             <i class="fa fa-trash"></i>
@@ -194,44 +194,41 @@ $kodeJenisPerizinan = [
                                                 @method('PUT')
                                                 @can('isAdmin')
                                                 <div class="form-group">
-                                                    <label for="kode_finger">Nama Pegawai</label>
-                                                    <select type="hidden" id="kode_finger" name="kode_finger"
-                                                        class="form-control @error('kode_finger') is-invalid @enderror">
+                                                    <label for="id_users">Nama Pegawai</label>
+                                                    <select type="hidden" id="id_users" name="id_users"
+                                                        class="form-control @error('id_users') is-invalid @enderror">
                                                         @foreach ($users as $u)
-                                                        <option value="{{ $u->kode_finger }}" {{ $ap->kode_finger ==
-                                                            $u->kode_finger ? 'selected' : '' }}>
+                                                        <option value="{{ $u->id_users }}" {{ $ap->id_users == $u->id_users ? 'selected' : '' }}>
                                                             {{ $u->nama_pegawai }}
                                                         </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="tgl_absen_awal" class='form-label'>Tanggal Awal
-                                                        Izin</label>
+                                                    <label for="tgl_absen_awal-update" class='form-label'>Tanggal Awal Izin</label>
                                                     <div class="form-input">
                                                         <input type="date" class="form-control"
                                                             class="form-control @error('tgl_absen_awal') is-invalid @enderror"
-                                                            id="tgl_absen_awal" placeholder="Nama Diklat"
+                                                            id="tgl_absen_awal-update" placeholder="Nama Diklat"
                                                             name="tgl_absen_awal"
                                                             value="{{$ap -> tgl_absen_awal ?? old('tgl_absen_awal')}}"
                                                             required>
-                                                        @error('tgl_absen_awal') <span
-                                                            class="textdanger">{{$message}}</span>
+                                                        @error('tgl_absen_awal') 
+                                                        <span class="textdanger">{{$message}}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="tgl_absen_akhir" class='form-label'>Tanggal Akhir
-                                                        Izin</label>
+                                                    <label for="tgl_absen_akhir-update" class='form-label'>Tanggal Akhir Izin</label>
                                                     <div class="form-input">
                                                         <input type="date" class="form-control"
                                                             class="form-control @error('tgl_absen_akhir') is-invalid @enderror"
-                                                            id="tgl_absen_akhir" placeholder="Nama Diklat"
+                                                            id="tgl_absen_akhir-update" placeholder="Nama Diklat"
                                                             name="tgl_absen_akhir"
                                                             value="{{$ap -> tgl_absen_akhir ?? old('tgl_absen_akhir')}}"
                                                             required>
-                                                        @error('tgl_absen_akhir') <span
-                                                            class="textdanger">{{$message}}</span>
+                                                        @error('tgl_absen_akhir') 
+                                                        <span class="textdanger">{{$message}}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -253,44 +250,18 @@ $kodeJenisPerizinan = [
                                                     <select
                                                         class="form-control  @error('jenis_perizinan') is-invalid @enderror"
                                                         id="jenis_perizinan" name="jenis_perizinan">
-                                                        <option value="A" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='A' ) selected @endif>Alpha</option>
-                                                        <option value="CAP" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CAP' ) selected @endif>CAP</option>
-                                                        <option value="CB" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CB' ) selected @endif>Cuti Bersama
+                                                        @foreach($kodeJenisPerizinan as $key => $item)
+                                                        <option value="{{ $key }}" @if(old('jenis_perizinan') == $key) selected @endif>
+                                                            {{$item}}
                                                         </option>
-                                                        <option value="CH" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CH' ) selected @endif>Cuti Haji</option>
-                                                        <option value="CM" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CM' ) selected @endif>Cuti Melahirkan
-                                                        </option>
-                                                        <option value="CS" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CS' ) selected @endif>Cuti Sakit</option>
-                                                        <option value="CT" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='CT' ) selected @endif>Cuti Tahunan
-                                                        </option>
-                                                        <option value="DL" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='DL' ) selected @endif>Dinas Luar</option>
-                                                        <option value="I" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='I')selected
-                                                            @endif>Izin</option>
-                                                        <option value="Prajab" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='Prajab'
-                                                            )selected @endif>Prajab</option>
-                                                        <option value="S" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='S' )selected
-                                                            @endif>Sakit</option>
-                                                        <option value="TB" @if(old('jenis_perizinan', $ap->
-                                                            jenis_perizinan)=='TB' )selected
-                                                            @endif>Tugas Belajar</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="keterangan" class="form-label">Keterangan</label>
-                                                    <textarea rows="4" class="form-control" id="keterangan"
-                                                        name="keterangan"
-                                                        required>{{$ap -> keterangan ?? old('keterangan')}}</textarea>
+                                                    <textarea rows="4" class="form-control" id="keterangan" name="keterangan" required>
+                                                        {{$ap -> keterangan ?? old('keterangan')}}
+                                                    </textarea>
                                                 </div>
                                                 @if($user->id_jabatan != '7')
                                                 <div class="form-group">
@@ -416,15 +387,15 @@ $kodeJenisPerizinan = [
                         </div>
                         <div class="form-row">
                             <div class="col form-group">
-                                <label for="tgl_absen_awal">Tanggal Awal Izin</label>
-                                <input type="date" class="form-control @error('tgl_absen_awal') is-invalid @enderror" id="tgl_absen_awal" name="tgl_absen_awal" required>
+                                <label for="tgl_absen_awal-store">Tanggal Awal Izin</label>
+                                <input type="date" class="form-control @error('tgl_absen_awal') is-invalid @enderror" id="tgl_absen_awal-store" name="tgl_absen_awal" required>
                                 @error('tgl_absen_awal') 
                                     <span class="textdanger">{{$message}}</span> 
                                 @enderror
                             </div>
                             <div class="col form-group">
-                                <label for="tgl_absen_akhir">Tanggal Akhir Izin</label>
-                                <input type="date" class="form-control @error('tgl_absen_akhir') is-invalid @enderror" id="tgl_absen_akhir" name="tgl_absen_akhir" required>
+                                <label for="tgl_absen_akhir-store">Tanggal Akhir Izin</label>
+                                <input type="date" class="form-control @error('tgl_absen_akhir') is-invalid @enderror" id="tgl_absen_akhir-store" name="tgl_absen_akhir" required>
                                 @error('tgl_absen_akhir') 
                                     <span class="textdanger">{{$message}}</span> 
                                 @enderror
@@ -432,10 +403,10 @@ $kodeJenisPerizinan = [
                         </div>
                         <div class="form-row">
                             <div class="col form-group">
-                                <label for="jumlah_hari_pengajuan" class="form-label">Jumlah Hari Pengajuan</label>
+                                <label for="jumlah_hari_pengajuan-store" class="form-label">Jumlah Hari Pengajuan</label>
                                 <input type="number"
                                     class="form-control @error('jumlah_hari_pengajuan') is-invalid @enderror"
-                                    id="jumlah_hari_pengajuan" name="jumlah_hari_pengajuan"
+                                    id="jumlah_hari_pengajuan-store" name="jumlah_hari_pengajuan"
                                     value="{{  old('jumlah_hari_pengajuan') }}" min="0">
                                 @error('jumlah_hari_pengajuan') 
                                     <span class="text-danger">{{ $message }}</span>
@@ -601,5 +572,48 @@ $kodeJenisPerizinan = [
             });
         }).draw();
     });
+</script>
+
+<script type="text/javascript">
+    const getBusinessDatesCount = (startDate, endDate) => {
+        let count = 0;
+        let curDate = +startDate;
+        while (curDate <= +endDate) {
+            const dayOfWeek = new Date(curDate).getDay();
+            const isWeekend = (dayOfWeek === 6) || (dayOfWeek === 0);
+            if (!isWeekend) count++;
+
+            curDate = curDate + 24 * 60 * 60 * 1000
+        }
+        return count;
+    }
+
+    const changeHariPengajuan = (tgl_absen_awal, tgl_absen_akhir, target) => {
+        let startDate = new Date(tgl_absen_awal.value);
+        let endDate = new Date(tgl_absen_akhir.value);
+
+        if(!startDate){
+            window.alert("Harap input tanggal awal");        
+        }
+
+        if(!endDate){
+            window.alert("Harap input tanggal akhir");        
+        }
+
+        if(+startDate > +endDate){
+            window.alert("Harap masukan periode tanggal yang sesuai");
+            tgl_absen_awal_store.value = '';
+            tgl_absen_akhir_store.value = '';
+        }
+
+        target.value = getBusinessDatesCount(startDate, endDate);
+    }
+    
+    const tgl_absen_awal_store = document.getElementById('tgl_absen_awal-store');
+    const tgl_absen_akhir_store = document.getElementById('tgl_absen_akhir-store');
+    const hari_pengajuan = document.getElementById('jumlah_hari_pengajuan-store');
+
+    document.getElementById('tgl_absen_akhir-store')
+    .addEventListener('change', (e) => changeHariPengajuan(tgl_absen_awal_store, tgl_absen_akhir_store, hari_pengajuan));
 </script>
 @endpush

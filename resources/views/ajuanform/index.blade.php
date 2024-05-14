@@ -130,8 +130,12 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="nama_kegiatan" class="form-label">Nama Kegiatan</label>
                         <div class="form-input">
-                            <input rows="3" type="text" class="form-control @error('nama_kegiatan') is-invalid @enderror"
-                                id="nama_kegiatan" name="nama_kegiatan"  required></input>
+                            <select name="nama_kegiatan" id="nama_kegiatan" class="form-control">
+                                <option value="">Pilih Kegiatan</option>
+                                @foreach($kegiatan as $key => $item)
+                                <option value="{{ $item->nama_kegiatan }}">{{ $item->nama_kegiatan }}</option>
+                                @endforeach
+                            </select>
                         @error('nama_kegiatan') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -261,9 +265,12 @@
                     </div>
                     <div class="form-group " style="align-items: flex-start;">
                         <label for="nama_kegiatan" class="form-label">Nama Kegiatan</label>
-                        <div class="form-input">
-                            <input type="text" class="form-control @error('nama_kegiatan') is-invalid @enderror"
-                                id="nama_kegiatan" name="nama_kegiatan" value="{{old('nama_kegiatan', $form->nama_kegiatan)}}" required>
+                        <select name="nama_kegiatan" id="nama_kegiatan" class="form-control">
+                            <option value="">Pilih Kegiatan</option>
+                            @foreach($kegiatan as $key => $item)
+                            <option value="{{ $item->nama_kegiatan }}" @if($item->nama_kegiatan == ($form->nama_kegiatan ?? old('nama_kegiatan'))) selected @endif>{{ $item->nama_kegiatan }}</option>
+                            @endforeach
+                        </select>
                         @error('nama_kegiatan') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>

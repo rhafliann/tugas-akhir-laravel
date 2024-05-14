@@ -27,6 +27,7 @@
                   <th>Nama</th>
                   <th>NIK</th>
                   <th>Institusi</th>
+                  <th>divisi</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -37,11 +38,12 @@
                   <td>{{ $item->nama }}</td>
                   <td>{{ $item->nik }}</td>
                   <td>{{ $item->institusi }}</td>
+                  <td>{{ $item->divisi }}</td>
                   <td class="d-flex">
                     <a class="btn btn-warning mx-2" href="{{route('pemagang.edit', $item)}}">Edit</a>
                     <form action="{{ route('pemagang.destroy', $item) }}" method="POST">
                       @csrf
-                      @method('DELETE')
+                      @method("DELETE")
                       <button class="btn btn-danger">Hapus</button>
                     </form>
                   </td>
@@ -102,6 +104,19 @@
                       <div class="col-9">
                         <input type="text" name="institusi" id="institusi" class="form-control @error('institusi') is-invalid @enderror" value="{{ old('institusi') }}" required>
                         @error('institusi')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3">
+                        <label for="institusi">Divisi Pemagang</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="text" name="divisi" id="divisi" class="form-control @error('divisi') is-invalid @enderror" value="{{ old('divisi') }}" required>
+                        @error('divisi')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>

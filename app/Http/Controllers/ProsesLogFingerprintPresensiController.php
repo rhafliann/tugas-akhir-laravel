@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class ProsesPresensiController extends Controller
+class ProsesLogFingerprintPresensiController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -32,14 +32,11 @@ class ProsesPresensiController extends Controller
             "start_date" => $start_date,
             "end_date" => $start_date
         ]);
-
-        // $log_fingerprints = [];
     
         if ($response->failed()) {
             echo "Failed \n";
             Log::error('request failed with' . json_encode($response->json(), JSON_PRETTY_PRINT));
         } else {
-    
             $json = (object) $response->json();
 
             if($json->success == false){
@@ -47,11 +44,9 @@ class ProsesPresensiController extends Controller
             }
 
             Log::info('request success with' . json_encode($json, JSON_PRETTY_PRINT));
-        
             if (isset($json->data)) { // mengecek apakah data dapat diakses
                 foreach ($json->data as $item) {
                     try {
-    
                         $log_fingerprint = [
                             "cloud_id" => $cloud_id,
                             "nik" => $item['pin'],
@@ -59,13 +54,7 @@ class ProsesPresensiController extends Controller
                             "scan_time" => $item['scan_date'],
                             "original_data" => json_encode($item)
                         ];
-                        // $inserted = LogFingerprint::create($log_fingerprint);
                         LogFingerprint::create($log_fingerprint);
-                        // mengecek apakah data berhasil di masukan
-                        // if ($inserted) {
-                        //     // data yang berhasil di masukan akan di gunakan kembali
-                        //     // array_push($log_fingerprints, (object) $log_fingerprint);
-                        // }
 
                     } catch (\Throwable $th) {
                         //throw $th;
@@ -75,7 +64,7 @@ class ProsesPresensiController extends Controller
             }
         }
 
-        $log_fingerprints = LogFingerprint::whereDate('scan_time', $start_date)->get();
+        $log_fingerprints = LogFingerprint::all();
 
         foreach ($log_fingerprints as $key => $value) {
             dispatch(new ProsesPresensiLogFingerprint($value->nik, Carbon::parse($value->scan_time)->format('Y-m-d'), $value));
