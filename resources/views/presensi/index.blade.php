@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                 @if(auth()->user()->level === 'admin')
-                    <form method="get" action="{{route('presensi.user')}}" class="row">
+                    <form method="get" action="{{route('presensi.index')}}" class="row">
                         <div class="col form-group mb-2">
                             <label for="tanggal">Tanggal Awal :</label> &nbsp;&nbsp;
                             <input type="date"
