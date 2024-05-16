@@ -13,12 +13,6 @@ class MonitoringPresensi extends Controller
      */
     public function __invoke(Request $request)
     {
-        //
-        // $presensi_pegawai = User::with(['profile.presensi' => function($query){
-        //     $hari_ini = Carbon::now()->format('Y-m-d');
-
-        //     $query->whereDate('tanggal', $hari_ini);
-        // }]);
         $presensi_pegawai = User::with([
             'profile:nik,id_users,id_jabatan',            
             'profile.presensi' => function($query){
