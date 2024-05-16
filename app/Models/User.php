@@ -80,10 +80,10 @@ class User extends Authenticatable
         return $this->hasOne(GeneralSetting::class, 'id_users', 'id_users');
     }
 
-    public function presensi()
-    {
-        return $this->hasMany(Presensi::class, 'nik', 'nik');
-    }
+    // public function presensi()
+    // {
+    //     return $this->hasMany(Presensi::class);
+    // }
 
     public function ajuanperizinan()
     {

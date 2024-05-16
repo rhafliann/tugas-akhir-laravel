@@ -24,5 +24,9 @@ class Profile extends Model
         return $this->belongsTo(User::class, 'id_users', 'id_users');
     }
 
+    public function presensi(){
+        return $this->hasMany(Presensi::class, 'nik', 'nik');
+    }
+
     protected $guarded = ['id_profile_user'];
 }
