@@ -38,7 +38,7 @@ class PresensiController extends Controller
             // Fetch all work experiences for admin
             $presensi = Presensi::where('is_deleted', '0')
                 ->whereHas('profile_user')
-                ->with(['profile_user:nik,id_users', 'profile_user.user:id_users,nama_pegawai']);
+                ->with(['profile_user:nik,id_users', '<profil></profil>e_user.user:id_users,nama_pegawai']);
         } else {
             // Fetch user's own work experiences using the relationship
             $presensi = Presensi::where(['nik' => $user->profile->nik])
@@ -147,13 +147,25 @@ class PresensiController extends Controller
 
         $presensis = [];
 
-        $defaultStartDate = '2023-01-01';
-        $defaultEndDate = '2023-12-31';
+        $defaultStartDate =  date('Y').'-01-01';
+        $defaultEndDate = date('Y-m-d');
 
         $start_date = $request->input('start_date', $defaultStartDate);
         $end_date = $request->input('end_date', $defaultEndDate);
 
-        foreach ($users as $user) {
+        $users = User::where('is_deleted', '0')
+        ->whereNotIn('id_users', [1,2,3,4,5])
+        ->with([
+            'profile', 
+            'profile.presensi' => function($query) use ($start_date, $end_date) {
+                $query->whereBetween('tanggal', [ Carbon::parse($start_date)->format('Y-m-d'), Carbon::parse($end_date)->format('Y-m-d')]);
+            }
+        ])->get();
+
+        $presensis = [];
+    
+        foreach($users as $key => $user)
+        {
             $kehadiran = 0;
             $terlambat = 0;
             $ijin = 0;
@@ -168,101 +180,89 @@ class PresensiController extends Controller
             $tugasBelajar = 0;
             $cap = 0;
             $prajab = 0;
+            // dd($user->nama_pegawai, $user->profile->presensi);
 
-            $presensiData = Presensi::where('kode_finger', $user->kode_finger)->whereBetween('tanggal', [$start_date, $end_date])->get();
-
-            foreach ($presensiData as $pd) {
-                if ($pd->kehadiran !== null && $pd->kehadiran !== '00:00') {
-                    $kehadiran++;
-                } else {
-                    switch ($pd->jenis_perizinan) {
+            if(isset($user->profile->presensi)){
+                foreach($user->profile->presensi as $p => $presensi){
+    
+                    if ($presensi->kehadiran !== null && $presensi->kehadiran !== '00:00:00') {
+                        $kehadiran++;
+                    }
+                    
+                    switch ($presensi->jenis_perizinan) {
                         case 'I':
                             $ijin++;
                             break;
-
                         case 'S':
                             $sakit++;
                             break;
-
                         case 'CS':
                             $cutiSakit++;
                             break;
-
                         case 'CT':
                             $cutiTahunan++;
                             break;
-
                         case 'CM':
                             $cutiMelahirkan++;
                             break;
-
                         case 'DL':
                             $dinasLuar++;
                             break;
-
                         case 'A':
                             $alpha++;
                             break;
-
                         case 'CB':
                             $cutiBersama++;
                             break;
-
                         case 'CH':
                             $cutiHaji++;
                             break;
-
                         case 'TB':
                             $tugasBelajar++;
                             break;
-                            
                         case 'CAP':
                             $cap++;
                             break;
-
                         case 'Prajab':
                             $prajab++;
                             break;
-
                         default:
                             // Handle any other case not covered above, if necessary.
                             break;
                     }
-                }
-
-                if (isset($pd->terlambat)) {
-                    if ($pd->kehadiran) {
-                        $time = explode(':', $pd->terlambat);
-                        if ($time[0] > 0) {
-                            $terlambat++;
-                        } elseif ($time[1] > 0) {
-                            $terlambat++;
-                        } elseif ($time[2] > 0) {
-                            $terlambat++;
+    
+                    if (isset($presensi->terlambat)) {
+                        if ($presensi->kehadiran) {
+                            $time = explode(':', $presensi->terlambat);
+                            if ($time[0] > 0) {
+                                $terlambat++;
+                            } elseif ($time[1] > 0) {
+                                $terlambat++;
+                            } elseif ($time[2] > 0) {
+                                $terlambat++;
+                            }
                         }
                     }
                 }
 
+                $presensis[] = [
+                    'user' => $user->nama_pegawai,
+                    'kehadiran' => $kehadiran,
+                    'terlambat' => $terlambat,
+                    'ijin' => $ijin,
+                    'sakit' => $sakit,
+                    'cutiSakit' => $cutiSakit,
+                    'cutiTahunan' => $cutiTahunan,
+                    'cutiMelahirkan' => $cutiMelahirkan,
+                    'dinasLuar' => $dinasLuar,
+                    'alpha' => $alpha,
+                    'cutiBersama' => $cutiBersama,
+                    'cutiHaji' => $cutiHaji,
+                    'tugasBelajar' => $tugasBelajar,
+                    'cap' => $cap,
+                    'prajab' => $prajab,
+                ];
             }
-
-            $presensis['data'][] = [
-                'user' => $user->nama_pegawai,
-                'kehadiran' => $kehadiran,
-                'terlambat' => $terlambat,
-                'ijin' => $ijin,
-                'sakit' => $sakit,
-                'cutiSakit' => $cutiSakit,
-                'cutiTahunan' => $cutiTahunan,
-                'cutiMelahirkan' => $cutiMelahirkan,
-                'dinasLuar' => $dinasLuar,
-                'alpha' => $alpha,
-                'cutiBersama' => $cutiBersama,
-                'cutiHaji' => $cutiHaji,
-                'tugasBelajar' => $tugasBelajar,
-                'cap' => $cap,
-                'prajab' => $prajab,
-            ];
-
         }
 
         $presensis['start_date'] = $start_date;
@@ -273,19 +273,25 @@ class PresensiController extends Controller
 
     public function filterAdmin(Request $request)
     {
-        $users = User::where('is_deleted', '0')
-        ->whereNotIn('id_users', [1,2,3,4,5])
-        ->with('profile')->get();
-
-        $presensis = [];
-
-        $defaultStartDate = '2023-01-01';
-        $defaultEndDate = '2023-12-31';
+        $defaultStartDate =  date('Y').'-01-01';
+        $defaultEndDate = date('Y-m-d');
 
         $start_date = $request->input('start_date', $defaultStartDate);
         $end_date = $request->input('end_date', $defaultEndDate);
 
-        foreach ($users as $user) {
+        $users = User::where('is_deleted', '0')
+        ->whereNotIn('id_users', [1,2,3,4,5])
+        ->with([
+            'profile', 
+            'profile.presensi' => function($query) use ($start_date, $end_date) {
+                $query->whereBetween('tanggal', [ Carbon::parse($start_date)->format('Y-m-d'), Carbon::parse($end_date)->format('Y-m-d')]);
+            }
+        ])->get();
+
+        $presensis = [];
+    
+        foreach($users as $key => $user)
+        {
             $kehadiran = 0;
             $terlambat = 0;
             $ijin = 0;
@@ -300,107 +306,89 @@ class PresensiController extends Controller
             $tugasBelajar = 0;
             $cap = 0;
             $prajab = 0;
+            // dd($user->nama_pegawai, $user->profile->presensi);
 
-            if(!$user->profile){
-                // dd($user);
-                continue;
-            }
-
-            $presensiData = Presensi::where('nik', $user->profile->nik)->whereBetween('tanggal', [$start_date, $end_date])->get();
-
-            foreach ($presensiData as $pd) {
-                if ($pd->kehadiran !== null && $pd->kehadiran !== '00:00:00') {
-                    $kehadiran++;
-                } else {
-                    switch ($pd->jenis_perizinan) {
+            if(isset($user->profile->presensi)){
+                foreach($user->profile->presensi as $p => $presensi){
+    
+                    if ($presensi->kehadiran !== null && $presensi->kehadiran !== '00:00:00') {
+                        $kehadiran++;
+                    }
+                    
+                    switch ($presensi->jenis_perizinan) {
                         case 'I':
                             $ijin++;
                             break;
-
                         case 'S':
                             $sakit++;
                             break;
-
                         case 'CS':
                             $cutiSakit++;
                             break;
-
                         case 'CT':
                             $cutiTahunan++;
                             break;
-
                         case 'CM':
                             $cutiMelahirkan++;
                             break;
-
                         case 'DL':
                             $dinasLuar++;
                             break;
-
                         case 'A':
                             $alpha++;
                             break;
-
                         case 'CB':
                             $cutiBersama++;
                             break;
-
                         case 'CH':
                             $cutiHaji++;
                             break;
-
                         case 'TB':
                             $tugasBelajar++;
                             break;
-
                         case 'CAP':
                             $cap++;
                             break;
-
                         case 'Prajab':
                             $prajab++;
                             break;
-        
-
                         default:
                             // Handle any other case not covered above, if necessary.
                             break;
                     }
-                }
-
-                if (isset($pd->terlambat)) {
-                    if ($pd->kehadiran) {
-                        $time = explode(':', $pd->terlambat);
-                        if ($time[0] > 0) {
-                            $terlambat++;
-                        } elseif ($time[1] > 0) {
-                            $terlambat++;
-                        } elseif ($time[2] > 0) {
-                            $terlambat++;
+    
+                    if (isset($presensi->terlambat)) {
+                        if ($presensi->kehadiran) {
+                            $time = explode(':', $presensi->terlambat);
+                            if ($time[0] > 0) {
+                                $terlambat++;
+                            } elseif ($time[1] > 0) {
+                                $terlambat++;
+                            } elseif ($time[2] > 0) {
+                                $terlambat++;
+                            }
                         }
                     }
                 }
 
+                $presensis[] = [
+                    'user' => $user->nama_pegawai,
+                    'kehadiran' => $kehadiran,
+                    'terlambat' => $terlambat,
+                    'ijin' => $ijin,
+                    'sakit' => $sakit,
+                    'cutiSakit' => $cutiSakit,
+                    'cutiTahunan' => $cutiTahunan,
+                    'cutiMelahirkan' => $cutiMelahirkan,
+                    'dinasLuar' => $dinasLuar,
+                    'alpha' => $alpha,
+                    'cutiBersama' => $cutiBersama,
+                    'cutiHaji' => $cutiHaji,
+                    'tugasBelajar' => $tugasBelajar,
+                    'cap' => $cap,
+                    'prajab' => $prajab,
+                ];
             }
-
-            $presensis[] = [
-                'user' => $user->nama_pegawai,
-                'kehadiran' => $kehadiran,
-                'terlambat' => $terlambat,
-                'ijin' => $ijin,
-                'sakit' => $sakit,
-                'cutiSakit' => $cutiSakit,
-                'cutiTahunan' => $cutiTahunan,
-                'cutiMelahirkan' => $cutiMelahirkan,
-                'dinasLuar' => $dinasLuar,
-                'alpha' => $alpha,
-                'cutiBersama' => $cutiBersama,
-                'cutiHaji' => $cutiHaji,
-                'tugasBelajar' => $tugasBelajar,
-                'cap' => $cap,
-                'prajab' => $prajab,
-            ];
-
         }
 
         return view('presensi.filter', [
