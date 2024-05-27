@@ -307,6 +307,7 @@ class PresensiController extends Controller
             $tugasBelajar = 0;
             $cap = 0;
             $prajab = 0;
+            $array_waktu_terlambat = [];
             // dd($user->nama_pegawai, $user->profile->presensi);
 
             if(isset($user->profile->presensi)){
@@ -361,7 +362,7 @@ class PresensiController extends Controller
                     if (isset($presensi->terlambat)) {
                         if ($presensi->kehadiran) {
                             if($presensi->terlambat){
-                                $totalWaktuTerlambat = $totalWaktuTerlambat + strtotime($presensi->terlambat);
+                                array_push($array_waktu_terlambat, $presensi->terlambat);
                             }
 
                             $time = explode(':', $presensi->terlambat);
@@ -376,12 +377,10 @@ class PresensiController extends Controller
                     }
                 }
 
-                $totalWaktuTerlambat = $totalWaktuTerlambat != 0 ? Carbon::createFromTimestamp($totalWaktuTerlambat)->toTimeString() : "0";
-
                 $presensis[] = [
                     'user' => $user->nama_pegawai,
                     'kehadiran' => $kehadiran,
-                    'total_waktu_terlambat' => $totalWaktuTerlambat,
+                    'total_waktu_terlambat' => $this->CalculateTime($array_waktu_terlambat),
                     'terlambat' => $terlambat,
                     'ijin' => $ijin,
                     'sakit' => $sakit,
@@ -403,6 +402,21 @@ class PresensiController extends Controller
             'presensis' => $presensis,
         ]);
 
+    }
+
+    function CalculateTime($times){    
+        $hh = 0;
+        $mm = 0;
+        $ss = 0;
+        foreach($times as $time){
+            [$hours, $minutes, $seconds] = explode(':', $time);
+            $hh += $hours;
+            $mm += $minutes;
+            $ss += $seconds;
+        }
+        $mm += floor($ss / 60); $ss = $ss % 60;
+        $hh += floor($mm / 60); $mm = $mm % 60;
+        return sprintf('%02d:%02d:%02d', $hh, $mm, $ss);
     }
 
     public function import(Request $request)
