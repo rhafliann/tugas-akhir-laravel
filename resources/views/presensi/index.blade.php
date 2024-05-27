@@ -118,7 +118,10 @@
     // })
     
     const d = new Date();
-    const filename = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const filename = `${d.getFullYear()}-${monthNames[d.getMonth()]}-${d.getDate()}`
+
+    console.log(d)
 
     async function downloadExcelData(items){
         const workbook = new ExcelJS.Workbook();
