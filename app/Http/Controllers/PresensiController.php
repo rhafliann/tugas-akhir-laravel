@@ -38,7 +38,7 @@ class PresensiController extends Controller
             // Fetch all work experiences for admin
             $presensi = Presensi::where('is_deleted', '0')
                 ->whereHas('profile_user')
-                ->with(['profile_user:nik,id_users', '<profil></profil>e_user.user:id_users,nama_pegawai']);
+                ->with(['profile_user:nik,id_users', 'profile_user.user:id_users,nama_pegawai']);
         } else {
             // Fetch user's own work experiences using the relationship
             $presensi = Presensi::where(['nik' => $user->profile->nik])
