@@ -81,7 +81,10 @@
                                         <td>{{$key + 1}}</td>
                                         <td>{{ $presensi['user'] }}</td>
                                         <td>{{ $presensi['kehadiran'] }}</td>
-                                        <td>{{ $presensi['terlambat'] }}</td>
+                                        <td class="d-flex justify-content-between"> 
+                                            <p>{{ $presensi['terlambat'] }}x </p>
+                                            <p>{{ $presensi['total_waktu_terlambat'] }}</p>
+                                        </td>
                                         <td>{{ $presensi['ijin'] }}</td>
                                         <td>{{ $presensi['sakit'] }}</td>
                                         <td>{{ $presensi['cutiSakit'] }}</td>

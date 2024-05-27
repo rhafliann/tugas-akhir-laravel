@@ -294,6 +294,7 @@ class PresensiController extends Controller
         {
             $kehadiran = 0;
             $terlambat = 0;
+            $totalWaktuTerlambat = 0;
             $ijin = 0;
             $sakit = 0;
             $cutiSakit = 0;
@@ -359,6 +360,10 @@ class PresensiController extends Controller
     
                     if (isset($presensi->terlambat)) {
                         if ($presensi->kehadiran) {
+                            if($presensi->terlambat){
+                                $totalWaktuTerlambat = $totalWaktuTerlambat + strtotime($presensi->terlambat);
+                            }
+
                             $time = explode(':', $presensi->terlambat);
                             if ($time[0] > 0) {
                                 $terlambat++;
@@ -371,9 +376,12 @@ class PresensiController extends Controller
                     }
                 }
 
+                $totalWaktuTerlambat = $totalWaktuTerlambat != 0 ? Carbon::createFromTimestamp($totalWaktuTerlambat)->toTimeString() : "0";
+
                 $presensis[] = [
                     'user' => $user->nama_pegawai,
                     'kehadiran' => $kehadiran,
+                    'total_waktu_terlambat' => $totalWaktuTerlambat,
                     'terlambat' => $terlambat,
                     'ijin' => $ijin,
                     'sakit' => $sakit,
