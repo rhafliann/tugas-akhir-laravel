@@ -6,19 +6,19 @@
 @section('content')
 @php
 $kodeJenisPerizinan = [
-    'A' => 'Alpha', 
-    'CAP' => 'CAP', 
-    'CB' => 'Cuti Bersama', 
-    'CH' => 'Cuti Haji', 
-    'CM' => 'Cuti Melahirkan', 
-    'CS' => 'Cuti Sakit', 
-    'CT' => 'Cuti Tahunan', 
-    'DL' => 'Dinas Luar', 
-    'I' => 'Izin', 
-    'Prajab' => 'Prajab', 
-    'S' => 'Sakit', 
+    'A' => 'Alpha',
+    'CAP' => 'CAP',
+    'CB' => 'Cuti Bersama',
+    'CH' => 'Cuti Haji',
+    'CM' => 'Cuti Melahirkan',
+    'CS' => 'Cuti Sakit',
+    'CT' => 'Cuti Tahunan',
+    'DL' => 'Dinas Luar',
+    'I' => 'Izin',
+    'Prajab' => 'Prajab',
+    'S' => 'Sakit',
     'TB' => 'Tugas Belajar'
-];   
+];
 @endphp
 <div class="row">
     <div class="col-12">
@@ -66,7 +66,7 @@ $kodeJenisPerizinan = [
                             </div>
                         </div>
                         {{-- <div class="col">
-                            
+
                         </div> --}}
                     </div>
                 </form>
@@ -107,7 +107,7 @@ $kodeJenisPerizinan = [
                                 <td id={{$key+1}}>{{$ap->user->nama_pegawai}}</td>
                                 <td id={{$key+1}}>{{$ap->jenis_perizinan}}</td>
                                 <td id={{$key+1}}> {{ \Carbon\Carbon::parse($ap->tgl_ajuan)->format('d M Y') }}</td>
-                                <td id={{$key+1}}> 
+                                <td id={{$key+1}}>
                                     {{ \Carbon\Carbon::parse($ap->tgl_absen_awal)->format('d M Y') }} - {{ \Carbon\Carbon::parse($ap->tgl_absen_akhir)->format('d M Y') }}
                                 </td>
                                 <td id={{$key+1}}>{{$ap->keterangan}}</td>
@@ -213,7 +213,7 @@ $kodeJenisPerizinan = [
                                                             name="tgl_absen_awal"
                                                             value="{{$ap -> tgl_absen_awal ?? old('tgl_absen_awal')}}"
                                                             required>
-                                                        @error('tgl_absen_awal') 
+                                                        @error('tgl_absen_awal')
                                                         <span class="textdanger">{{$message}}</span>
                                                         @enderror
                                                     </div>
@@ -227,7 +227,7 @@ $kodeJenisPerizinan = [
                                                             name="tgl_absen_akhir"
                                                             value="{{$ap -> tgl_absen_akhir ?? old('tgl_absen_akhir')}}"
                                                             required>
-                                                        @error('tgl_absen_akhir') 
+                                                        @error('tgl_absen_akhir')
                                                         <span class="textdanger">{{$message}}</span>
                                                         @enderror
                                                     </div>
@@ -241,8 +241,8 @@ $kodeJenisPerizinan = [
                                                         value="{{$ap -> jumlah_hari_pengajuan ?? old('jumlah_hari_pengajuan') }}"
                                                         min="0">
 
-                                                    @error('jumlah_hari_pengajuan') 
-                                                        <span class="text-danger">{{$message }}</span> 
+                                                    @error('jumlah_hari_pengajuan')
+                                                        <span class="text-danger">{{$message }}</span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
@@ -304,9 +304,9 @@ $kodeJenisPerizinan = [
                                                 <div class="form-group">
                                                     <label for="status_izin_atasan">Persetujuan Atasan</label>
                                                     <div class="input">
-                                                        <input type="radio" name="status_izin_atasan" value="1" @if ($ap->status_izin_atasan === '1') checked @endif> 
+                                                        <input type="radio" name="status_izin_atasan" value="1" @if ($ap->status_izin_atasan === '1') checked @endif>
                                                         Disetujui<br>
-                                                        <input type="radio" name="status_izin_atasan" value="0" @if ($ap->status_izin_atasan === '0') checked @endif> 
+                                                        <input type="radio" name="status_izin_atasan" value="0" @if ($ap->status_izin_atasan === '0') checked @endif>
                                                         Ditolak<br>
                                                     </div>
                                                 </div>
@@ -375,13 +375,15 @@ $kodeJenisPerizinan = [
                                 <label class="control-label col-md-6" for="id_users">Nama Pegawai</label>
                                 <select id="id_users" name="id_users" class="form-control @error('id_users') is-invalid @enderror">
                                     @foreach ($users as $us)
+                                    @if ($us->level != 'admin')
                                     <option value="{{ $us->id_users }}" @if(old('id_users') == $us->id_users) selected @endif>
                                         {{ $us->nama_pegawai }}
                                     </option>
+                                    @endif
                                     @endforeach
                                 </select>
-                                @error('id_users') 
-                                    <span class="textdanger">{{$message}}</span> 
+                                @error('id_users')
+                                    <span class="textdanger">{{$message}}</span>
                                 @enderror
                             </div>
                         </div>
@@ -389,15 +391,15 @@ $kodeJenisPerizinan = [
                             <div class="col form-group">
                                 <label for="tgl_absen_awal-store">Tanggal Awal Izin</label>
                                 <input type="date" class="form-control @error('tgl_absen_awal') is-invalid @enderror" id="tgl_absen_awal-store" name="tgl_absen_awal" required>
-                                @error('tgl_absen_awal') 
-                                    <span class="textdanger">{{$message}}</span> 
+                                @error('tgl_absen_awal')
+                                    <span class="textdanger">{{$message}}</span>
                                 @enderror
                             </div>
                             <div class="col form-group">
                                 <label for="tgl_absen_akhir-store">Tanggal Akhir Izin</label>
                                 <input type="date" class="form-control @error('tgl_absen_akhir') is-invalid @enderror" id="tgl_absen_akhir-store" name="tgl_absen_akhir" required>
-                                @error('tgl_absen_akhir') 
-                                    <span class="textdanger">{{$message}}</span> 
+                                @error('tgl_absen_akhir')
+                                    <span class="textdanger">{{$message}}</span>
                                 @enderror
                             </div>
                         </div>
@@ -408,7 +410,7 @@ $kodeJenisPerizinan = [
                                     class="form-control @error('jumlah_hari_pengajuan') is-invalid @enderror"
                                     id="jumlah_hari_pengajuan-store" name="jumlah_hari_pengajuan"
                                     value="{{  old('jumlah_hari_pengajuan') }}" min="0">
-                                @error('jumlah_hari_pengajuan') 
+                                @error('jumlah_hari_pengajuan')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -453,14 +455,17 @@ $kodeJenisPerizinan = [
                                 <label for="id_atasan">Atasan Langsung</label>
                                 <select id="id_atasan" name="id_atasan" class="form-control @error('id_atasan') is-invalid @enderror">
                                     @foreach ($users as $us)
+                                    @if ($us->level != 'admin')
                                     <option value="{{ $us->id_users }}" @if( old('id_atasan') == $us->id_users) selected @endif>
                                         {{ $us->nama_pegawai }}
                                     </option>
+
+                                    @endif
                                     @endforeach
                                 </select>
                                 <small class="form-text text-muted">Direktur doesn't required</small>
-                                @error('id_atasan') 
-                                <span class="textdanger">{{$message}}</span> 
+                                @error('id_atasan')
+                                <span class="textdanger">{{$message}}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
@@ -593,11 +598,11 @@ $kodeJenisPerizinan = [
         let endDate = new Date(tgl_absen_akhir.value);
 
         if(!startDate){
-            window.alert("Harap input tanggal awal");        
+            window.alert("Harap input tanggal awal");
         }
 
         if(!endDate){
-            window.alert("Harap input tanggal akhir");        
+            window.alert("Harap input tanggal akhir");
         }
 
         if(+startDate > +endDate){
@@ -608,7 +613,7 @@ $kodeJenisPerizinan = [
 
         target.value = getBusinessDatesCount(startDate, endDate);
     }
-    
+
     const tgl_absen_awal_store = document.getElementById('tgl_absen_awal-store');
     const tgl_absen_akhir_store = document.getElementById('tgl_absen_akhir-store');
     const hari_pengajuan = document.getElementById('jumlah_hari_pengajuan-store');

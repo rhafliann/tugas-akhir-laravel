@@ -219,9 +219,14 @@
                             <select id="id_users" name="id_users"
                                 class="form-control @error('id_users') is-invalid @enderror">
                                 @foreach ($users as $us)
-                                <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users
-                                    )selected @endif>
-                                    {{ $us->nama_pegawai }}</option>
+                                @if($us->level != 'admin')
+
+                                <option value="{{ $us->id_users }}"
+                                @if( old('id_users') == $us->id_users)selected @endif>
+
+                                    {{ $us->nama_pegawai }}
+                                </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('id_users') <span class="textdanger">{{$message}}</span> @enderror
@@ -251,11 +256,14 @@
                             <select id="id_atasan" name="id_atasan"
                                 class="form-control @error('id_atasan') is-invalid @enderror">
                                 @foreach ($users as $us)
+                                @if ($us->level != 'admin')
                                 <option value="{{ $us->id_users }}" @if( old('id_atasan')==$us->
                                     id_users )selected
                                     @endif>
                                     {{ $us->nama_pegawai }}</option>
+                                    @endif
                                 @endforeach
+
                             </select>
                         </div>
                         <div class="modal-footer">

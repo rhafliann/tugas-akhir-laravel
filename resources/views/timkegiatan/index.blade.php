@@ -107,9 +107,10 @@
                                     <select id="id_users" name="id_users"
                                         class="form-control @error('id_users') is-invalid @enderror">
                                         @foreach ($user as $us)
-                                        <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users )
-                                            sePlected @endif">
+                                        @if ($us->level != 'admin')
+                                        <option value="{{ $us->id_users }}" @if( old('id_users')==$us->id_users )sePlected @endif">
                                             {{ $us->nama_pegawai }}</option>
+                                        @endif
                                         @endforeach
                                     </select>
                                 </div>
