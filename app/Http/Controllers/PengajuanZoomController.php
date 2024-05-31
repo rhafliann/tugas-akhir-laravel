@@ -12,10 +12,12 @@ class PengajuanZoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-      
-        $zoom = PengajuanZoom::where('is_deleted', '0')->get();
+        $tahun = $request->input('tahun', date('Y'));
+        $zoom = PengajuanZoom::where('is_deleted', '0')
+        ->whereYear('tgl_pengajuan', $tahun)
+        ->get();
         $kegiatan = Kegiatan::all();
       
 
@@ -23,6 +25,7 @@ class PengajuanZoomController extends Controller
             'zoom' => $zoom,
             'kegiatan' => $kegiatan,
             'user' => User::where('is_deleted', '0')->orderByRaw("LOWER(nama_pegawai)")->get(),
+            'tahun' => $tahun
         ]);
     }
 
