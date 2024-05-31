@@ -16,15 +16,24 @@ class PengajuanDesainController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $tahun = $request->input('tahun', date('Y'));
         $user = auth()->user();
-        $ajuandesain = PengajuanDesain::where('is_deleted', '0')->orderByDesc('id_pengajuan_desain')->get();
-        $kegiatan = Kegiatan::all();
+        $ajuandesain = PengajuanDesain::where('is_deleted', '0')
+        ->whereYear('tgl_pengajuan', $tahun)
+        ->orderByDesc('id_pengajuan_desain')->get();
+        
+        $kegiatan = Kegiatan::where(['is_deleted' => '0'])
+        ->whereYear('tgl_mulai', $tahun)
+        ->orWhereYear('tgl_selesai', $tahun)
+        ->get();
+
         return view('ajuandesain.index', [
             'ajuandesain' => $ajuandesain,
             'kegiatan' => $kegiatan,
             'users' => User::where('is_deleted', '0')->orderByRaw("LOWER(nama_pegawai)")->get(),
+            'tahun' => $tahun
         ]);
     }
 
