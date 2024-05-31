@@ -40,7 +40,7 @@
                 <!--kiri-->
 
                 <div class="box-1 mt-md-0 mt-5">
-                    <img src="https://source.unsplash.com/random/600x1000?nature" class="image" alt="Random Image">
+                    <img src="https://source.unsplash.com/random/600x1000?nature" id="random-image" class="image" alt="Random Image">
                     <div class="text w-100">
                         <p>SEAMEO QITEP in Language</p>
                         <p>Prioritising Language, Advancing Education</p>
@@ -98,6 +98,17 @@
             </div>
         </main>
     </div>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(){
+            fetch('https://api.unsplash.com/photos/random?client_id=Y4pwuZXv0cOGKrDBEfme2fHepLHWFEVbBCq0oJf1J04')
+            .then(res => res.json())
+            .then(json => {
+                document.getElementById('random-image').setAttribute('src', json.urls.regular);
+            })
+        })
+    </script>
+
 </body>
 
 </html>
