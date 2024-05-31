@@ -62,7 +62,7 @@
                                         </a>
                                         &nbsp;
                                         <a href="{{route('ajuanperbaikan.destroy', $pk->id_pengajuan_perbaikan)}}"
-                                            onclick="notificationBeforeDelete(event, this, <?php echo $key+1; ?>)"
+                                            onclick="notificationBeforeDelete(event, this, {{ $key + 1 }})"
                                             class="btn btn-danger btn-xs">
                                             <i class="fa fa-trash"></i>
                                         </a>

@@ -167,7 +167,7 @@ $kodeJenisPerizinan = [
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         @if(auth()->user()->level=='admin' )
-                                        <a href="{{ route('ajuanperizinan.destroy', $ap->id_perizinan) }}"
+                                        <a href="{{route('ajuanperizinan.destroy', $ap->id_perizinan) }}"
                                             onclick="notificationBeforeDelete(event, this, {{$key+1}})"
                                             class="btn btn-danger btn-xs mx-1">
                                             <i class="fa fa-trash"></i>
@@ -580,6 +580,13 @@ $kodeJenisPerizinan = [
 </script>
 
 <script type="text/javascript">
+    function notificationBeforeDelete(event, el) {
+        event.preventDefault();
+        if (confirm('Apakah anda yakin akan menghapus data ? ')) {
+            $("#delete-form").attr('action', $(el).attr('href'));
+            $("#delete-form").submit();
+        }
+    }
     const getBusinessDatesCount = (startDate, endDate) => {
         let count = 0;
         let curDate = +startDate;
