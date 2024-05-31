@@ -25,10 +25,26 @@
                 </div>
                 @endif
 
-                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal_form"
-                    role="dialog">
-                    Tambah
-                </button>
+                <div class="row justify-items-between">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal_form"
+                            role="dialog">
+                            Tambah
+                        </button>
+                    </div>
+                    <div class="col-3">
+                        <form action="{{ route('url.index') }}" id="form-tahun" method="get">
+                            <div class="form-group">
+                                <select name="tahun" id="tahun" class="form-control">
+                                    @for ($i = date('Y'); $i >= 2015; $i--)
+                                    <option value="{{ $i }}" {{ $tahun == $i ? 'selected' : '' }} >{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered table-stripped" id="example2">
                         <thead>
@@ -225,4 +241,16 @@ function notificationBeforeDelete(event, el) {
     }
 }
 </script>
+
+<script type="text/javascript">
+    const form_tahun = document.getElementById('form-tahun');
+    const select_tahun = document.getElementById('tahun');
+    
+    document.addEventListener('DOMContentLoaded', function(){
+        select_tahun.addEventListener('change', function(e){
+            form_tahun.submit();
+        });
+    })
+</script>
+
 @endpush

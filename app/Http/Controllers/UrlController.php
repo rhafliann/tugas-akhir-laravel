@@ -27,15 +27,21 @@ use Illuminate\Support\Facades\URL as FacadesURL;
 
 class UrlController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $url = Url::All();
-        $kegiatan = Kegiatan::where(['is_deleted' => '0'])->get();
+        $tahun = $request->input('tahun', date('Y'));
+        $url = Url::whereYear('created_at', $tahun);
+        
+        $kegiatan = Kegiatan::where(['is_deleted' => '0'])
+        ->whereYear('tgl_mulai', $tahun)
+        ->orWhereYear('tgl_selesai', $tahun)
+        ->get();
 
         return view('url.index', [
-            'url' => $url,
+            'url' => $url->get(),
             'kegiatan' => $kegiatan,
             'user' => User::where('is_deleted', '0')->get(),
+            'tahun' => $tahun
         ]);
     }
 

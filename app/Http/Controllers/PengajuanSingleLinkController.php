@@ -14,16 +14,26 @@ class PengajuanSingleLinkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
-        $ajuansinglelink = PengajuanSingleLink::where('is_deleted', '0')->orderByDesc('id_pengajuan_singlelink')->get();
-        $kegiatan = Kegiatan::all();
+        $tahun = $request->input('tahun', date('Y'));
+
+        $ajuansinglelink = PengajuanSingleLink::where('is_deleted', '0')
+        ->whereYear('tgl_pengajuan', $tahun)
+        ->orderByDesc('id_pengajuan_singlelink')->get();
+        
+        $kegiatan = Kegiatan::where(['is_deleted' => '0'])
+        ->whereYear('tgl_mulai', $tahun)
+        ->orWhereYear('tgl_selesai', $tahun)
+        ->get();
+
 
         return view('ajuansinglelink.index', [
             'ajuansinglelink' => $ajuansinglelink,
             'kegiatan' => $kegiatan,
             'users' => User::where('is_deleted', '0')->orderByRaw("LOWER(nama_pegawai)")->get(),
+            'tahun' => $tahun
         ]);
     }
 

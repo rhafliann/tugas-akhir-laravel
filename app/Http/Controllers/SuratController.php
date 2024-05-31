@@ -13,17 +13,22 @@ class SuratController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
+        $tahun = $request->input('tahun', date('Y'));
+
         $surat = Surat::where('is_deleted', '0')
             ->orderBy('tgl_surat', 'desc')
-            ->whereIn('id_users', $user->surat->pluck('id_users'))->get();
+            ->whereIn('id_users', $user->surat->pluck('id_users'))
+            ->whereYear('tgl_surat', $tahun)
+            ->get();
 
         return view('surat.index', [
             'surat' => $surat,
             'users' => User::where('is_deleted', '0')->get(),
             'kodesurat' => KodeSurat::all(),
+            'tahun' => $tahun
         ]);
     }
 
