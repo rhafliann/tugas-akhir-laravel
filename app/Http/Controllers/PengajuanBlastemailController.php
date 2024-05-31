@@ -16,14 +16,22 @@ class PengajuanBlastemailController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $BlastEmail = PengajuanBlastemail::where('is_deleted', '0')->get();
-        $kegiatan = Kegiatan::all();
+        $tahun = $request->input('tahun', date('Y'));
+        $BlastEmail = PengajuanBlastemail::where('is_deleted', '0')
+        ->whereYear('tgl_pengajuan', $tahun)
+        ->get();
+
+        $kegiatan = Kegiatan::where(['is_deleted' => '0'])
+        ->whereYear('tgl_mulai', $tahun)
+        ->orWhereYear('tgl_selesai', $tahun)
+        ->get();
         
         return view('ajuanblastemail.index', [
             'BlastEmail' => $BlastEmail,
-            'kegiatan' => $kegiatan
+            'kegiatan' => $kegiatan,
+            'tahun' => $tahun
         ]);
     }
     public function show($id_pengajuan_blastemail)

@@ -27,13 +27,28 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                {{-- @can('isAdmin') --}}
-                <div class="mb-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_form">
-                        Tambah
-                    </button>
+                <div class="row justify-content-between">
+                    <div class="col">
+                        {{-- @can('isAdmin') --}}
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_form">
+                                Tambah
+                            </button>
+                        </div>
+                        {{-- @endcan --}}
+                    </div>
+                    <div class="col-3">
+                        <form action="{{ route('ajuanform.index') }}" id="form-tahun" method="get">
+                            <div class="form-group">
+                                <select name="tahun" id="tahun" class="form-control">
+                                    @for ($i = date('Y'); $i >= 2015; $i--)
+                                    <option value="{{ $i }}" {{ $tahun == $i ? 'selected' : '' }} >{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                {{-- @endcan --}}
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered table-stripped" id="example2">
                         <thead>
@@ -416,4 +431,16 @@ Swal.fire({
 });
 </script>
 @endif
+
+
+<script type="text/javascript">
+    const form_tahun = document.getElementById('form-tahun');
+    const select_tahun = document.getElementById('tahun');
+    
+    document.addEventListener('DOMContentLoaded', function(){
+        select_tahun.addEventListener('change', function(e){
+            form_tahun.submit();
+        });
+    })
+</script>
 @endpush
