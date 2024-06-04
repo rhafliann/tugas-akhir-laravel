@@ -102,87 +102,92 @@
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="form-body">
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                            @can('isAdmin')
-                                                            <div class="form-group">
-                                                                <label for="id_users">Nama Pegawai</label>
-                                                                <select id="id_users" name="id_users"
-                                                                    class="form-control @error('id_users') is-invalid @enderror">
-                                                                    @foreach ($users as $u)
-                                                                    <option value="{{ $u->id_users }}"
-                                                                        {{ $lr->id_users == $u->id_users ? 'selected' : '' }}>
-                                                                        {{ $u->nama_pegawai }}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
+                                                    @can('isAdmin')
+                                                    <div class="row">
+                                                        <div class="form-group col">
+                                                            <label for="id_users">Nama Pegawai</label>
+                                                            <select id="id_users" name="id_users"
+                                                                class="form-control @error('id_users') is-invalid @enderror">
+                                                                @foreach ($users as $u)
+                                                                <option value="{{ $u->id_users }}"
+                                                                    {{ $lr->id_users == $u->id_users ? 'selected' : '' }}>
+                                                                    {{ $u->nama_pegawai }}
+                                                                </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col">
+                                                            <label for="tanggal">Tanggal</label>
+                                                            <input type="date" name="tanggal" id="tanggal"
+                                                                value="{{$lr -> tanggal ?? old('tanggal')}}"
+                                                                class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group pr-2 col">
+                                                            <label for="jam_mulai">Jam Mulai</label>
+                                                            <input type="time" name="jam_mulai" id="jam_mulai"
+                                                                value="{{$lr -> jam_mulai ?? old('jam_mulai')}}"
+                                                                class="form-control" required>
+                                                        </div>
+                                                        <div class="form-group pr-2 col">
+                                                            <label for="jam_selesai">Jam Selesai</label>
+                                                            <input type="time" name="jam_selesai" id="jam_selesai"
+                                                                value="{{$lr -> jam_selesai ?? old('jam_selesai')}}"
+                                                                class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group pr-2 col w-100">
+                                                            <label for="tugas">Uraian Tugas</label>
+                                                            <textarea name="tugas" id="tugas" class="form-control"
+                                                                required rows="1">{{$lr -> tugas ?? old('tugas')}}</textarea>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="tanggal">Tanggal</label>
-                                                                <input type="date" name="tanggal" id="tanggal"
-                                                                    value="{{$lr -> tanggal ?? old('tanggal')}}"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="jam_mulai">Jam Mulai</label>
-                                                                <input type="time" name="jam_mulai" id="jam_mulai"
-                                                                    value="{{$lr -> jam_mulai ?? old('jam_mulai')}}"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="jam_selesai">Jam Selesai</label>
-                                                                <input type="time" name="jam_selesai" id="jam_selesai"
-                                                                    value="{{$lr -> jam_selesai ?? old('jam_selesai')}}"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="tugas">Uraian Tugas</label>
-                                                                <textarea name="tugas" id="tugas" class="form-control"
-                                                                    required>{{$lr -> tugas ?? old('tugas')}}</textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="id_atasan" for="id_atasan">Atasan
-                                                                    Langsung</label>
-                                                                <select id="id_atasan" name="id_atasan"
-                                                                    class="form-control @error('id_atasan') is-invalid @enderror">
+                                                            <div class="form-group pr-2 col">
+                                                                <label class="id_atasan" for="id_atasan">Atasan Langsung</label>
+                                                                <select id="id_atasan" name="id_atasan" class="form-control form-select @error('id_atasan') is-invalid @enderror">
                                                                     @foreach ($users as $us)
-                                                                    <option value="{{ $us->id_users }}" @if( $lr->
-                                                                        id_atasan == old('id_atasan', $us->id_users) )
-                                                                        selected @endif>
+                                                                    @if ($us->level != 'admin')
+                                                                    <option value="{{ $us->id_users }}"
+                                                                        @if($lr->id_atasan == old('id_atasan', $us->id_users)) selected @endif>
                                                                         {{ $us->nama_pegawai }}
                                                                     </option>
+                                                                    @endif
                                                                     @endforeach
                                                                 </select>
                                                             </div>
-                                                            @endcan
-                                                            <div class="form-group">
-                                                                <label for="status_izin_atasan">Apakah anda menyetujui
-                                                                    lembur {{$lr->user->nama_pegawai}}?</label>
-                                                                <div class="input">
-                                                                    <input type="radio" name="status_izin_atasan"
-                                                                        value="1" @if ($lr->status_izin_atasan === '1')
-                                                                    checked @endif> Disetujui<br>
-                                                                    <input type="radio" name="status_izin_atasan"
-                                                                        value="0" @if ($lr->status_izin_atasan === '0')
-                                                                    checked @endif> Ditolak<br>
-                                                                </div>
-                                                            </div>
-                                                            <div id="alasan_ditolak_atasan" style="display: none;"
-                                                                class="form-group">
-                                                                <label for="alasan_ditolak_atasan">Alasan
-                                                                    Ditolak</label>
-                                                                <textarea name="alasan_ditolak_atasan"
-                                                                    id="alasan_ditolak_atasan" cols="30" rows="3"
-                                                                    class="form-control">{{ $lr->alasan_ditolak_atasan }}</textarea>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="submit"
-                                                                    class="btn btn-primary">Simpan</button>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-dismiss="modal">Batal</button>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group w-100">
+                                                            <label for="status_izin_atasan">Apakah anda menyetujui
+                                                                lembur {{$lr->user->nama_pegawai}}?</label>
+                                                            <div class="input">
+                                                                <input type="radio" name="status_izin_atasan"
+                                                                    value="1" @if ($lr->status_izin_atasan === '1')
+                                                                checked @endif> Disetujui<br>
+                                                                <input type="radio" name="status_izin_atasan"
+                                                                    value="0" @if ($lr->status_izin_atasan === '0')
+                                                                checked @endif> Ditolak<br>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div id="alasan_ditolak_atasan" style="display: none;"
+                                                        class="form-group col">
+                                                        <label for="alasan_ditolak_atasan">Alasan
+                                                            Ditolak</label>
+                                                        <textarea name="alasan_ditolak_atasan"
+                                                            id="alasan_ditolak_atasan" cols="30" rows="3"
+                                                            class="form-control">{{ $lr->alasan_ditolak_atasan }}</textarea>
+                                                        </div>
+                                                        <div class="modal-footer p-0">
+                                                            <button type="submit"
+                                                            class="btn btn-primary">Simpan</button>
+                                                            <button type="button" class="btn btn-danger"
+                                                            data-dismiss="modal">Batal</button>
+                                                        </div>
+                                                    </div>
+                                                    @endcan
                                                 </div>
                                             </form>
                                         </div>
