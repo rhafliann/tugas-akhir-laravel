@@ -35,4 +35,5 @@ class Lembur extends Model
     {
         return $this->belongsTo(User::class, 'id_atasan', 'id_users');
     }
+
 }

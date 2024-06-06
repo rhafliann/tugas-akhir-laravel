@@ -17,14 +17,15 @@
     </thead>
     <tbody>
         @foreach($lemburs['data'] as $key => $lembur)
+        {{-- @dd($lembur->user->profile->presensi) --}}
         @if($lembur->status_izin_atasan === '1')
         <tr>
             <td>{{$key + 1}}</td>
             <td>{{ $lembur->user->nama_pegawai }}</td>
             <td>{{ $lembur->user->jabatan->nama_jabatan }}</td>
             <td>{{ $lembur->tanggal }}</td>
-            <td>{{ $lembur->user->presensi->jam_masuk }}</td>
-            <td>{{ $lembur->user->presensi->jam_pulang }}</td>
+            {{-- <td>{{ $lembur->user->profile->presensi[0]->scan_masuk ?? '' }}</td>
+            <td>{{ $lembur->user->profile->presensi[0]->scan_pulang ?? ''  }}</td> --}}
             <td>{{ $lembur->jam_mulai }}</td>
             <td>{{ $lembur->jam_selesai }}</td>
             <td>{{ $lembur->jam_lembur }}</td>
