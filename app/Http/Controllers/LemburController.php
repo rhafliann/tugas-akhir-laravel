@@ -17,17 +17,30 @@ class LemburController extends Controller
         $users = User::where('is_deleted', '0')->get();
 
         $lemburs = [];
-        
+
         $defaultStartDate = '2023-01-01';
         $defaultEndDate = date('Y') . '-12-31';
 
         $start_date = $request->input('start_date', $defaultStartDate);
         $end_date = $request->input('end_date', $defaultEndDate);
 
-        $lemburs['data'] = Lembur::whereBetween('tanggal', [$start_date, $end_date])->get();
+        $queryLembur= Lembur::whereBetween('tanggal', [$start_date, $end_date])
+        ->with([
+            'user',
+            'user.profile',
+        //    'user.profile.presensi'
+            'user.profile.presensi' => function($query) use ($start_date, $end_date){
+                $query->where('tanggal', '=', 'lembur.tanggal');
+            },
+        ]);
+
+        // dd($queryLembur->user->toSql());
+
+        $lemburs['data'] = $queryLembur->get();
 
         $lemburs['start_date'] = $start_date;
         $lemburs['end_date']   = $end_date;
+        // dd($lemburs['data'][0]->toArray());
 
         return Excel::download(new LemburExport($lemburs), 'lembur.xlsx');
 
@@ -109,7 +122,7 @@ class LemburController extends Controller
         }
 
         $lembur->save();
-        
+
         // dd($lembur);
         $pengguna = User::where('id_users', $lembur->id_users)->first();
         if ($lembur->status_izin_atasan === '1') {
@@ -233,7 +246,7 @@ class LemburController extends Controller
         $notifikasi->save();
 
         $notifikasiAdmin = User::where('level', 'admin')->get();
-        
+
         foreach($notifikasiAdmin as $na){
             $notifikasi = new Notifikasi();
             $notifikasi->judul = 'Pengajuan Lembur ';
@@ -309,7 +322,7 @@ class LemburController extends Controller
         $lembur->save();
 
         $pengguna = User::where('id_users', $request->id_users)->first();
-       
+
 
         $notifikasi = new Notifikasi();
         $notifikasi->judul = 'Pengajuan Lembur';
@@ -332,7 +345,7 @@ class LemburController extends Controller
         $notifikasi->save();
 
         $notifikasiAdmin = User::where('level', 'admin')->get();
-        
+
         foreach($notifikasiAdmin as $na){
             $notifikasi = new Notifikasi();
             $notifikasi->judul = 'Pengajuan Lembur ';
@@ -346,7 +359,7 @@ class LemburController extends Controller
         }
 
         return redirect()->back()->with('success_message', 'Data telah tersimpan.');
-        
+
 
     }
 

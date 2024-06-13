@@ -24,7 +24,9 @@
                                         value="{{ request()->input('end_date') }}">&nbsp;&nbsp;
                                     <button type="submit" class="btn btn-primary">&nbsp;Tampilkan</button>&nbsp;&nbsp;
                                     <a href="{{ route('lembur.xlsx', ['start_date' => request()->input('start_date'), 'end_date' => request()->input('end_date')]) }}"
-                                        class="btn btn-primary">Unduh Excel</a>
+                                        class="btn btn-primary">
+                                        Unduh Excel
+                                    </a>
                                 </div>
                             </form>
                         </div>
