@@ -250,8 +250,9 @@ $kodeJenisPerizinan = [
                                                     <select
                                                         class="form-control  @error('jenis_perizinan') is-invalid @enderror"
                                                         id="jenis_perizinan" name="jenis_perizinan">
+
                                                         @foreach($kodeJenisPerizinan as $key => $item)
-                                                        <option value="{{ $key }}" @if(old('jenis_perizinan') == $key) selected @endif>
+                                                        <option value="{{ $key }}" @if($ap->jenis_perizinan == $key || old('jenis_perizinan') == $key ) selected @endif>
                                                             {{$item}}
                                                         </option>
                                                         @endforeach
