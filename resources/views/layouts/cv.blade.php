@@ -17,7 +17,7 @@
             position: relative;
         }
         h5{
-            font-size: 14px;    
+            font-size: 14px;
         }
         img{
             width: 90px;
@@ -43,10 +43,10 @@
                         <td style="width:33%;padding-left:15px;">
                             <img src="{{asset("images/tutwuri.png")}}" alt="">
                             <img src="{{asset("images/seameo.png")}}" alt="">
-                            <img src="{{asset("images/qitep.png")}}" alt="">               
+                            <img src="{{asset("images/qitep.png")}}" alt="">
                         </td>
                         <td style="width:50%;">
-                            <h5 style="margin-top: -40px;">The Southeast Asian Ministers of Education Organization (SEAMEO) <br>Regional Center for Quality Improvement of Teachers and Education Personnel (QITEP) in Language (SEAQIL) </h5>        
+                            <h5 style="margin-top: -40px;">The Southeast Asian Ministers of Education Organization (SEAMEO) <br>Regional Center for Quality Improvement of Teachers and Education Personnel (QITEP) in Language (SEAQIL) </h5>
                         </td>
                     </tr>
                 </table>
@@ -114,6 +114,10 @@
                     </tr>
                     <tr>
                         <td style="width: 30%;">15. BPJS</td>
+                        <td style="width: 40%;">: {{ $user->bpjs }}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%;">15. BPJS Ketenagakerjaan</td>
                         <td style="width: 40%;">: {{ $user->bpjs }}</td>
                     </tr>
                     @if(isset($user->tingkat_pendidikan->nama_tingkat_pendidikan))
