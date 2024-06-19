@@ -20,16 +20,18 @@
         @if(config('adminlte.usermenu_image'))
             <img src="{{ Auth::user()->adminlte_image() }}"
                  class="user-image img-circle elevation-2"
-                 alt="{{ Auth::user()->name }}">
+                 alt="{{ Auth::user()->nama_pegawai }}">
         @endif
         <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
-            {{ Auth::user()->name }}
+            {{ Auth::user()->nama_pegawai }}
         </span>
     </a>
 
     {{-- User menu dropdown --}}
     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-
+        <li class="user-footer">
+            <a href="{{ route('user.changePassword') }}" class="btn btn-outline-dark w-100">Ubah Password</a>
+        </li>
         {{-- User menu header --}}
         @if(!View::hasSection('usermenu_header') && config('adminlte.usermenu_header'))
             <li class="user-header {{ config('adminlte.usermenu_header_class', 'bg-primary') }}
@@ -37,10 +39,10 @@
                 @if(config('adminlte.usermenu_image'))
                     <img src="{{ Auth::user()->adminlte_image() }}"
                          class="img-circle elevation-2"
-                         alt="{{ Auth::user()->name }}">
+                         alt="{{ Auth::user()->nama_pegawai }}">
                 @endif
                 <p class="@if(!config('adminlte.usermenu_image')) mt-0 @endif">
-                    {{ Auth::user()->name }}
+                    {{ Auth::user()->nama_pegawai }}
                     @if(config('adminlte.usermenu_desc'))
                         <small>{{ Auth::user()->adminlte_desc() }}</small>
                     @endif

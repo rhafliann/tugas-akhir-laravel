@@ -1,4 +1,4 @@
-<nav class="main-header navbar
+<nav class="main-header navbar overflow-x-hidden
     {{ config('adminlte.classes_topnav_nav', 'navbar-expand') }}
     {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
 
@@ -13,6 +13,8 @@
         {{-- Custom left links --}}
         @yield('content_top_nav_left')
     </ul>
+
+    <h5 id="navbar-navbar" class="d-none d-md-block" style="white-space: nowrap">Sistem Informasi Kepegawaian & Layanan Internal SEAQIL</h5>
 
     {{-- Navbar right links --}}
     <ul class="navbar-nav ml-auto">

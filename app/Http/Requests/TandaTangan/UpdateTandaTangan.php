@@ -22,7 +22,7 @@ class UpdateTandaTangan extends FormRequest
             return true;
         }
 
-        return false;
+        return true;
     }
 
     /**
