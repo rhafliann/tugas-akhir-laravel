@@ -93,6 +93,8 @@
             title: json?.message || "Error",
             text: json?.message
           });
+
+          window.location.href = '/profile';
         })
       })
     })
