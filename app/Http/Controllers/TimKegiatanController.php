@@ -109,11 +109,13 @@ class TimKegiatanController extends Controller
         }
 
         $kegiatan = Kegiatan::where('is_deleted', '0')->get();
+        $user = User::where('is_deleted', '0')->orderBy('nama_pegawai', 'asc')->whereNot('level', 'admin')->get();
+        $peran = Peran::where('is_deleted', '0')->get();
 
         return view('timkegiatan.laporan', [
             'timkegiatan' => $timkegiatan,
-            'user' => User::where('is_deleted', '0')->get(),
-            'peran' => Peran::where('is_deleted', '0')->get(),
+            'user' => $user,
+            'peran' => $peran,
             'kegiatan' => $kegiatan,
         ]);
     }
