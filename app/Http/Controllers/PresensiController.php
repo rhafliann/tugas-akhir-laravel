@@ -90,7 +90,7 @@ class PresensiController extends Controller
 
         $now = Carbon::now()->setTimezone('Asia/Jakarta');
 
-        dd($now->greaterThan($jam10pagi), $now ,$jam10pagi);
+        // dd($now->greaterThan($jam10pagi), $now ,$jam10pagi);
 
         // $scanTime = Carbon::parse($logFingerPrint->scan_time);
         // $jamMasuk = Carbon::now()->setTimeFromTimeString($waktuKerja->jam_masuk);
@@ -281,7 +281,8 @@ class PresensiController extends Controller
         // $presensis['start_date'] = $start_date;
         // $presensis['end_date'] = $end_date;
 
-        return Excel::download(new PresensiExportFilter($payload), 'presensi.xlsx');
+        return response()->json($payload);
+        // return Excel::download(new PresensiExportFilter($payload), 'presensi.xlsx');
     }
 
     public function filterAdmin(Request $request)

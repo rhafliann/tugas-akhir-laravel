@@ -8,7 +8,7 @@ use App\Models\Notifikasi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
+// use Maatwebsite\Excel\Facades\Excel;
 
 class LemburController extends Controller
 {
@@ -27,6 +27,7 @@ class LemburController extends Controller
         $queryLembur= Lembur::whereBetween('tanggal', [$start_date, $end_date])
         ->with([
             'user',
+            'user.jabatan',
             'user.profile',
         //    'user.profile.presensi'
             'user.profile.presensi' => function($query) use ($start_date, $end_date){
@@ -34,15 +35,14 @@ class LemburController extends Controller
             },
         ]);
 
-        // dd($queryLembur->user->toSql());
-
         $lemburs['data'] = $queryLembur->get();
 
         $lemburs['start_date'] = $start_date;
         $lemburs['end_date']   = $end_date;
         // dd($lemburs['data'][0]->toArray());
 
-        return Excel::download(new LemburExport($lemburs), 'lembur.xlsx');
+        return response()->json($lemburs);
+        // return Excel::download(new LemburExport($lemburs), 'lembur.xlsx');
 
     }
 

@@ -46,9 +46,7 @@
                                 </form>
                             </div>
                             <div class="col-md-2 d-flex flex-column justify-content-right">
-                                <a href="{{ route('presensi.filterDataAdmin', ['start_date' => request()->input('start_date'), 'end_date' => request()->input('end_date')]) }}"
-                                    class="btn btn-danger">Export
-                                    Data</a>
+                                <button id="download-button" class="btn btn-danger">Export Data</button>
                             </div>
                         </div>
 
@@ -156,6 +154,113 @@
 @stop
 
 @push('js')
+
+<!-- used for exporting data to excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- exporting data to excel -->
+<script type="text/javascript">
+
+    // let data = JSON.parse('{!! json_encode($presensi) !!}')
+    // data = data.map((item) => {
+    //     item.nama_pegawai = item.profile_user.user.nama_pegawai;
+    //     delete item.profile_user;
+    //     return item;
+    // })
+    
+    const d = new Date();
+    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const filename = `${d.getFullYear()}-${monthNames[d.getMonth()]}-${d.getDate()}`
+
+    async function downloadExcelData(items, start_date, end_date){
+        const workbook = new ExcelJS.Workbook();
+        workbook.creator = "{{ Auth::user()->nama_pegawai }}";
+        workbook.lastModifiedBy = "{{ Auth::user()->nama_pegawai }}";
+        workbook.created = new Date();
+        workbook.modified = new Date();
+
+        // add a sheet with name the data data downloaded
+        const sheet = workbook.addWorksheet(filename);
+
+        sheet.columns = [
+            { header: 'No', key: 'no', width: 10 },
+            { header: 'Nama Pegawai', key: 'user', width: 32 },
+            { header: 'Kehadiran', key: 'kehadiran', width: 10 },
+            { header: 'Terlambat', key: 'terlambat', width: 10 },
+            { header: 'Total Waktu Terlambat', key: 'total_waktu_terlambat', width: 10 },
+            { header: 'Izin', key: 'izin', width: 10 },
+            { header: 'Sakit', key: 'sakit', width: 10 },
+            { header: 'Cuti Sakit', key: 'cutiSakit', width: 10 },
+            { header: 'Cuti Tahunan', key: 'cutiTahunan', width: 10 },
+            { header: 'Cuti Melahirkan', key: 'cutiMelahirkan', width: 10 },
+            { header: 'Dinas Luar', key: 'dinasLuar', width: 10 },
+            { header: 'Alpha', key: 'alpha', width: 10 },
+            { header: 'Cuti Bersama', key: 'jacutiBersama_masuk', width: 10 },
+            { header: 'Cuti Haji', key: 'cutiHaji', width: 10 },
+            { header: 'Tugas Belajar', key: 'tugasBelajar', width: 10 },
+            { header: 'CAP', key: 'cap', width: 10 },
+            { header: 'Prajab', key: 'prajab', width: 10 },
+        ];
+
+        sheet.insertRow(1, ['Periode ' + `${start_date} s.d ${end_date}`]);
+        sheet.insertRow(2, ['Data Rekap Presensi Pegawai SEAMEO QITEP in Language']);
+
+        items.map((item, index) => {
+            sheet.addRow({no: index + 1, ...item});
+        });
+
+        let values = [
+            ['I', 'Izin'],
+            ['S', 'Sakit'],
+            ['CS', 'Cuti Sakit'],
+            ['CT', 'Cuti Tahunan'],
+            ['CM', 'Cuti Melahirkan'],
+            ['DL', 'Dinas Luar'],
+            ['A', 'Alpha'],
+            ['CB', 'Cuti Bersama'],
+            ['CB', 'Cuti Haji'],
+            ['TB', 'Tugas Belajar'],
+            ['CAP', 'CAP'],
+            ['Prajab', 'Prajab'],
+        ];
+
+        sheet.insertRow(items.length + 5, ['']);
+        sheet.insertRow(items.length + 6, ['']);
+        sheet.insertRow(items.length + 7, ['']);
+
+        values.forEach((element, index) => {
+            sheet.insertRow((items.length + 8 + index), element);
+        });
+            
+        return workbook.xlsx.writeBuffer();
+    }
+
+    document.getElementById('download-button').addEventListener('click', function(){
+        fetch('/presensi/admin/export', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(async result => {
+            let data = result.data
+
+            let buffer = await downloadExcelData(data, result.start_date, result.end_date);
+            let blob = new Blob(
+                [buffer], 
+                {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"}
+            );
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = 'export-rekap-presensi-pegawai-' + filename + ".xlsx";
+            link.click();
+        })
+    });
+</script>
+
+
 <script>
 $('#example2').DataTable({
     "responsive": true,
