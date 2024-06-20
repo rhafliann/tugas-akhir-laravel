@@ -23,10 +23,7 @@
                                 <input type="date" id="end_date" name="end_date" required class="form-control"
                                     value="{{ request()->input('end_date') }}">&nbsp;&nbsp;
                                 <button type="submit" class="btn btn-primary">&nbsp;Tampilkan</button>&nbsp;&nbsp;
-                                <button id="download-button"
-                                    class="btn btn-primary">
-                                    Unduh Excel
-                                </button>
+                                <button id="download-button" type="button" class="btn btn-primary">Unduh Excel</button>
                             </div>
                         </form>
                     </div>
