@@ -205,6 +205,8 @@ class PengajuanZoomController extends Controller
             $zoom->tgl_pelaksanaan = $request->tgl_pelaksanaan;
             $zoom->jam_mulai = $request->jam_mulai;
             $zoom->jenis_zoom = $request->jenis_zoom;
+            $zoom->nama_kegiatan = $request->nama_kegiatan;
+            $zoom->judul_zoom = $request->judul_zoom;
             $zoom->jam_selesai = $request->jam_selesai;
             $zoom->jumlah_peserta = $request->jumlah_peserta;
             $zoom->nama_kegiatan = $request->nama_kegiatan;
