@@ -28,7 +28,7 @@
                 <td>{{$key + 1}}</td>
                 <td>{{ $presensi['user'] }}</td>
                 <td>{{ $presensi['kehadiran'] }}</td>
-                <td>{{ $presensi['terlambat'] }}</td>
+                <td>{{ $presensi['terlambat'] }}x / {{ $presensi['total_waktu_terlambat'] }}</td>
                 <td>{{ $presensi['ijin'] }}</td>
                 <td>{{ $presensi['sakit'] }}</td>
                 <td>{{ $presensi['cutiSakit'] }}</td>

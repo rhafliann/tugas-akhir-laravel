@@ -109,7 +109,9 @@ class TimKegiatanController extends Controller
         }]);
 
         $filtered = $timkegiatan->get()->filter(function($item) use ($tgl_selesai){
-            return \Carbon\Carbon::parse($item->kegiatan->tgl_selesai)->format('Y') == $tgl_selesai; 
+            if($item?->kegiatan?->tgl_selesai){
+                return \Carbon\Carbon::parse($item->kegiatan->tgl_selesai)->format('Y') == $tgl_selesai; 
+            }
         });
 
         $kegiatan = Kegiatan::where('is_deleted', '0');

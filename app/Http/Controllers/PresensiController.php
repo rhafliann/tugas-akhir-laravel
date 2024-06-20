@@ -66,7 +66,7 @@ class PresensiController extends Controller
 
         $presensi->orderBy('tanggal', 'desc');
         
-        $users = User::where('is_deleted', '0');
+        $users = User::where('is_deleted', '0')->orderBy('nama_pegawai', 'asc');
 
         if($request->isJson()){
             return response()->json([
@@ -181,12 +181,18 @@ class PresensiController extends Controller
             $cap = 0;
             $prajab = 0;
             // dd($user->nama_pegawai, $user->profile->presensi);
+            $array_waktu_terlambat = [];
+            
 
             if(isset($user->profile->presensi)){
                 foreach($user->profile->presensi as $p => $presensi){
     
                     if ($presensi->kehadiran !== null && $presensi->kehadiran !== '00:00:00') {
                         $kehadiran++;
+                    }
+
+                    if($presensi->terlambat){
+                        array_push($array_waktu_terlambat, $presensi->terlambat);
                     }
                     
                     switch ($presensi->jenis_perizinan) {
@@ -261,14 +267,21 @@ class PresensiController extends Controller
                     'tugasBelajar' => $tugasBelajar,
                     'cap' => $cap,
                     'prajab' => $prajab,
+                    'total_waktu_terlambat' => $this->CalculateTime($array_waktu_terlambat),
                 ];
             }
         }
 
-        $presensis['start_date'] = $start_date;
-        $presensis['end_date'] = $end_date;
+        $payload = [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'data' => $presensis
+        ];
 
-        return Excel::download(new PresensiExportFilter($presensis), 'presensi.xlsx');
+        // $presensis['start_date'] = $start_date;
+        // $presensis['end_date'] = $end_date;
+
+        return Excel::download(new PresensiExportFilter($payload), 'presensi.xlsx');
     }
 
     public function filterAdmin(Request $request)
