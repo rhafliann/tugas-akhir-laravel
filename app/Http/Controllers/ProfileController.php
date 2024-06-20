@@ -21,6 +21,8 @@ class ProfileController extends Controller
         $user = Profile::where('id_users', auth()->user()->id_users)->first();
         $tingkat_pendidikan = TingkatPendidikan::all();
 
+        // dd($user->masa_kerja);
+
         $pdf = PDF::loadView('layouts.cv', [
             'main_user' => $main_user,
             'user' => $user,
@@ -184,7 +186,7 @@ class ProfileController extends Controller
             $file = $request->file('photo');
             $fileName = Str::random(10).'.'.$file->getClientOriginalExtension();
             $file->storeAs('profile', $fileName, 'public');
-            
+
             $profile->update([
                 'photo' => $fileName,
             ]);

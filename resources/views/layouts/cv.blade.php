@@ -58,7 +58,7 @@
                 <table style="width:100%;margin-top:20px;margin-left:150px;">
                     <tr>
                         <td style="width: 30%;">1. Nama</td>
-                        <td style="width: 40%;">: {{ $main_user->nama_pegawai }}</td>
+                        <td style="width: 40%;">: {{$user?->gelar_depan }} {{ $main_user->nama_pegawai }} {{$user?->gelar_belakang }}</td>
                     </tr>
                     <tr>
                         <td style="width: 30%;">2. Jabatan</td>
@@ -106,7 +106,7 @@
                     </tr>
                     <tr>
                         <td style="width: 30%;">13. Masa Kerja</td>
-                        <td style="width: 40%;">: {{ date('Y-m-d', strtotime('+2 year', strtotime($user->tmt) )) ?? old('masa_kerja') }}</td>
+                        <td style="width: 40%;">: {{ $user->masa_kerja }}</td>
                     </tr>
                     <tr>
                         <td style="width: 30%;">14. Status Kawin</td>

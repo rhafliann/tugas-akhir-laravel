@@ -15,6 +15,8 @@ class Profile extends Model
 
     protected $date = 'tanggal_lahir';
 
+    protected $appends = ['masa_kerja'];
+
     public function tingkat_pendidikan()
     {
         return $this->belongsTo(TingkatPendidikan::class, 'id_tingkat_pendidikan', 'id_tingkat_pendidikan');
@@ -26,6 +28,11 @@ class Profile extends Model
 
     public function presensi(){
         return $this->hasMany(Presensi::class, 'nik', 'nik');
+    }
+
+    public function getMasaKerjaAttribute(){
+        return \Carbon\Carbon::parse($this->tmt)->locale('id-ID')->diffForHumans();
+        // return date('Y-m-d', strtotime('+2 year', strtotime($this->tmt)));
     }
 
     protected $guarded = ['id_profile_user'];

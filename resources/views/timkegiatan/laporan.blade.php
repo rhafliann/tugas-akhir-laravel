@@ -22,7 +22,7 @@
                                         </option>
                                         @foreach ($user as $us)
                                         <option value="{{ $us->id_users }}" @if($us->id_users == session('selected_id_users')) selected @endif>
-                                            {{ $us->nama_pegawai }}
+                                            {{ $us->nama_pegawai}}
                                         </option>
                                         @endforeach
                                     </select>
@@ -56,7 +56,7 @@
                                             All
                                         </option>
                                         @php
-                                          $year = date('Y');  
+                                          $year = date('Y');
                                         @endphp
                                         @for ($year; $year >= 2020; $year--)
                                         <option value="{{ $year }}" @if( $year  == session('selected_tgl_selesai')) selected @endif>
