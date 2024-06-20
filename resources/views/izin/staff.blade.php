@@ -124,7 +124,7 @@ $kodeJenisPerizinan = [
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="kode_finger" value="{{ Auth::user()->kode_finger}}">
+                    <input type="hidden" name="id_users" value="{{ Auth::user()->id_users}}">
 
                     <div class="form-body">
                         <div class="form-group">
@@ -262,7 +262,7 @@ $kodeJenisPerizinan = [
                     <div class="form-body">
                         <div class="form-group">
                             <div class="form-row">
-                                <input type="hidden" name="kode_finger" value="{{ Auth::user()->kode_finger}}">
+                                <input type="hidden" name="id_users" value="{{ Auth::user()->id_users}}">
                                 <div class="col-6 form-group">
                                     <label for="tgl_absen_awal-store" class="form-label">Tanggal Awal Izin </label>
                                     <div class="form-input">

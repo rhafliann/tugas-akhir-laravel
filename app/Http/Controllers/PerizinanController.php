@@ -65,7 +65,7 @@ class PerizinanController extends Controller
         // dd($request);
         //Menyimpan Data User Baru
         $request->validate([
-            'kode_finger' => 'required',
+            'id_users' => 'required',
             'tgl_absen_awal' => 'required',
             'tgl_absen_akhir' => 'required',
             'jumlah_hari_pengajuan' => 'required',
@@ -78,7 +78,7 @@ class PerizinanController extends Controller
         $perizinan = new Perizinan();
 
         // Temukan pengguna berdasarkan kode finger
-        $pengguna = User::where('kode_finger', $request->kode_finger)->first();
+        $pengguna = User::where('id_users', $request->id_users)->first();
 
         if (!$pengguna) {
             return redirect()->back()->with('error', 'Pengguna dengan kode finger tersebut tidak ditemukan.');
@@ -105,7 +105,7 @@ class PerizinanController extends Controller
             $perizinan->file_perizinan = null; // Atur kolom file_perizinan menjadi NULL jika tidak ada file diunggah
         }
 
-        $perizinan->kode_finger = $request->kode_finger;
+        $perizinan->id_users = $request->id_users;
         $perizinan->tgl_absen_awal = $request->tgl_absen_awal;
         $perizinan->jenis_perizinan = $request->jenis_perizinan;
         $perizinan->tgl_absen_akhir = $request->tgl_absen_akhir;
@@ -202,7 +202,7 @@ class PerizinanController extends Controller
     public function update(Request $request, $id_perizinan)
     {
         $rules = [
-            'kode_finger' => 'required',
+            'id_users' => 'required',
             'tgl_absen_awal' => 'required',
             'tgl_absen_akhir' => 'required',
             'jumlah_hari_pengajuan' => 'required',
@@ -214,7 +214,6 @@ class PerizinanController extends Controller
         $request->validate($rules);
 
         $perizinan = Perizinan::find($id_perizinan);
-        // dd($request, $rules, $perizinan);
 
         if ($request->hasFile('file_perizinan')) {
             // Menghapus file file_perizinan sebelumnya
@@ -230,7 +229,7 @@ class PerizinanController extends Controller
         }
 
         if ($request->jenis_perizinan === 'CT') {
-            $perizinanUser = User::with('cuti')->where('kode_finger', $request->kode_finger)->first();
+            $perizinanUser = User::with('cuti')->where('id_users', $request->id_users)->first();
             if ($perizinanUser) {
                 if ($perizinanUser->cuti == null) {
                     return redirect()->back()->with('error', 'Anda belum memiliki cuti tahunan.');
@@ -247,7 +246,7 @@ class PerizinanController extends Controller
                 }
             }
         }
-        $perizinan->kode_finger = $request->kode_finger;
+        $perizinan->id_users = $request->id_users;
         $perizinan->tgl_absen_awal = $request->tgl_absen_awal;
         $perizinan->jenis_perizinan = $request->jenis_perizinan;
         $perizinan->tgl_absen_akhir = $request->tgl_absen_akhir;
@@ -258,7 +257,7 @@ class PerizinanController extends Controller
         $perizinan->status_izin_ppk = null;
 
         $perizinan->save();
-        $pengguna = User::where('kode_finger', $request->kode_finger)->first();
+        $pengguna = User::where('id_users', $request->id_users)->first();
 
 
         $notifikasi = new Notifikasi();
