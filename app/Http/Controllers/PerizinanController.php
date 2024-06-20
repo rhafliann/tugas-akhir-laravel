@@ -16,20 +16,20 @@ class PerizinanController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function indexStaff()
-{
-   $user = auth()->user();
+    public function indexStaff()
+    {
+        $user = auth()->user();
 
-    // Mendapatkan data pengguna
-    $pengguna = User::where('id_users', $user->id_users)->first();
+        // Mendapatkan data pengguna
+        $pengguna = User::where('id_users', $user->id_users)->first();
 
-    // Mendapatkan data jatah cuti terkait dengan pengguna
-    $jatahCuti = $pengguna->cutis->first();
+        // Mendapatkan data jatah cuti terkait dengan pengguna
+        $jatahCuti = $pengguna->cutis->first();
 
         $perizinan = Perizinan::where('is_deleted', '0')
-            ->whereIn('kode_finger', $user->ajuanperizinans->pluck('kode_finger'))->orderBy('id_perizinan','desc')
+            ->whereIn('id_users', $user->ajuanperizinans->pluck('id_users'))->orderBy('id_perizinan', 'desc')
             ->get();
-        
+
 
         return view('izin.staff', [
             'perizinan' => $perizinan,
@@ -80,7 +80,7 @@ class PerizinanController extends Controller
         // Temukan pengguna berdasarkan kode finger
         $pengguna = User::where('kode_finger', $request->kode_finger)->first();
 
-        if (! $pengguna) {
+        if (!$pengguna) {
             return redirect()->back()->with('error', 'Pengguna dengan kode finger tersebut tidak ditemukan.');
         }
 
@@ -98,8 +98,8 @@ class PerizinanController extends Controller
         if ($request->hasFile('file_perizinan')) {
             // Upload dan simpan file jika ada
             $file_perizinan = $request->file('file_perizinan');
-            $namafile_perizinan = Str::random(10).'.'.$file_perizinan->getClientOriginalExtension();
-            Storage::disk('public')->put('file_perizinan/'.$namafile_perizinan, file_get_contents($file_perizinan));
+            $namafile_perizinan = Str::random(10) . '.' . $file_perizinan->getClientOriginalExtension();
+            Storage::disk('public')->put('file_perizinan/' . $namafile_perizinan, file_get_contents($file_perizinan));
             $perizinan->file_perizinan = $namafile_perizinan;
         } else {
             $perizinan->file_perizinan = null; // Atur kolom file_perizinan menjadi NULL jika tidak ada file diunggah
@@ -112,15 +112,15 @@ class PerizinanController extends Controller
         $perizinan->jumlah_hari_pengajuan = $jumlah_hari_pengajuan;
         $perizinan->keterangan = $request->keterangan;
 
-        if($pengguna->id_jabatan == '7'){
+        if ($pengguna->id_jabatan == '7') {
             $perizinan->id_atasan = null;
-        }else {
+        } else {
             $perizinan->id_atasan = $request->id_atasan;
         }
 
-        if($pengguna->id_jabatan == '7'){
-            $perizinan->status_izin_atasan = '1';    
-        }else{
+        if ($pengguna->id_jabatan == '7') {
+            $perizinan->status_izin_atasan = '1';
+        } else {
             $perizinan->status_izin_atasan = null;
         }
 
@@ -138,23 +138,23 @@ class PerizinanController extends Controller
         $notifikasi->id_users = $pengguna->id_users;
         $notifikasi->save();
 
-        if($pengguna->id_jabatan != '7'){
+        if ($pengguna->id_jabatan != '7') {
             $notifikasi = new Notifikasi();
             $notifikasi->judul = 'Pengajuan Izin ';
-            $notifikasi->pesan = 'Pengajuan perizinan dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+            $notifikasi->pesan = 'Pengajuan perizinan dari ' . $pengguna->nama_pegawai . '. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
             $notifikasi->is_dibaca = 'tidak_dibaca';
             $notifikasi->send_email = 'yes';
             $notifikasi->label = 'info';
             $notifikasi->link = '/ajuanperizinan';
             $notifikasi->id_users = $request->id_atasan;
             $notifikasi->save();
-            }
+        }
 
         $ppk = GeneralSetting::where('status', '1')->first();
         if ($request->jenis_perizinan !== 'I') {
             $notifikasi = new Notifikasi();
             $notifikasi->judul = 'Pengajuan Izin ';
-            $notifikasi->pesan = 'Pengajuan perizinan dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+            $notifikasi->pesan = 'Pengajuan perizinan dari ' . $pengguna->nama_pegawai . '. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
             $notifikasi->is_dibaca = 'tidak_dibaca';
             $notifikasi->send_email = 'yes';
             $notifikasi->label = 'info';
@@ -164,17 +164,17 @@ class PerizinanController extends Controller
         }
 
         $notifikasiAdmin = User::where('level', 'admin')->get();
-        
-        foreach($notifikasiAdmin as $na){
-        $notifikasi = new Notifikasi();
-        $notifikasi->judul = 'Pengajuan Izin ';
-        $notifikasi->pesan = 'Pengajuan perizinan dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
-        $notifikasi->is_dibaca = 'tidak_dibaca';
-        $notifikasi->send_email = 'yes';
-        $notifikasi->label = 'info';
-        $notifikasi->link = '/ajuanperizinan';
-        $notifikasi->id_users = $na->id_users;
-        $notifikasi->save();
+
+        foreach ($notifikasiAdmin as $na) {
+            $notifikasi = new Notifikasi();
+            $notifikasi->judul = 'Pengajuan Izin ';
+            $notifikasi->pesan = 'Pengajuan perizinan dari ' . $pengguna->nama_pegawai . '. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+            $notifikasi->is_dibaca = 'tidak_dibaca';
+            $notifikasi->send_email = 'yes';
+            $notifikasi->label = 'info';
+            $notifikasi->link = '/ajuanperizinan';
+            $notifikasi->id_users = $na->id_users;
+            $notifikasi->save();
         }
 
         return redirect()->back()->with('success_message', 'Data telah tersimpan.');
@@ -219,13 +219,13 @@ class PerizinanController extends Controller
         if ($request->hasFile('file_perizinan')) {
             // Menghapus file file_perizinan sebelumnya
             if ($perizinan->file_perizinan) {
-                Storage::disk('public')->delete('file_perizinan/'.$perizinan->file_perizinan);
+                Storage::disk('public')->delete('file_perizinan/' . $perizinan->file_perizinan);
             }
 
             // Upload file file_perizinan baru
             $file_perizinan = $request->file('file_perizinan');
-            $namafile_perizinan = Str::random(10).'.'.$file_perizinan->getClientOriginalExtension();
-            Storage::disk('public')->put('file_perizinan/'.$namafile_perizinan, file_get_contents($file_perizinan));
+            $namafile_perizinan = Str::random(10) . '.' . $file_perizinan->getClientOriginalExtension();
+            Storage::disk('public')->put('file_perizinan/' . $namafile_perizinan, file_get_contents($file_perizinan));
             $perizinan->file_perizinan = $namafile_perizinan;
         }
 
@@ -273,7 +273,7 @@ class PerizinanController extends Controller
 
         $notifikasi = new Notifikasi();
         $notifikasi->judul = 'Pengajuan Izin ';
-        $notifikasi->pesan = 'Pengajuan perizinan dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+        $notifikasi->pesan = 'Pengajuan perizinan dari ' . $pengguna->nama_pegawai . '. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
         $notifikasi->is_dibaca = 'tidak_dibaca';
         $notifikasi->send_email = 'yes';
         $notifikasi->label = 'info';
@@ -286,7 +286,7 @@ class PerizinanController extends Controller
         if ($request->jenis_perizinan !== 'I') {
             $notifikasi = new Notifikasi();
             $notifikasi->judul = 'Pengajuan Izin ';
-            $notifikasi->pesan = 'Pengajuan perizinan dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+            $notifikasi->pesan = 'Pengajuan perizinan dari ' . $pengguna->nama_pegawai . '. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
             $notifikasi->is_dibaca = 'tidak_dibaca';
             $notifikasi->send_email = 'yes';
             $notifikasi->label = 'info';
@@ -295,18 +295,18 @@ class PerizinanController extends Controller
             $notifikasi->save();
         }
 
-         $notifikasiAdmin = User::where('level', 'admin')->get();
-        
-        foreach($notifikasiAdmin as $na){
-        $notifikasi = new Notifikasi();
-        $notifikasi->judul = 'Pengajuan Izin ';
-        $notifikasi->pesan = 'Pengajuan perizinan dari '.$pengguna->nama_pegawai.'. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
-        $notifikasi->is_dibaca = 'tidak_dibaca';
-        $notifikasi->send_email = 'yes';
-        $notifikasi->label = 'info';
-        $notifikasi->link = '/ajuanperizinan';
-        $notifikasi->id_users = $na->id_users;
-        $notifikasi->save();
+        $notifikasiAdmin = User::where('level', 'admin')->get();
+
+        foreach ($notifikasiAdmin as $na) {
+            $notifikasi = new Notifikasi();
+            $notifikasi->judul = 'Pengajuan Izin ';
+            $notifikasi->pesan = 'Pengajuan perizinan dari ' . $pengguna->nama_pegawai . '. Mohon berikan persetujan kepada pemohon.'; // Sesuaikan pesan notifikasi sesuai kebutuhan Anda.
+            $notifikasi->is_dibaca = 'tidak_dibaca';
+            $notifikasi->send_email = 'yes';
+            $notifikasi->label = 'info';
+            $notifikasi->link = '/ajuanperizinan';
+            $notifikasi->id_users = $na->id_users;
+            $notifikasi->save();
         }
 
         return redirect()->back()->with('success_message', 'Data telah tersimpan.');

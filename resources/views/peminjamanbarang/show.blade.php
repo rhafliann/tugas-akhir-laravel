@@ -166,7 +166,6 @@
                                 $nomor++; // Increment the sequence for the next row
                                 @endphp
                                 @endforeach
-                                @dd($detailPeminjaman)
                             </tbody>
                         </table>
                     </div>
