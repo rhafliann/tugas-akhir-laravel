@@ -118,7 +118,7 @@
                     </tr>
                     <tr>
                         <td style="width: 30%;">15. BPJS Ketenagakerjaan</td>
-                        <td style="width: 40%;">: {{ $user->bpjs }}</td>
+                        <td style="width: 40%;">: {{ $user->bpjsk }}</td>
                     </tr>
                     @if(isset($user->tingkat_pendidikan->nama_tingkat_pendidikan))
                     <tr>

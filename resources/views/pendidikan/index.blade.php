@@ -102,7 +102,8 @@
                                                         @foreach ($tingpen->sortBy('nama_tingkat_pendidikan') as $tp)
                                                         <option value="{{ $tp->id_tingkat_pendidikan }}"
                                                             @if($pd->id_tingkat_pendidikan === old('id_tingkat_pendidikan', $tp->id_tingkat_pendidikan)) selected @endif>
-                                                            {{ $tp->nama_tingkat_pendidikan }}</option>
+                                                            {{ $tp->nama_tingkat_pendidikan }}
+                                                        </option>
                                                         @endforeach
                                                     </select>
                                                     @error('level') <span class="text-danger">{{$message}}</span>

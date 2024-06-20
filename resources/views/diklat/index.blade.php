@@ -56,8 +56,7 @@
                                 @endif
                                 </td>
                                 <td>
-                                    @include('components.action-buttons', ['id' => $dk->id_diklat, 'key' => $key,
-                                    'route' => 'diklat'])
+                                    @include('components.action-buttons', ['id' => $dk->id_diklat, 'key' => $key, 'route' => 'diklat'])
                                 </td>
                             </tr>
 
@@ -81,13 +80,15 @@
                                                 @else
                                                 <div class="form-group">
                                                     <label class="id_users" for="id_users">Nama Pegawai</label>
-                                                    <select id="id_users" name="id_users"
+                                                    <select 
+                                                        id="id_users" 
+                                                        name="id_users"
                                                         class="form-control @error('id_users') is-invalid @enderror">
-                                                            @foreach ($users->sortBy('nama_pegawai') as $us)
-                                                            <option value="{{ $us->id_users }}" @if( $dk->id_users === old('id_users', $us->id_users) ) selected @endif>
-                                                            {{ $us->nama_pegawai }}
-                                                            </option>
-                                                            @endforeach
+                                                        @foreach ($users->sortBy('nama_pegawai') as $us)
+                                                        <option value="{{ $us->id_users }}" @if( $dk->id_users === old('id_users', $us->id_users) ) selected @endif>
+                                                        {{ $us->nama_pegawai }}
+                                                        </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 @endif
@@ -105,19 +106,29 @@
                                                 <div class="form-group">
                                                     <label for="tgl_mulai" class='form-label'>Nama Diklat</label>
                                                     <div class="form-input">
-                                                        <input type="text" class="form-control @error('nama_diklat') is-invalid @enderror"
-                                                            id="nama_diklat" placeholder="Nama Diklat"
-                                                            name="nama_diklat" value="{{$dk->nama_diklat ?? old('nama_diklat')}}" required>
-                                                        @error('nama_diklat') <span class="text-danger">{{$message}}</span> @enderror
+                                                        <input type="text" 
+                                                            class="form-control @error('nama_diklat') is-invalid @enderror"
+                                                            id="nama_diklat" 
+                                                            placeholder="Nama Diklat"
+                                                            name="nama_diklat" 
+                                                            value="{{$dk->nama_diklat ?? old('nama_diklat')}}" required>
+                                                        @error('nama_diklat') 
+                                                        <span class="text-danger">{{$message}}</span> 
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="penyelenggara" class="form-label">Penyelenggara</label>
                                                     <div class="form-input">
-                                                        <input type="text" class="form-control @error('penyelenggara') is-invalid @enderror"
-                                                            id="penyelenggara" placeholder="Penyelenggara" name="penyelenggara"
+                                                        <input type="text" 
+                                                            class="form-control @error('penyelenggara') is-invalid @enderror"
+                                                            id="penyelenggara" 
+                                                            placeholder="Penyelenggara" 
+                                                            name="penyelenggara"
                                                             value="{{$dk->penyelenggara ?? old('penyelenggara')}}" required>
-                                                        @error('penyelenggara') <span class="text-danger">{{$message}}</span> @enderror
+                                                        @error('penyelenggara') 
+                                                        <span class="text-danger">{{$message}}</span> 
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -138,8 +149,9 @@
                                                             class="form-control @error('tgl_selesai') is-invalid @enderror"
                                                             id="tgl_selesai" name="tgl_selesai"
                                                             value="{{$dk -> tgl_selesai ?? old('tgl_selesai')}}">
-                                                        @error('tgl_selesai') <span
-                                                            class="textdanger">{{$message}}</span> @enderror
+                                                        @error('tgl_selesai') 
+                                                        <span class="textdanger">{{$message}}</span> 
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -154,13 +166,14 @@
                                                     <label for="file_sertifikat">File Sertifikat</label>
                                                     <input type="file" class="form-control @error('file_sertifikat') is-invalid @enderror" id="file_sertifikat" name="file_sertifikat"
                                                     accept="image/jpeg ,image/jpg ,image/png ,application/pdf ,application/docx">
-                                                        @error('file_sertifikat') 
+                                                    @error('file_sertifikat') 
                                                         <span class="invalid" role="alert">{{$message}}</span>
                                                     @enderror
                                                     <small class="form-text text-muted">Allow file extensions : .jpeg .jpg .png .pdf .docx</small>
                                                     @if ($dk->file_sertifikat)
-                                                    <p>Previous File: <a href="{{ asset('/storage/file_sertifikat/' . $dk->file_sertifikat) }}"
-                                                            target="_blank">{{ $dk->file_sertifikat }}</a></p>
+                                                    <p>
+                                                        Previous File: <a href="{{ asset('/storage/file_sertifikat/' . $dk->file_sertifikat) }}" target="_blank">{{ $dk->file_sertifikat }}</a>
+                                                    </p>
                                                     @endif
                                                 </div>
                                                 <div class="modal-footer">
@@ -224,45 +237,57 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputName">Nama Diklat</label>
-                                <input type="text" class="form-control @error('nama_diklat') is-invalid @enderror" 
-                                    id="nama_diklat" name="nama_diklat" required>
-                                    @error('nama_diklat')<span class="text-danger">{{ $message }}</span>@enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputName">Penyelenggara</label>
-                                <input type="text" class="form-control @error('penyelenggara') is-invalid @enderror"  
-                                    id="penyelenggara" name="penyelenggara" required>
-                                    @error('penyelenggara')<span class="text-danger">{{ $message }}</span>@enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="tgl_mulai" class="form-label">Tanggal Mulai</label>
-                                <div class="form-input">
-                                    <input type="date" class="form-control @error('tgl_mulai') is-invalid @enderror"
-                                        id="tgl_mulai" name="tgl_mulai" value="{{ old('tgl_mulai')}}">
-                                    @error('tgl_mulai') <span class="textdanger">{{$message}}</span> @enderror
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Nama Diklat</label>
+                                    <input type="text" class="form-control @error('nama_diklat') is-invalid @enderror" 
+                                        id="nama_diklat" name="nama_diklat" required>
+                                        @error('nama_diklat')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="tgl_selesai" class="form-label">Tanggal Selesai</label>
-                                <div class="form-input">
-                                    <input type="date" class="form-control"
-                                        class="form-control @error('tgl_selesai') is-invalid @enderror" id="tgl_selesai"
-                                        name="tgl_selesai" value="{{old('tgl_selesai')}}">
-                                    @error('tgl_selesai') <span class="textdanger">{{$message}}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputName">Jam Pelajaran</label>
-                                <input type="number" class="form-control @error('jp') is-invalid @enderror"  
-                                    id="jp" name="jp" required>
-                                @error('jp')<span class="text-danger">{{ $message }}</span>@enderror
 
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Penyelenggara</label>
+                                    <input type="text" class="form-control @error('penyelenggara') is-invalid @enderror"  
+                                        id="penyelenggara" name="penyelenggara" required>
+                                        @error('penyelenggara')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="tgl_mulai" class="form-label">Tanggal Mulai</label>
+                                    <div class="form-input">
+                                        <input type="date" class="form-control @error('tgl_mulai') is-invalid @enderror"
+                                            id="tgl_mulai" name="tgl_mulai" value="{{ old('tgl_mulai')}}">
+                                        @error('tgl_mulai') <span class="textdanger">{{$message}}</span> @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="tgl_selesai" class="form-label">Tanggal Selesai</label>
+                                    <div class="form-input">
+                                        <input type="date" class="form-control"
+                                            class="form-control @error('tgl_selesai') is-invalid @enderror" id="tgl_selesai"
+                                            name="tgl_selesai" value="{{old('tgl_selesai')}}">
+                                        @error('tgl_selesai') <span class="textdanger">{{$message}}</span> @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputName">Jam Pelajaran</label>
+                                    <input type="number" class="form-control @error('jp') is-invalid @enderror"  
+                                        id="jp" name="jp" required>
+                                    @error('jp')<span class="text-danger">{{ $message }}</span>@enderror
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="file_sertifikat">File Sertifikat</label>
-                                <input type="file" class="form-control @error('file_sertifikat') is-invalid @enderror"  
+                                <label for="file_sertifikat">File Sertifikat</label> <br>
+                                <input type="file" class=" @error('file_sertifikat') is-invalid @enderror"  
                                     id="file_sertifikat" enctype="multipart/form-data" name="file_sertifikat"
                                     accept="image/jpeg ,image/jpg ,image/png ,application/pdf ,application/docx">
                                     @error('file_sertifikat') <span class="invalid" role="alert">{{$message}}</span> @enderror
