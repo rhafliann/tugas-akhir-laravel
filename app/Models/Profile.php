@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +33,12 @@ class Profile extends Model
     }
 
     public function getMasaKerjaAttribute(){
-        return \Carbon\Carbon::parse($this->tmt)->locale('id-ID')->diffForHumans();
+        return Carbon::parse($this->tmt)->locale('id-ID')->diffForHumans([
+            'parts' => 3, 
+            'join' => ' ', 
+            'skip' => 'week',
+            'syntax' => CarbonInterface::DIFF_ABSOLUTE
+        ]);
         // return date('Y-m-d', strtotime('+2 year', strtotime($this->tmt)));
     }
 
