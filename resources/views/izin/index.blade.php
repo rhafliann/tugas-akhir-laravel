@@ -260,9 +260,7 @@ $kodeJenisPerizinan = [
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="keterangan" class="form-label">Keterangan</label>
-                                                    <textarea rows="4" class="form-control" id="keterangan" name="keterangan" required>
-                                                        {{$ap -> keterangan ?? old('keterangan')}}
-                                                    </textarea>
+                                                    <textarea rows="4" class="form-control" id="keterangan" name="keterangan" required>{{$ap -> keterangan ?? old('keterangan')}}</textarea>
                                                 </div>
                                                 @if($user->id_jabatan != '7')
                                                 <div class="form-group">

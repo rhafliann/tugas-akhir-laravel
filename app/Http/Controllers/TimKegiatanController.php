@@ -85,38 +85,42 @@ class TimKegiatanController extends Controller
 
         $pegawai = $request->input('id_users');
         $peran = $request->input('id_peran');
-        $tgl_selesai = $request->input('tgl_selesai');
+        $tgl_selesai = $request->input('tgl_selesai', date('Y'));
 
         // Store the selected values in session
         session()->put('selected_id_users', $pegawai);
         session()->put('selected_id_peran', $peran);
         session()->put('selected_tgl_selesai', $tgl_selesai);
 
+        $timkegiatan = TimKegiatan::orderBy('created_at', 'desc');
+
         if ($pegawai && $peran && $peran != 0) {
             $timkegiatan = TimKegiatan::whereIn('id_users', [$pegawai])
-                ->where('id_peran', $peran)
-                ->get();
+                ->where('id_peran', $peran);
 
         } elseif ($pegawai) {
-            $timkegiatan = TimKegiatan::where('id_users', $pegawai)
-                ->get();
+            $timkegiatan = TimKegiatan::where('id_users', $pegawai);
         } elseif ($peran) {
-            $timkegiatan = TimKegiatan::where('id_peran', $peran)
-                ->get();
-
-        } else {
-            $timkegiatan = TimKegiatan::get();
+            $timkegiatan = TimKegiatan::where('id_peran', $peran);
         }
 
-        $kegiatan = Kegiatan::where('is_deleted', '0')->get();
-        $user = User::where('is_deleted', '0')->orderBy('nama_pegawai', 'asc')->whereNot('level', 'admin')->get();
-        $peran = Peran::where('is_deleted', '0')->get();
+        $timkegiatan->with(['kegiatan' => function($query) use ($tgl_selesai) {
+            return $query->whereYear('tgl_selesai', $tgl_selesai);
+        }]);
+
+        $filtered = $timkegiatan->get()->filter(function($item) use ($tgl_selesai){
+            return \Carbon\Carbon::parse($item->kegiatan->tgl_selesai)->format('Y') == $tgl_selesai; 
+        });
+
+        $kegiatan = Kegiatan::where('is_deleted', '0');
+        $user = User::where('is_deleted', '0')->orderBy('nama_pegawai', 'asc')->whereNot('level', 'admin');
+        $peran = Peran::where('is_deleted', '0');
 
         return view('timkegiatan.laporan', [
-            'timkegiatan' => $timkegiatan,
-            'user' => $user,
-            'peran' => $peran,
-            'kegiatan' => $kegiatan,
+            'timkegiatan' => $filtered,
+            'user' => $user->get(),
+            'peran' => $peran->get(),
+            'kegiatan' => $kegiatan->get(),
         ]);
     }
 }

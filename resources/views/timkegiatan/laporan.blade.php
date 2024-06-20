@@ -91,9 +91,9 @@
                             @foreach($timkegiatan as $key => $tk)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$tk->kegiatan->nama_kegiatan}}</td>
-                                <td>{{$tk->user->nama_pegawai}}</td>
-                                <td>{{$tk->peran->nama_peran}}</td>
+                                <td>{{$tk?->kegiatan?->nama_kegiatan}}</td>
+                                <td>{{$tk?->user?->nama_pegawai}}</td>
+                                <td>{{$tk?->peran?->nama_peran}}</td>
 
                             </tr>
                             @endforeach
