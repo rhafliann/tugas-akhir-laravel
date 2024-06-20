@@ -14,13 +14,13 @@
     .form-input .radioInd {
         margin-right: 15px;
     }
-    
+
     .form-input .radioInd label {
         font-weight: normal;
         margin-right: 0; /* Menghilangkan margin-right sebelumnya */
     }
 }
-</style>    
+</style>
 @stop
 @section('content')
 <div class="row">
@@ -63,8 +63,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
-                            $showDetail = true; 
+                            @php
+                            $showDetail = true;
                             $sortedForm = $ajuanform->sortByDesc('id_pengajuan_form');
                             $nomor = 1; // Inisialisasi variabel untuk nomor urutan
                             @endphp
@@ -80,7 +80,7 @@
                                             Diajukan
                                         @elseif($form->status == 'diproses')
                                             Diproses
-                                        @else   
+                                        @else
                                             Ready
                                         @endif
                                     <td>
@@ -88,7 +88,7 @@
                                             <a href="{{ route('ajuanform' . '.show', $form->id_pengajuan_form)}}" class="btn btn-info btn-xs mx-1">
                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                             </a>
-    
+
                                             @if(auth()->user()->level === 'admin' || (auth()->user()->id_users == $form->id_users && $form->status !== 'ready'))
                                                 <a href="#" class="btn btn-primary btn-xs edit-button" data-toggle="modal" data-target="#editModal{{$form->id_pengajuan_form}}" data-id="{{$form->id_pengajuan_form}}">
                                                     <i class="fa fa-edit"></i>
@@ -98,7 +98,7 @@
                                                 </a>
                                             @endif
                                         </div>
-    
+
                                     </td>
                                 </tr>
                                 @php
@@ -132,14 +132,14 @@
                         <label for="jenis_form" class="form-label">Jenis Form</label>
                         <div class="form-input">
                             <select class="form-control" id="jenis_form" name="jenis_form" required>
-                                <option value="Biodata">Biodata</option> 
-                                <option value="Daftar Hadir">Daftar Hadir</option> 
-                                <option value="Evaluasi">Evaluasi</option>                            
-                                <option value="Konfirmasi Keikutsertaan">Konfirmasi Keikutsertaan</option>                            
-                                <option value="Pendaftaran">Pendaftaran</option>                            
-                                <option value="Pendaftaran">Pengumpulan Tugas</option>                            
-                                <option value="Pendaftaran">Validasi</option>                            
-                            </select>  
+                                <option value="Biodata">Biodata</option>
+                                <option value="Daftar Hadir">Daftar Hadir</option>
+                                <option value="Evaluasi">Evaluasi</option>
+                                <option value="Konfirmasi Keikutsertaan">Konfirmasi Keikutsertaan</option>
+                                <option value="Pendaftaran">Pendaftaran</option>
+                                <option value="Pendaftaran">Pengumpulan Tugas</option>
+                                <option value="Pendaftaran">Validasi</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group" style="align-items: flex-start;">
@@ -175,7 +175,7 @@
                             </label>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="shortlink" class="form-label">Nama Shortlink</label>
                         <div class="form-input">
@@ -213,12 +213,12 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="keterangan_pemohon" class="form-label">Keterangan Tambahan</label>
                         <div class="form-input">
-                            <textarea rows="3" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control 
+                            <textarea rows="3" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control
                             @error('keterangan_pemohon') is-invalid @enderror"></textarea>
                         @error('keterangan_pemohon') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-                    </div> 
-                    <div class="modal-footer">  
+                    </div>
+                    <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Ajukan</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                     </div>
@@ -268,14 +268,14 @@
                         <label for="jenis_form" class="form-label">Jenis Form</label>
                         <div class="form-input">
                             <select class="form-control" id="jenis_form" name="jenis_form" required>
-                                <option value="Biodata" @if($form->jenis_form == 'Biodata' || old('Biodata') == 'Biodata') selected @endif>Biodata</option> 
-                                <option value="Daftar Hadir" @if($form->jenis_form  == 'Daftar Hadir' || old('Daftar Hadir') == 'Daftar Hadir') selected @endif>Daftar Hadir</option> 
-                                <option value="Evaluasi" @if($form->jenis_form == 'Evaluasi' || old('Evaluasi') == 'Evaluasi') selected @endif>Evaluasi</option>                            
-                                <option value="Konfirmasi Keikutsertaan" @if($form->jenis_form == 'Konfirmasi Keikutsertaan' || old('Konfirmasi Keikutsertaan') == 'Konfirmasi Keikutsertaan') selected @endif>Konfirmasi Keikutsertaan</option>                            
-                                <option value="Pendaftaran" @if($form->jenis_form == 'Pendaftaran' || old('Pendaftaran') == 'Pendaftaran') selected @endif>Pendaftaran</option>                            
-                                <option value="Pengumpulan Tugas" @if($form->jenis_form == 'Pengumpulan Tugas' || old('Pengumpulan Tugas') == 'Pengumpulan Tugas') selected @endif>Pengumpulan Tugas</option>                            
-                                <option value="Pendaftaran" @if($form->jenis_form == 'Biodata' || old('Biodata') == 'Biodata') selected @endif>Validasi</option>                            
-                            </select>  
+                                <option value="Biodata" @if($form->jenis_form == 'Biodata' || old('Biodata') == 'Biodata') selected @endif>Biodata</option>
+                                <option value="Daftar Hadir" @if($form->jenis_form  == 'Daftar Hadir' || old('Daftar Hadir') == 'Daftar Hadir') selected @endif>Daftar Hadir</option>
+                                <option value="Evaluasi" @if($form->jenis_form == 'Evaluasi' || old('Evaluasi') == 'Evaluasi') selected @endif>Evaluasi</option>
+                                <option value="Konfirmasi Keikutsertaan" @if($form->jenis_form == 'Konfirmasi Keikutsertaan' || old('Konfirmasi Keikutsertaan') == 'Konfirmasi Keikutsertaan') selected @endif>Konfirmasi Keikutsertaan</option>
+                                <option value="Pendaftaran" @if($form->jenis_form == 'Pendaftaran' || old('Pendaftaran') == 'Pendaftaran') selected @endif>Pendaftaran</option>
+                                <option value="Pengumpulan Tugas" @if($form->jenis_form == 'Pengumpulan Tugas' || old('Pengumpulan Tugas') == 'Pengumpulan Tugas') selected @endif>Pengumpulan Tugas</option>
+                                <option value="Pendaftaran" @if($form->jenis_form == 'Biodata' || old('Biodata') == 'Biodata') selected @endif>Validasi</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group " style="align-items: flex-start;">
@@ -317,7 +317,7 @@
                             id="template" name="template" accept=".jpg,.jpeg,.png,.doc,.docx,.xls,.zip" >
                             <small class="form-text text-muted mt-0">Allow file extensions : .jpg .jpeg .png .doc .docx .xls .zip </small>
                             @if($form->template)
-                            Previous File: 
+                            Previous File:
                                 <a href="{{ asset('/storage/template_form/'. $form->template) }}"
                                 target="_blank">{{ $form->template }}</a>
                             @endif
@@ -329,8 +329,8 @@
                         <div class="form-input">
                             <input type="text" class="form-control @error('contoh') is-invalid @enderror"
                                 id="contoh" name="contoh"  value="{{old('contoh', $form->contoh)}}">
-                            
-                            
+
+
                         @error('contoh') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -345,19 +345,19 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="keterangan_pemohon" class="form-label">Keterangan Tambahan</label>
                         <div class="form-input">
-                            <textarea rows="3" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control 
+                            <textarea rows="3" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control
                             @error('keterangan_pemohon') is-invalid @enderror">{{old('keterangan_pemohon', $form->keterangan_pemohon)}}"</textarea>
                         @error('keterangan_pemohon') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
-                    
+
                     @can('isAdmin')
                     <div class="form-group">
                         <label for="nama_operator" class="form-label">Nama Operator</label>
                         <div class="form-input">
                             <select id="nama_operator" name="nama_operator" class="form-control @error('nama_operator') is-invalid @enderror">
-                                <option value="Hana" @if($form->nama_operator == 'Hana' || old('Hana') == 'Hana') selected @endif>Hana</option>
                                 <option value="Bayu"@if($form->nama_operator == 'Bayu' || old('Bayu') == 'Bayu') selected @endif>Bayu</option>
+                                <option value="Rahadian" @if($form->nama_operator == 'Rahadian' || old('Rahadian') == 'Rahadian') selected @endif>Rahadian</option>
                                 <option value="Wendy" @if($form->nama_operator == 'Wendy' || old('Wendy') == 'Wendy') selected @endif>Wendy</option>
                                 <option value="Siswa Magang" @if($form->nama_operator == 'Siswa Magang' || old('Siswa Magang') == 'Siswa Magang') selected @endif>Siswa Magang</option>
                                 <option value="Lainnya" @if($form->nama_operator == 'Lainnya' || old('Lainnya') == 'Lainnya') selected @endif>Lainnya</option>
@@ -379,13 +379,13 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="tautan_form" class="form-label">Tautan Form</label>
                         <div class="form-input">
-                            <textarea rows="5" name="tautan_form" id="tautan_form" class="form-control 
+                            <textarea rows="5" name="tautan_form" id="tautan_form" class="form-control
                             @error('keterangan_operator') is-invalid @enderror">{{old('tautan_form', $form->tautan_form)}}</textarea>
                         @error('tautan_form') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
-                    @endcan 
-                    <div class="modal-footer">  
+                    @endcan
+                    <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                     </div>
@@ -436,7 +436,7 @@ Swal.fire({
 <script type="text/javascript">
     const form_tahun = document.getElementById('form-tahun');
     const select_tahun = document.getElementById('tahun');
-    
+
     document.addEventListener('DOMContentLoaded', function(){
         select_tahun.addEventListener('change', function(e){
             form_tahun.submit();
