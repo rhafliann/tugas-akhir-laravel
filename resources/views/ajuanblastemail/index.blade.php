@@ -46,8 +46,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
-                            $showDetail = true; 
+                            @php
+                            $showDetail = true;
                             $sortedBlastEmail = $BlastEmail->sortByDesc('id_pengajuan_blastemail');
                             $nomor = 1; // Inisialisasi variabel untuk nomor urutan
                             @endphp
@@ -68,7 +68,7 @@
                                             <a href="{{ route('ajuanblastemail' . '.show', $email->id_pengajuan_blastemail)}}" class="btn btn-info btn-xs mx-1">
                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                             </a>
-    
+
                                             @if(auth()->user()->level === 'admin' || (auth()->user()->id_users == $email->id_users && $email->status !== 'selesai'))
                                                 <a href="#" class="btn btn-primary btn-xs edit-button" data-toggle="modal" data-target="#editModal{{$email->id_pengajuan_blastemail}}" data-id="{{$email->id_pengajuan_blastemail}}">
                                                     <i class="fa fa-edit"></i>
@@ -78,7 +78,7 @@
                                                 </a>
                                             @endif
                                         </div>
-    
+
                                     </td>
                                 </tr>
                                 @php
@@ -112,10 +112,10 @@
                         <label for="jenis_blast" class="form-label">Jenis Email</label>
                         <div class="form-input">
                             <select class="form-control" id="jenis_blast" name="jenis_blast" required>
-                                <option value="Sertifikat Kegiatan">Sertifikat Kegiatan</option> 
-                                <option value="Surat Undangan">Surat Undangan</option> 
-                                <option value="Informasi Lainnya">Informasi Lainnya</option>                            
-                            </select>  
+                                <option value="Sertifikat Kegiatan">Sertifikat Kegiatan</option>
+                                <option value="Surat Undangan">Surat Undangan</option>
+                                <option value="Informasi Lainnya">Informasi Lainnya</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -135,11 +135,11 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="keterangan_pemohon" class="form-label">Keterangan</label>
                         <div class="form-input">
-                            <textarea rows="5" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control 
+                            <textarea rows="5" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control
                             @error('keterangan_pemohon') is-invalid @enderror"required></textarea>
                         @error('keterangan_pemohon') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-                    </div> 
+                    </div>
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="lampiran" class="form-label">Lampiran Dokumen</label>
                         <div class="form-input">
@@ -149,7 +149,7 @@
                         @error('lampiran') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
-                    <div class="modal-footer">  
+                    <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Ajukan</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                     </div>
@@ -194,10 +194,10 @@
                         <label for="jenis_blast" class="form-label">Jenis Email</label>
                         <div class="form-input">
                             <select class="form-control" id="jenis_blast" name="jenis_blast" required>
-                                <option value="Sertifikat Kegiatan" @if($email->jenis_blast == 'Sertifikat Kegiatan' || old('Sertifikat Kegiatan') == 'Sertifikat Kegiatan') selected @endif>Sertifikat Kegiatan</option> 
-                                <option value="Surat Undangan" @if($email->jenis_blast == 'Surat Undangan' || old('Surat Undangan') == 'Surat Undangan') selected @endif>Surat Undangan</option> 
-                                <option value="Informasi Lainnya" @if($email->jenis_blast == 'Informasi Lainnya' || old('Informasi Lainny') == 'Informasi Lainny') selected @endif>Informasi Lainnya</option>                            
-                            </select>  
+                                <option value="Sertifikat Kegiatan" @if($email->jenis_blast == 'Sertifikat Kegiatan' || old('Sertifikat Kegiatan') == 'Sertifikat Kegiatan') selected @endif>Sertifikat Kegiatan</option>
+                                <option value="Surat Undangan" @if($email->jenis_blast == 'Surat Undangan' || old('Surat Undangan') == 'Surat Undangan') selected @endif>Surat Undangan</option>
+                                <option value="Informasi Lainnya" @if($email->jenis_blast == 'Informasi Lainnya' || old('Informasi Lainny') == 'Informasi Lainny') selected @endif>Informasi Lainnya</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -215,21 +215,21 @@
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="keterangan_pemohon" class="form-label">Keterangan</label>
                         <div class="form-input">
-                            <textarea rows="5" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control 
+                            <textarea rows="5" name="keterangan_pemohon" id="keterangan_pemohon" class="form-control
                             @error('keterangan_pemohon') is-invalid @enderror" required>{{old('keterangan_pemohon', $email->keterangan_pemohon)}}</textarea>
                         @error('keterangan_pemohon') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-                    </div> 
+                    </div>
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="lampiran" class="form-label">Lampiran Dokumen</label>
                         <div class="form-input">
                             <input type="file" class="form-control-file border @error('lampiran') is-invalid @enderror"
                             id="lampiran" name="lampiran" accept=".doc,.docx,.xlsx,.xls,.rar,.zip">
                             <small class="form-text text-muted">Allow file extensions : .doc .docx .xls .xlsx .zip .rar</small>
-                            Previous File: 
+                            Previous File:
                                 <a href="{{ asset('/storage/lampiran_blast_email/'. $email->lampiran) }}"
                                 target="_blank">{{ $email->lampiran }}</a>
-                            
+
                         @error('lampiran') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -238,8 +238,8 @@
                         <label for="nama_operator" class="form-label">Nama Operator</label>
                         <div class="form-input">
                             <select id="nama_operator" name="nama_operator" class="form-control @error('nama_operator') is-invalid @enderror">
-                                <option value="Hana" @if($email->nama_operator == 'Hana' || old('Hana') == 'Hana') selected @endif>Hana</option>
                                 <option value="Bayu"@if($email->nama_operator == 'Bayu' || old('Bayu') == 'Bayu') selected @endif>Bayu</option>
+                                <option value="Rahadian" @if($email->nama_operator == 'Rahadian' || old('Rahadian') == 'Rahadian') selected @endif>Rahadian</option>
                                 <option value="Wendy" @if($email->nama_operator == 'Wendy' || old('Wendy') == 'Wendy') selected @endif>Wendy</option>
                                 <option value="Siswa Magang" @if($email->nama_operator == 'Siswa Magang' || old('Siswa Magang') == 'Siswa Magang') selected @endif>Siswa Magang</option>
                                 <option value="Lainnya" @if($email->nama_operator == 'Lainnya' || old('Lainnya') == 'Lainnya') selected @endif>Lainnya</option>
@@ -265,19 +265,19 @@
                         <div class="form-input">
                             <input type="date" name="tgl_kirim" id="tgl_kirim" class="form-control @error('keterangan_operator') is-invalid @enderror"
                             value="{{old('tgl_kirim', $email->tgl_kirim)}}" required>
-                            @error('tgl_kirim') <span class="text-danger">{{ $message }}</span> @enderror                            
+                            @error('tgl_kirim') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="form-group" style="align-items: flex-start;">
                         <label for="keterangan_operator" class="form-label">Keterangan Operator</label>
                         <div class="form-input">
-                            <textarea rows="5" name="keterangan_operator" id="keterangan_operator" class="form-control 
+                            <textarea rows="5" name="keterangan_operator" id="keterangan_operator" class="form-control
                             @error('keterangan_operator') is-invalid @enderror" required>{{old('keterangan_operator', $email->keterangan_operator)}}</textarea>
                         @error('keterangan_operator') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     @endcan
-                    <div class="modal-footer">  
+                    <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                     </div>
@@ -324,7 +324,7 @@ Swal.fire({
 <script type="text/javascript">
     const form_tahun = document.getElementById('form-tahun');
     const select_tahun = document.getElementById('tahun');
-    
+
     document.addEventListener('DOMContentLoaded', function(){
         select_tahun.addEventListener('change', function(e){
             form_tahun.submit();
