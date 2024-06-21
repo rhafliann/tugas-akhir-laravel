@@ -74,7 +74,7 @@ class AjuanPerizinanController extends Controller
         }
         
         $ajuanperizinan->where($where);
-        $ajuanperizinan->orderBy('id_perizinan', 'desc');
+        $ajuanperizinan->orderBy('tgl_ajuan', 'desc');
 
         return view('izin.index', [
             'ajuanperizinan' => $ajuanperizinan->get(),
