@@ -102,8 +102,6 @@ class PengajuanPerbaikanController extends Controller
     public function show($id_pengajuan_perbaikan)
     {
         $ajuanperbaikan = PengajuanPerbaikan::findOrFail($id_pengajuan_perbaikan);
-    
-        // Mengambil semua data BarangTik yang tersedia
         $users = User::where('is_deleted', '0')->get();
         $barang = BarangTIK::where('is_deleted', '0')->get();
         

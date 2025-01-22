@@ -8,6 +8,7 @@
 @endif
 @stop
 @section('content')
+
 {{-- <div class="container"> --}}
 <div class="row">
     <div class="col-12">
@@ -71,6 +72,7 @@
                                 <th>Terlambat</th>
                                 <th>Pulang Cepat</th>
                                 <th>Total Kehadiran</th>
+                          
                                 <th>Keterangan</th>
                             </tr>
                         </thead>
@@ -82,8 +84,6 @@
                                 <td>{{ optional(optional($pn->profile_user)->user)->nama_pegawai }}</td>
                                 @endif
                                 <td> {{ \Carbon\Carbon::parse($pn->tanggal)->format('d M Y') }}</td>
-                                {{-- <td>{{$pn->jam_masuk}}</td>
-                                <td>{{$pn->jam_pulang}}</td> --}}
                                 <td>{{$pn->scan_masuk}}</td>
                                 <td>{{$pn->scan_pulang}}</td>
                                 <td>{{$pn->terlambat}}</td>

@@ -28,7 +28,6 @@ class PengajuanSingleLinkController extends Controller
         ->orWhereYear('tgl_selesai', $tahun)
         ->get();
 
-
         return view('ajuansinglelink.index', [
             'ajuansinglelink' => $ajuansinglelink,
             'kegiatan' => $kegiatan,

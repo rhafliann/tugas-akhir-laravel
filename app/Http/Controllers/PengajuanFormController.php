@@ -28,7 +28,6 @@ class PengajuanFormController extends Controller
         ->whereYear('tgl_mulai', $tahun)
         ->orWhereYear('tgl_selesai', $tahun)
         ->get();
-        // dd($form);
         return view('ajuanform.index', [
             'ajuanform' => $form,
             'kegiatan' => $kegiatan,

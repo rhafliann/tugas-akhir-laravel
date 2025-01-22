@@ -399,7 +399,7 @@ return [
             ],
         ],
         [
-            'text' => 'Pengajuan 2',
+            'text' => 'Pengajuan',
             'url' => '/pengajuan',
             'icon' => 'fas fa-qrcode',
             'can' => '',
@@ -422,44 +422,44 @@ return [
 		// 	'url' => '/ajuansurat',
 		// 	'can' => 'isAdmin',
         // ],
-        [
-            'icon' => 'fas fa-link',
-            'text' => 'Pengajuan',
-			'submenu' => [
+        // [
+        //     'icon' => 'fas fa-link',
+        //     'text' => 'Pengajuan',
+		// 	'submenu' => [
 
-                [
-                    'text' => 'Zoom Meeting',
-                    'url' => '/ajuanzoom',
-                    'can' => '',
-                ],
-                [
+        //         [
+        //             'text' => 'Zoom Meeting',
+        //             'url' => '/ajuanzoom',
+        //             'can' => '',
+        //         ],
+        //         [
 
-                    'text' => 'Single Link',
-                    'url' => '/ajuansinglelink',
-                    'can' => '',
-                ],           
-                [
-                    'text' => 'Blast Email',
-                    'url' => '/ajuanblastemail',
-                    'can' => '',
-                ],
-                [
-                    'text' => 'Google Form',
-                    'url' => '/ajuanform',
-                    'can' => '',
-                ],
-                [
-                    'text' => 'Perbaikan Alat TIK',
-                    'url' => '/perbaikanBarang',
-                    'can' => '',
-                ],  
-                [
-                    'text' => 'Desain',
-                    'url' => '/ajuandesain',
-                    'can' => '',
-                ],   
-            ],
-        ],
+        //             'text' => 'Single Link',
+        //             'url' => '/ajuansinglelink',
+        //             'can' => '',
+        //         ],           
+        //         [
+        //             'text' => 'Blast Email',
+        //             'url' => '/ajuanblastemail',
+        //             'can' => '',
+        //         ],
+        //         [
+        //             'text' => 'Google Form',
+        //             'url' => '/ajuanform',
+        //             'can' => '',
+        //         ],
+        //         [
+        //             'text' => 'Perbaikan Alat TIK',
+        //             'url' => '/perbaikanBarang',
+        //             'can' => '',
+        //         ],  
+        //         [
+        //             'text' => 'Desain',
+        //             'url' => '/ajuandesain',
+        //             'can' => '',
+        //         ],   
+        //     ],
+        // ],
         [
             'text' => 'Pemagang',
             'icon' => 'fas fa-user-cog',

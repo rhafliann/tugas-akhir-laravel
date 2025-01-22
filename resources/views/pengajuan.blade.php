@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Pengajuan 2')
+@section('title', 'Pengajuan')
 
 @section('content_header')
 
@@ -74,7 +74,7 @@
         </div>
 
 
-        <div class="ag-courses_item">
+        <!-- <div class="ag-courses_item">
             <a href="{{route('url.index')}}" class="ag-courses-item_link">
                 <div class="ag-courses-item_bg"></div>
 
@@ -89,7 +89,7 @@
                     Short Link / QR Code
                 </div>
             </a>
-        </div>
+        </div> -->
 
         <div class="ag-courses_item">
             <a href="{{route('ajuansinglelink.index')}}" class="ag-courses-item_link">
@@ -100,7 +100,6 @@
                         <i class="fa-solid fa-link"></i>
                     </div>
                 </div>
-
 
                 <div class="ag-courses-item_date-box">
                     Single Link
@@ -231,7 +230,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <a href="{{route('url.index')}}">
                     <div class="card">
                         <div class="card-body text-center">
@@ -242,7 +241,7 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> -->
             <div class="col-md-3">
                 <a href="{{route('ajuansinglelink.index')}}">
                     <div class="card">
@@ -276,7 +275,7 @@
                             <h2>
                                 <i class="fas fa-envelope"></i>
                             </h2>
-                            <h5>Blast Email</h5>
+                            <h5>Email</h5>
                         </div>
                     </div>
                 </a>
@@ -288,7 +287,7 @@
                             <h2>
                                 <i class="fa-brands fa-wpforms"></i>
                             </h2>
-                            <h5>Gooogle Form</h5>
+                            <h5>Google Form</h5>
                         </div>
                     </div>
                 </a>

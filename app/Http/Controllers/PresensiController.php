@@ -40,7 +40,7 @@ class PresensiController extends Controller
                 ->whereHas('profile_user')
                 ->with(['profile_user:nik,id_users', 'profile_user.user:id_users,nama_pegawai']);
         } else {
-            // Fetch user's own work experiences using the relationship
+            
             $presensi = Presensi::where(['nik' => $user->profile->nik])
                 ->with(['profile_user:nik,id_users', 'profile_user.user:id_users,nama_pegawai']);
         }

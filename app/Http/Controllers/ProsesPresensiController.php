@@ -20,7 +20,7 @@ class ProsesPresensiController extends Controller
     {
         $hari_ini =  Carbon::now()->format('Y-m-d');
         $start_date = $request->input('start_date') ?? $hari_ini;
-    
+        // dd($hari_ini);
         $cloud_id = "C2630450C3051F24";
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -59,7 +59,6 @@ class ProsesPresensiController extends Controller
                             "scan_time" => $item['scan_date'],
                             "original_data" => json_encode($item)
                         ];
-                        // $inserted = LogFingerprint::create($log_fingerprint);
                         LogFingerprint::create($log_fingerprint);
                         // mengecek apakah data berhasil di masukan
                         // if ($inserted) {

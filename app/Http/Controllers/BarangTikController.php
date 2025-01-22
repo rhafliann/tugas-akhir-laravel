@@ -10,9 +10,6 @@ use Illuminate\Http\Request;
 
 class BarangTikController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
 {
     $barangTik = BarangTik::where('is_deleted', '0')->get();
@@ -33,7 +30,6 @@ class BarangTikController extends Controller
             $detailPeminjaman->push($dipinjamDetail);
         }
     }
-    // dd($detailPeminjaman);
     return view('barangtik.index', [
         'barangTik' => $barangTik,
         'ruangan' => $ruangan,

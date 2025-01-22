@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\PengajuanZoom;
 use App\Models\Notifikasi;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PengajuanZoomController extends Controller
 {
@@ -20,7 +21,6 @@ class PengajuanZoomController extends Controller
         ->get();
         $kegiatan = Kegiatan::all();
       
-
         return view('ajuanzoom.index', [
             'zoom' => $zoom,
             'kegiatan' => $kegiatan,
@@ -59,7 +59,7 @@ class PengajuanZoomController extends Controller
         $zoom = new PengajuanZoom();
 
         $zoom->id_users = $request->id_users;
-        $zoom->tgl_pelaksanaan = $request->tgl_pelaksanaan;
+        $zoom->tgl_pelaksanaan = Carbon::parse($request->tgl_pelaksanaan)->format("Y-m-d");
         $zoom->jam_mulai = $request->jam_mulai;
         $zoom->jenis_zoom = $request->jenis_zoom;
         $zoom->jam_selesai = $request->jam_selesai;
@@ -160,7 +160,7 @@ class PengajuanZoomController extends Controller
 
             $zoom = PengajuanZoom::find($id_pengajuan_zoom);
             $request->validate($rules);
-            $zoom->tgl_pelaksanaan = $request->tgl_pelaksanaan;
+            $zoom->tgl_pelaksanaan = Carbon::parse($request->tgl_pelaksanaan)->format("Y-m-d");
             $zoom->jam_mulai = $request->jam_mulai;
             $zoom->jenis_zoom = $request->jenis_zoom;
             $zoom->jam_selesai = $request->jam_selesai;
